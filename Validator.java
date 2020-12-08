@@ -13,7 +13,7 @@ public class Validator
 	
 	public static boolean verifyDouble(String d)
 	{
-		String doublePattern = "(-)?([0-9]*\\.)?[0-9]+";
+		String dubPattern = "(-)?([0-9]*\\.)?[0-9]+";
 		return (d.matches(dubPattern));
 	}
 }
