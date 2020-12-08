@@ -25,5 +25,15 @@ public class Writer
 			writer.write(str.toCSV() + "\n");
 		}
 		writer.close();
-	}	
+	}
+	
+	public static void salesToFile(String fileName, String itemDesc) throws IOException 
+	{
+		FileWriter writer = new FileWriter(fileName);
+	
+		writer.write(itemDesc.toCSV() + "\n");
+	}
+		writer.close();
+	}
+
 }

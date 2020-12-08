@@ -42,10 +42,11 @@ public class VendingMachine
    
    public String addCoin(Coin money)
    {
-       String output = ""; //I added this guy to this method to collect our output 
+	   
+	   String output = "";  //I added this guy to this method to collect our output 
 							//and return it, it helps with the GUI, i also changed
 							//the statement where this is called from VendingMenu to
-							//a println statement so that the needed info is still printed!
+							//a println statement so that the needed info is still printed! 
 	   boolean addNew = true;
 	   for(int i = 0; i < currentCoins.size(); i++)
 	   {
@@ -222,6 +223,11 @@ public class VendingMachine
 			}
 		}
 		return false;
+   }
+
+   public void trackSales(String prodDesc){
+	   
+
    }
    
    public ArrayList<LineItem> getStock()
