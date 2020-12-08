@@ -56,8 +56,8 @@ public class VendingGUI extends Application {
 		gPane.add(rbOpFuntions,1,1);
 		gPane.add(rbQuit,1,2);
 	
-		ToggleGroup group = new ToggleGroup(); //This group ensures the radio buttons stay pushed
-		rbShowProducts.setToggleGroup(group);  //untill the next scene is launched.
+		ToggleGroup group = new ToggleGroup();
+		rbShowProducts.setToggleGroup(group);
 		rbInsertCoins.setToggleGroup(group);
 		rbBuy.setToggleGroup(group);
 		rbReturnCoins.setToggleGroup(group);
@@ -71,7 +71,7 @@ public class VendingGUI extends Application {
 				primaryStage.setTitle("Show Products");
 				primaryStage.setScene(showProductsScene);
 				primaryStage.show();
-				rbShowProducts.setSelected(false); //This unchecks the radio button once the next scene is shown.
+				rbShowProducts.setSelected(false);
 			}
 		});
 		//Insert Coins menu button
@@ -121,7 +121,8 @@ public class VendingGUI extends Application {
 				primaryStage.setTitle("Ad\u00ED"+"os CowBoy!");
 				primaryStage.setScene(quitScene);
 				primaryStage.show();
-				writeFiles(); // this writes all our files before quitting the application.
+				writeFiles();
+				
 			}
 		});
 		return gPane;
@@ -129,48 +130,46 @@ public class VendingGUI extends Application {
 ////////////////////////////////////////////////////////////////////////////////////
 
 	public BorderPane getBuyPane(){
-		BorderPane pane 	= new BorderPane();
-		GridPane buttonPane = new GridPane();
-		Button btPurchase 	= new Button("Purchase");
-		Button btClose	 	= new Button("Back");
+		BorderPane pane = new BorderPane();
+		Button btClose 	= new Button("Back");
 		pane.setPrefHeight(175);
 		pane.setPrefWidth(320);
-		buttonPane.add(btPurchase, 3, 0);
-		buttonPane.add(btClose, 0, 0);
-		pane.setBottom(buttonPane);
+		pane.setBottom(btClose);
+		
 		products = machine.getProductTypes(false); // loads the products array with the current stock.
 		
-		if(products.length>0) { // if there are no products.
-			String[] productInfo = new String[products.length]; // next few lines fill productInfo for ComboBox
+		if(products.length>0){
+			String[] productInfo = new String[products.length];
 			for(int i=0; i<products.length; i++)
-				productInfo[i] = "Product: " + products[i].getDescription() + 
-								 ", Price: $" + String.format("%1.2f", products[i].getPrice());
-
+					productInfo[i] = "Product: " + products[i].getDescription() + ", Price: $" + products[i].getPrice();
+					
+			String[] productDescriptions = new String[products.length];	
+			for(int i=0; i<products.length; i++)
+					productDescriptions[i] = products[i].toString();
+			
 			ObservableList<String> items = FXCollections.observableArrayList(productInfo);
 			ComboBox<String> cbo 		 = new ComboBox<>();
 			TextArea textArea 			 = new TextArea();
-			textArea.setPrefWidth(320);
 			textArea.setPrefHeight(125);
-			textArea.setEditable(false); // this and the following two lines prevent users editing textArea
+			textArea.setPrefWidth(320);
+			textArea.setEditable(false);
 			textArea.setMouseTransparent(true);
 			textArea.setFocusTraversable(false);
-			textArea.setText(machine.getCurrentCredit());
 			BorderPane paneForComboBox 	 = new BorderPane();
 			paneForComboBox.setLeft(new Label("Select Product to Buy: "));
 			paneForComboBox.setRight(cbo);
 			pane.setTop(paneForComboBox);
-			cbo.setValue("Product..."); // default display value for comboBox
 			cbo.setPrefWidth(200);
+			cbo.setValue("Product...");
+			
 			cbo.getItems().addAll(items); 
 			pane.setCenter(textArea);
 			
-			cbo.setOnMouseClicked(e -> textArea.setText(machine.getCurrentCredit()));
-			btPurchase.setOnAction(e -> {
+			//Display the selected product
+			cbo.setOnAction(e -> {
 				int indx = items.indexOf(cbo.getValue());
 				try{
-					textArea.setText(machine.buyProduct(products[indx]) + 
-									 "\n" + machine.getCurrentCredit() +
-									 "\n\n" + "This machine does not give change.");
+					textArea.setText(machine.buyProduct(products[indx]));
 				}
 				catch(NullPointerException except) {
 					textArea.setText("No Options Currently Available");
@@ -178,14 +177,14 @@ public class VendingGUI extends Application {
 				catch (VendingException ex) {
 					textArea.setText(ex.getMessage());
 				}
-				cbo.setValue("Product...");
 			});
 		}else{
 			Label message = new Label("No products in stock.");
 			pane.setCenter(message);
 		}
-		btClose.setOnAction(e->primaryStage.hide()); // close current stage
+		btClose.setOnAction(e->primaryStage.hide());
 		return pane;	
+		
 	}
 ////////////////////////////////////////////////////////////////////////////////////
 	
@@ -279,6 +278,7 @@ public class VendingGUI extends Application {
 				int indx = items.indexOf(cbo.getValue());
 				if(indx>=0){
 					try{	
+						
 						textArea.setText("Added: " + coinNames[indx] + "\n" + machine.addCoin(coins[indx]));
 					}
 					catch(NullPointerException ex) {
@@ -418,7 +418,6 @@ public class VendingGUI extends Application {
 				secondaryStage.setTitle("Operator Coin Withdrawl");
 				secondaryStage.setScene(returnCoinsScene);
 				secondaryStage.show();
-				rbWithdrawCoins.setSelected(false);
 			}
 		});
 		
@@ -428,7 +427,6 @@ public class VendingGUI extends Application {
 				secondaryStage.setTitle("Restock");
 				secondaryStage.setScene(restockScene);
 				secondaryStage.show();
-				rbRestock.setSelected(false);
 			}
 		});
 
@@ -438,7 +436,6 @@ public class VendingGUI extends Application {
 				secondaryStage.setTitle("Add Stock");
 				secondaryStage.setScene(scene);
 				secondaryStage.show();
-				rbAddProduct.setSelected(false);
 			}
 		});
 		
@@ -591,7 +588,7 @@ public class VendingGUI extends Application {
 	public GridPane getQuitPane(){
 		GridPane pane 	= new GridPane();
 		Button btQuit 	= new Button("Quit");
-		Label l1 		= new Label("Returning Unused Coins:\n" + machine.removeMoney(false) + "\n" +
+		Label l1 		= new Label("Returning Unused Coins\n" + machine.removeMoney(false) + "\n" +
 									"Writing files to memory...\n");
 		pane.add(l1,0,0);
 		pane.setPrefWidth(320);
@@ -617,5 +614,7 @@ public class VendingGUI extends Application {
 	
 	}
 ////////////////////////////////////////////////////////////////////////////////////
-		
+	
+
+	
 }
