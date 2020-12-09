@@ -43,9 +43,9 @@ public class VendingGUI extends Application {
 		gPane.setVgap(25.5);
 		
 		RadioButton rbShowProducts 	= new RadioButton("Show Products");
-		RadioButton rbInsertCoins 	= new RadioButton("Insert Coins");
+		RadioButton rbInsertCoins 	= new RadioButton("Insert Cash/Credit");
 		RadioButton rbBuy 			= new RadioButton("Buy");
-		RadioButton rbReturnCoins 	= new RadioButton("Return Coins");
+		RadioButton rbReturnCoins 	= new RadioButton("Return Cash/Credit");
 		RadioButton rbOpFuntions 	= new RadioButton("Operator Functions");
 		RadioButton rbQuit 			= new RadioButton("Quit");
 		
@@ -78,7 +78,7 @@ public class VendingGUI extends Application {
 		rbInsertCoins.setOnAction(e -> {
 			if (rbInsertCoins.isSelected()) {
 				Scene insertCoinsScene = new Scene(getInsertCoinsPane());
-				primaryStage.setTitle("Insert Coins");
+				primaryStage.setTitle("Insert Cash");
 				primaryStage.setScene(insertCoinsScene);
 				primaryStage.show();
 				rbInsertCoins.setSelected(false);
@@ -98,7 +98,7 @@ public class VendingGUI extends Application {
 		rbReturnCoins.setOnAction(e -> {
 			if (rbReturnCoins.isSelected()) {
 				Scene returnCoinsScene = new Scene(getReturnCoinsPane(false));
-				primaryStage.setTitle("Return Coins");
+				primaryStage.setTitle("Return Cash");
 				primaryStage.setScene(returnCoinsScene);
 				primaryStage.show();
 				rbReturnCoins.setSelected(false);
