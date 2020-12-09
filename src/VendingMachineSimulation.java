@@ -13,7 +13,7 @@ public class VendingMachineSimulation
    public static void main(String[] args) throws IOException
    { 
       VendingMachine machine = new VendingMachine();
-      VendingMachineMenu menu = new VendingMachineMenu();
+      UserMenu menu = new UserMenu();
 	  Scanner in = new Scanner(System.in); String c = "";
 	  while(!(c.equals("~")))
 	  {
