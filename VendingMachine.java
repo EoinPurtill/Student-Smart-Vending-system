@@ -43,10 +43,7 @@ public class VendingMachine
    public String addCoin(Coin money)
    {
 	   
-	   String output = "";  //I added this guy to this method to collect our output 
-							//and return it, it helps with the GUI, i also changed
-							//the statement where this is called from VendingMenu to
-							//a println statement so that the needed info is still printed! 
+	   String output = ""; 
 	   boolean addNew = true;
 	   for(int i = 0; i < currentCoins.size(); i++)
 	   {
@@ -92,7 +89,7 @@ public class VendingMachine
 	   }
 	   else
 	   {
-		   String ret = "No Coins Inserted";
+		   String ret = "No Money Inserted";
 		   if(!(currentCoins.isEmpty()))
 		   {
 			   double sum = 0;
@@ -134,16 +131,14 @@ public class VendingMachine
    
    public String buyProduct(Product prod) throws VendingException
    {
-		String output = ""; //I added this guy to this method to collect our output 
-							//and return it, it helps with the GUI, i also changed
-							//the statement where this is called from VendingMenu to
-							//a println statement so that the needed info is still printed!
+		String output = ""; 
 		double sum = 0;
+		double credit = 10;
 		for(int i = 0; i < currentCoins.size(); i++)
 		{
 			sum += currentCoins.get(i).total();
 		}
-		if(prod.getPrice() <= sum)
+		if(prod.getPrice() <= sum || prod.getPrice() <= credit)
 		{
 			for(int j = 0; j < stock.size(); j++)
 			{
@@ -153,13 +148,11 @@ public class VendingMachine
 					j = stock.size();
 				}
 			}
-			output = "Purchased: " + prod.getDescription() + ".";
+			output = "Purchased: " + prod.getDescription() + ".\nCredit remaining: " + (credit - prod.getPrice());
 			transferCoins();
 		}
 		else
 		{
-			//output = this.removeMoney(false);
-			//I changed this, it wasnt printing the removeMoney message.////////////////////////
 			throw new VendingException("Not enough money\n" + this.removeMoney(false));
 		}
 		return output;
