@@ -14,10 +14,3 @@ The operator username and password are as follows:
 	   UserName = Operator
 	   Password = password
 
-Regards,
-	
-	Project Group 11
-		
-		Adam Aherne (12159603), 
-		Eoin Purtill (17185467), 
-		Ronan McMullen (0451657).
