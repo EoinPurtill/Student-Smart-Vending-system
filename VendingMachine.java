@@ -133,11 +133,12 @@ public class VendingMachine
    {
 		String output = ""; 
 		double sum = 0;
+		double credit = 10;
 		for(int i = 0; i < currentCoins.size(); i++)
 		{
 			sum += currentCoins.get(i).total();
 		}
-		if(prod.getPrice() <= sum)
+		if(prod.getPrice() <= sum || prod.getPrice() <= credit)
 		{
 			for(int j = 0; j < stock.size(); j++)
 			{
@@ -147,7 +148,7 @@ public class VendingMachine
 					j = stock.size();
 				}
 			}
-			output = "Purchased: " + prod.getDescription() + ".";
+			output = "Purchased: " + prod.getDescription() + ".\nCredit remaining: " + (credit - prod.getPrice());
 			transferCoins();
 		}
 		else

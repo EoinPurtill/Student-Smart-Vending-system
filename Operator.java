@@ -3,6 +3,7 @@ public class Operator
 	private String id;
 	private String pWord;
 	
+	
 	public Operator(String idx, String pass)
 	{
 		id = idx;

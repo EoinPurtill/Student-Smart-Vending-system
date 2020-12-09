@@ -37,24 +37,29 @@ public class VendingGUI extends Application {
 		GridPane gPane = new GridPane();
 		gPane.setAlignment(Pos.CENTER);
 		gPane.setPadding(new Insets(16.5, 17.5, 19.5, 20.5));
-		gPane.setPrefHeight(175);
-		gPane.setPrefWidth(325);
+		gPane.setPrefHeight(375);
+		gPane.setPrefWidth(525);
 		gPane.setHgap(45.5);
 		gPane.setVgap(25.5);
 		
 		RadioButton rbShowProducts 	= new RadioButton("Show Products");
-		RadioButton rbInsertCoins 	= new RadioButton("Insert Cash/Credit");
+		RadioButton rbInsertCoins 	= new RadioButton("Insert Cash");
 		RadioButton rbBuy 			= new RadioButton("Buy");
-		RadioButton rbReturnCoins 	= new RadioButton("Return Cash/Credit");
+		RadioButton rbReturnCoins 	= new RadioButton("Return Cash");
 		RadioButton rbOpFuntions 	= new RadioButton("Operator Functions");
+		RadioButton rbAddCredit		= new RadioButton("Add Credit");
 		RadioButton rbQuit 			= new RadioButton("Quit");
 		
 		gPane.add(rbShowProducts,0,0);
-		gPane.add(rbInsertCoins,0,1);
-		gPane.add(rbBuy,0,2);
-		gPane.add(rbReturnCoins,1,0);
-		gPane.add(rbOpFuntions,1,1);
-		gPane.add(rbQuit,1,2);
+		gPane.add(rbBuy,1,0);
+		gPane.add(rbInsertCoins,0,2);
+		gPane.add(rbReturnCoins,1,2);
+		
+		gPane.add(rbAddCredit,2,2);
+		
+		gPane.add(rbOpFuntions,0,4);
+		
+		gPane.add(rbQuit,1,4);
 	
 		ToggleGroup group = new ToggleGroup();
 		rbShowProducts.setToggleGroup(group);
