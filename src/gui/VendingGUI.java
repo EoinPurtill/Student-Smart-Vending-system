@@ -26,12 +26,14 @@ public class VendingGUI extends Application {
 	private Stage secondaryStage 	= new Stage();
 	private Product[] products;
 		
-	public VendingGUI() throws IOException {
+	public VendingGUI() throws IOException
+	{
 		coins = Readr.currencyReader("Money.txt");
 	}
 	
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage)
+	{
         	  
 		Scene scene = new Scene(getMenuPane());
 		primaryStage.setTitle("Vending Menu");
@@ -39,7 +41,8 @@ public class VendingGUI extends Application {
 		primaryStage.show();	
 	}
 	
-	public GridPane getMenuPane() {
+	public GridPane getMenuPane()
+	{
 		GridPane gPane = new GridPane();
 		gPane.setAlignment(Pos.CENTER);
 		gPane.setPadding(new Insets(16.5, 17.5, 19.5, 20.5));
