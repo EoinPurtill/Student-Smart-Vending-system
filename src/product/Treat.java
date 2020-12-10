@@ -1,4 +1,10 @@
+package product;
+
 public class Treat extends Product implements Vendable{
+
+    public Treat(String description, double price){
+        super(description, price);
+    }
 
     @Override
     public String describe(){
