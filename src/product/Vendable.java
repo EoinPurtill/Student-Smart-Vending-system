@@ -1,7 +1,7 @@
 package product;
 
-public interface VendingItem{
+public interface Vendable{
 
-    void describe();
+    String describe();
 
 }

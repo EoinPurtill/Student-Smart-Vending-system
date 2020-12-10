@@ -8,16 +8,16 @@ public class ProductFactory {
          return null;
       }		
       if(productType.equalsIgnoreCase("TREAT")){
-         return new Treat();
+         return new Treat("treat", 0.0);
          
       } else if(productType.equalsIgnoreCase("SNACK")){
-         return new SNACK();
+         return new Snack("snack", 0.0);
          
       } else if(productType.equalsIgnoreCase("FRUIT")){
-         return new FRUIT();
+         return new Fruit("fruit", 0.0);
 
       } else if(productType.equalsIgnoreCase("DRINK")){
-        return new DRINK();
+        return new Drink("drink", 0.0);
       }
 
       
