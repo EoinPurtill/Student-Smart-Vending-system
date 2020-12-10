@@ -1,3 +1,5 @@
+package product;
+
 public class Treat extends Product implements Vendable{
 
     @Override

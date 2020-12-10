@@ -1,3 +1,5 @@
+package product;
+
 public class Snack extends Product implements Vendable{
 
     @Override
