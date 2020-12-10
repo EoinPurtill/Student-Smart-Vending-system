@@ -11,14 +11,14 @@ import io.*;
 /**   
 A menu from the vending machine.
 */
-public class VendingMachineMenu extends Menu
+public class UserMenu extends Menu
 {    
 	private static Coin[] coins;
 	private OperatorMenu opMenu;
 	/**
-    Constructs a VendingMachineMenu object
+        Constructs a UserMenu object
 	*/
-	public VendingMachineMenu() throws IOException
+	public UserMenu() throws IOException
 	{
 		super();
 		opMenu = new OperatorMenu();

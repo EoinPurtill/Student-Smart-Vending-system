@@ -32,13 +32,13 @@ public class Writr
 		writer.close();
 	}
 	
-	// public static void salesToFile(String fileName, String itemDesc) throws IOException 
-	// {
-	// 	FileWriter writer = new FileWriter(fileName);
+/* 	public static void salesToFile(String fileName, String itemDesc) throws IOException 
+	{
+		FileWriter writer = new FileWriter(fileName);
 	
-	// 	writer.write(itemDesc.toCSV() + "\n");
+		writer.write(itemDesc.toCSV() + "\n");
 	
-	// 	writer.close();
-	// }
+		writer.close();
+	} */
 
 }

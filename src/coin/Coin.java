@@ -20,14 +20,14 @@ public class Coin implements Comparable<Coin>, Writable
       name = aName;
    }
 
-   public double getValue()
-   {
-	   return value;
-   }
-   
    public String getName()
    {
 	   return name;
+   }
+   
+   public double getValue()
+   {
+	   return value;
    }
    
    public int compareTo(Coin c)
