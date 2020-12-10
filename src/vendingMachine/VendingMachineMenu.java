@@ -11,14 +11,14 @@ import io.*;
 /**   
 A menu from the vending machine.
 */
-public class UserMenu extends Menu
+public class VendingMachineMenu extends Menu
 {    
 	private static Coin[] coins;
 	private OperatorMenu opMenu;
 	/**
         Constructs a UserMenu object
 	*/
-	public UserMenu() throws IOException
+	public VendingMachineMenu() throws IOException
 	{
 		super();
 		opMenu = new OperatorMenu();
@@ -119,8 +119,8 @@ public class UserMenu extends Menu
 			{ 
 				System.out.println("\nReturning Unused Coins");
 				System.out.println(machine.removeMoney(false));
-				Writer.stockToFile("Stock.txt", machine.getStock());
-				Writer.coinsToFile("Money.txt", machine.getCoins());
+				Writr.stockToFile("Stock.txt", machine.getStock());
+				Writr.coinsToFile("Money.txt", machine.getCoins());
 				more = false;
 			}
 		}
