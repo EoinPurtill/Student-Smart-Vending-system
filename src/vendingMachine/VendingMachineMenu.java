@@ -16,7 +16,7 @@ public class UserMenu extends Menu
 	private static Coin[] coins;
 	private OperatorMenu opMenu;
 	/**
-    Constructs a UserMenu object
+        Constructs a UserMenu object
 	*/
 	public UserMenu() throws IOException
 	{
