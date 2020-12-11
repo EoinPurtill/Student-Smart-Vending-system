@@ -187,7 +187,7 @@ public class VendingMachine
 	   }
 	   if(go)
 	   {   
-			stock.add(new LineItem(prod, quant)); 
+			stock.add(new LineItem(prod, quant, "")); 
 			output = "Successfully added"; 
 	   }
 	   return output;
