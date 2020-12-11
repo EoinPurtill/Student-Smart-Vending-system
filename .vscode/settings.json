@@ -1,0 +1,16 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\User\\junit4.10\\junit-4.10.jar",
+        "c:\\Users\\User\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
+        "c:\\Users\\User\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
+        "c:\\Users\\User\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
+        "c:\\Users\\User\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
+        "c:\\Users\\User\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
+        "c:\\Users\\User\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
+        "c:\\Users\\User\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
+        "c:\\Users\\User\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar",
+        "c:\\Users\\User\\junit4.10\\junit-4.10-src.jar",
+        "c:\\Users\\User\\junit4.10\\junit-dep-4.10.jar"
+    ]
+}

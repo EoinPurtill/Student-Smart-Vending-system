@@ -15,24 +15,38 @@ import javafx.stage.Stage;
 public class VendingGUI extends Application {
 
 	private static Coin[] coins;
-	private VendingMachine machine 	= new VendingMachine();
-	private Stage primaryStage 		= new Stage();
-	private Stage secondaryStage 	= new Stage();
+	private VendingMachine machine = new VendingMachine();
+	private Stage primaryStage = new Stage();
+	private Stage secondaryStage = new Stage();
 	private Product[] products;
+<<<<<<< Updated upstream:VendingGUI.java
 		
 	public VendingGUI() throws IOException {
 		coins = Reader.currencyReader("Money.txt");
+=======
+
+	public VendingGUI() throws IOException {
+		coins = Readr.currencyReader("Money.txt");
+>>>>>>> Stashed changes:src/gui/VendingGUI.java
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) {
+<<<<<<< Updated upstream:VendingGUI.java
         	  
+=======
+
+>>>>>>> Stashed changes:src/gui/VendingGUI.java
 		Scene scene = new Scene(getMenuPane());
 		primaryStage.setTitle("Vending Menu");
-		primaryStage.setScene(scene); 
-		primaryStage.show();	
+		primaryStage.setScene(scene);
+		primaryStage.show();
 	}
+<<<<<<< Updated upstream:VendingGUI.java
 	
+=======
+
+>>>>>>> Stashed changes:src/gui/VendingGUI.java
 	public GridPane getMenuPane() {
 		GridPane gPane = new GridPane();
 		gPane.setAlignment(Pos.CENTER);
@@ -41,6 +55,7 @@ public class VendingGUI extends Application {
 		gPane.setPrefWidth(325);
 		gPane.setHgap(45.5);
 		gPane.setVgap(25.5);
+<<<<<<< Updated upstream:VendingGUI.java
 		
 		RadioButton rbShowProducts 	= new RadioButton("Show Products");
 		RadioButton rbInsertCoins 	= new RadioButton("Insert Coins");
@@ -56,6 +71,28 @@ public class VendingGUI extends Application {
 		gPane.add(rbOpFuntions,1,1);
 		gPane.add(rbQuit,1,2);
 	
+=======
+
+		RadioButton rbShowProducts = new RadioButton("Show Products");
+		RadioButton rbInsertCoins = new RadioButton("Insert Cash");
+		RadioButton rbBuy = new RadioButton("Buy");
+		RadioButton rbReturnCoins = new RadioButton("Return Cash");
+		RadioButton rbOpFuntions = new RadioButton("Operator Functions");
+		RadioButton rbAddCredit = new RadioButton("Add Credit");
+		RadioButton rbQuit = new RadioButton("Quit");
+
+		gPane.add(rbShowProducts, 0, 0);
+		gPane.add(rbBuy, 1, 0);
+		gPane.add(rbInsertCoins, 0, 2);
+		gPane.add(rbReturnCoins, 1, 2);
+
+		gPane.add(rbAddCredit, 2, 2);
+
+		gPane.add(rbOpFuntions, 0, 4);
+
+		gPane.add(rbQuit, 1, 4);
+
+>>>>>>> Stashed changes:src/gui/VendingGUI.java
 		ToggleGroup group = new ToggleGroup();
 		rbShowProducts.setToggleGroup(group);
 		rbInsertCoins.setToggleGroup(group);
@@ -63,8 +100,8 @@ public class VendingGUI extends Application {
 		rbReturnCoins.setToggleGroup(group);
 		rbOpFuntions.setToggleGroup(group);
 		rbQuit.setToggleGroup(group);
-		
-		//Show Products menu button
+
+		// Show Products menu button
 		rbShowProducts.setOnAction(e -> {
 			if (rbShowProducts.isSelected()) {
 				Scene showProductsScene = new Scene(getShowItemsPane());
@@ -74,7 +111,7 @@ public class VendingGUI extends Application {
 				rbShowProducts.setSelected(false);
 			}
 		});
-		//Insert Coins menu button
+		// Insert Coins menu button
 		rbInsertCoins.setOnAction(e -> {
 			if (rbInsertCoins.isSelected()) {
 				Scene insertCoinsScene = new Scene(getInsertCoinsPane());
@@ -84,7 +121,7 @@ public class VendingGUI extends Application {
 				rbInsertCoins.setSelected(false);
 			}
 		});
-		//Buy Product menu button
+		// Buy Product menu button
 		rbBuy.setOnAction(e -> {
 			if (rbBuy.isSelected()) {
 				Scene buyScene = new Scene(getBuyPane());
@@ -94,7 +131,7 @@ public class VendingGUI extends Application {
 				rbBuy.setSelected(false);
 			}
 		});
-		//Return Coins menu button
+		// Return Coins menu button
 		rbReturnCoins.setOnAction(e -> {
 			if (rbReturnCoins.isSelected()) {
 				Scene returnCoinsScene = new Scene(getReturnCoinsPane(false));
@@ -104,7 +141,7 @@ public class VendingGUI extends Application {
 				rbReturnCoins.setSelected(false);
 			}
 		});
-		//Operator Functions Menu Button
+		// Operator Functions Menu Button
 		rbOpFuntions.setOnAction(e -> {
 			if (rbOpFuntions.isSelected()) {
 				Scene loginScene = new Scene(getLoginPane());
@@ -114,103 +151,101 @@ public class VendingGUI extends Application {
 				rbOpFuntions.setSelected(false);
 			}
 		});
-		//Quit Menu Button
+		// Quit Menu Button
 		rbQuit.setOnAction(e -> {
 			if (rbQuit.isSelected()) {
 				Scene quitScene = new Scene(getQuitPane());
-				primaryStage.setTitle("Ad\u00ED"+"os CowBoy!");
+				primaryStage.setTitle("Ad\u00ED" + "os CowBoy!");
 				primaryStage.setScene(quitScene);
 				primaryStage.show();
 				writeFiles();
-				
+
 			}
 		});
 		return gPane;
 	}
-////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
 
-	public BorderPane getBuyPane(){
+	public BorderPane getBuyPane() {
 		BorderPane pane = new BorderPane();
-		Button btClose 	= new Button("Back");
+		Button btClose = new Button("Back");
 		pane.setPrefHeight(175);
 		pane.setPrefWidth(320);
 		pane.setBottom(btClose);
-		
+
 		products = machine.getProductTypes(false); // loads the products array with the current stock.
-		
-		if(products.length>0){
+
+		if (products.length > 0) {
 			String[] productInfo = new String[products.length];
-			for(int i=0; i<products.length; i++)
-					productInfo[i] = "Product: " + products[i].getDescription() + ", Price: $" + products[i].getPrice();
-					
-			String[] productDescriptions = new String[products.length];	
-			for(int i=0; i<products.length; i++)
-					productDescriptions[i] = products[i].toString();
-			
+			for (int i = 0; i < products.length; i++)
+				productInfo[i] = "Product: " + products[i].getDescription() + ", Price: $" + products[i].getPrice();
+
+			String[] productDescriptions = new String[products.length];
+			for (int i = 0; i < products.length; i++)
+				productDescriptions[i] = products[i].toString();
+
 			ObservableList<String> items = FXCollections.observableArrayList(productInfo);
-			ComboBox<String> cbo 		 = new ComboBox<>();
-			TextArea textArea 			 = new TextArea();
+			ComboBox<String> cbo = new ComboBox<>();
+			TextArea textArea = new TextArea();
 			textArea.setPrefHeight(125);
 			textArea.setPrefWidth(320);
 			textArea.setEditable(false);
 			textArea.setMouseTransparent(true);
 			textArea.setFocusTraversable(false);
-			BorderPane paneForComboBox 	 = new BorderPane();
+			BorderPane paneForComboBox = new BorderPane();
 			paneForComboBox.setLeft(new Label("Select Product to Buy: "));
 			paneForComboBox.setRight(cbo);
 			pane.setTop(paneForComboBox);
 			cbo.setPrefWidth(200);
 			cbo.setValue("Product...");
-			
-			cbo.getItems().addAll(items); 
+
+			cbo.getItems().addAll(items);
 			pane.setCenter(textArea);
-			
-			//Display the selected product
+
+			// Display the selected product
 			cbo.setOnAction(e -> {
 				int indx = items.indexOf(cbo.getValue());
-				try{
+				try {
 					textArea.setText(machine.buyProduct(products[indx]));
-				}
-				catch(NullPointerException except) {
+				} catch (NullPointerException except) {
 					textArea.setText("No Options Currently Available");
-				}
-				catch (VendingException ex) {
+				} catch (VendingException ex) {
 					textArea.setText(ex.getMessage());
 				}
 			});
-		}else{
+		} else {
 			Label message = new Label("No products in stock.");
 			pane.setCenter(message);
 		}
-		btClose.setOnAction(e->primaryStage.hide());
-		return pane;	
-		
+		btClose.setOnAction(e -> primaryStage.hide());
+		return pane;
+
 	}
-////////////////////////////////////////////////////////////////////////////////////
-	
-	public BorderPane getShowItemsPane(){
-		
+	////////////////////////////////////////////////////////////////////////////////////
+
+	public BorderPane getShowItemsPane() {
+
 		BorderPane pane = new BorderPane();
-		Button btClose  = new Button("Back");
+		Button btClose = new Button("Back");
 		pane.setPrefHeight(175);
 		pane.setPrefWidth(320);
 		pane.setBottom(btClose);
-	
+
 		products = machine.getProductTypes(false); // loads the products array with the current stock.
-		
-		if(products.length>0){
+
+		if (products.length > 0) {
 			String[] productNames = new String[products.length];
-			for(int i=0; i<products.length; i++){
-					productNames[i] = products[i].getDescription();
-				}
-				
-			String[] productDescriptions = new String[products.length];	
-			for(int i=0; i<products.length; i++){
-					productDescriptions[i] = products[i].toString();
-				}
-			
+			for (int i = 0; i < products.length; i++) {
+				productNames[i] = products[i].getDescription();
+			}
+
+			String[] productDescriptions = new String[products.length];
+			for (int i = 0; i < products.length; i++) {
+				productDescriptions[i] = products[i].toString();
+			}
+
 			ComboBox<String> cbo = new ComboBox<>();
-			TextArea textArea 	 = new TextArea();
+			TextArea textArea = new TextArea();
 			textArea.setPrefHeight(125);
 			textArea.setPrefWidth(320);
 			textArea.setEditable(false);
@@ -222,44 +257,44 @@ public class VendingGUI extends Application {
 			pane.setTop(paneForComboBox);
 			cbo.setPrefWidth(100);
 			cbo.setValue("Product...");
-			
+
 			ObservableList<String> items = FXCollections.observableArrayList(productNames);
-			cbo.getItems().addAll(items); 
+			cbo.getItems().addAll(items);
 			pane.setCenter(textArea);
-			
+
 			// Display the selected product
 			cbo.setOnAction(e -> textArea.setText(productDescriptions[(items.indexOf(cbo.getValue()))]));
-		}else{
+		} else {
 			Label message = new Label("No products in stock.");
 			pane.setCenter(message);
 		}
-		btClose.setOnAction(e->primaryStage.hide());
-		return pane;	
+		btClose.setOnAction(e -> primaryStage.hide());
+		return pane;
 	}
-////////////////////////////////////////////////////////////////////////////////////
-	
-	public BorderPane getInsertCoinsPane(){
-		
-		BorderPane pane 	= new BorderPane();
+	////////////////////////////////////////////////////////////////////////////////////
+
+	public BorderPane getInsertCoinsPane() {
+
+		BorderPane pane = new BorderPane();
 		GridPane buttonPane = new GridPane();
-		Button btInsert 	= new Button("Insert");
-		Button btClose	 	= new Button("Back");
+		Button btInsert = new Button("Insert");
+		Button btClose = new Button("Back");
 		pane.setPrefHeight(175);
 		pane.setPrefWidth(320);
 		buttonPane.add(btInsert, 3, 0);
 		buttonPane.add(btClose, 0, 0);
 		pane.setBottom(buttonPane);
-		
-		if(coins.length>1 && coins[0].getValue()>0){	
-		
+
+		if (coins.length > 1 && coins[0].getValue() > 0) {
+
 			String[] coinNames = new String[coins.length];
-			for(int i=0; i<coins.length; i++)
+			for (int i = 0; i < coins.length; i++)
 				coinNames[i] = coins[i].getName();
 			ObservableList<String> items = FXCollections.observableArrayList(coinNames);
-			
-			ComboBox<String> cbo 		= new ComboBox<>();
-			BorderPane paneForComboBox  = new BorderPane();
-			TextArea textArea 			= new TextArea();
+
+			ComboBox<String> cbo = new ComboBox<>();
+			BorderPane paneForComboBox = new BorderPane();
+			TextArea textArea = new TextArea();
 			textArea.setPrefHeight(125);
 			textArea.setPrefWidth(320);
 			textArea.setEditable(false);
@@ -271,47 +306,45 @@ public class VendingGUI extends Application {
 			pane.setCenter(textArea);
 			cbo.setPrefWidth(175);
 			cbo.setValue("Coin...");
-			cbo.getItems().addAll(items); 
-			
+			cbo.getItems().addAll(items);
+
 			cbo.setOnMouseClicked(e -> textArea.clear());
 			btInsert.setOnAction(e -> {
 				int indx = items.indexOf(cbo.getValue());
-				if(indx>=0){
-					try{	
-						
+				if (indx >= 0) {
+					try {
+
 						textArea.setText("Added: " + coinNames[indx] + "\n" + machine.addCoin(coins[indx]));
-					}
-					catch(NullPointerException ex) {
+					} catch (NullPointerException ex) {
 						textArea.setText("No Options Currently Available");
 					}
 					cbo.setValue("Coin...");
-				}else
+				} else
 					textArea.setText("No coin chosen!");
 			});
-		}else{
+		} else {
 			Label message = new Label("No Coins listed.");
 			pane.setCenter(message);
 		}
-		btClose.setOnAction(e->primaryStage.hide());
-		return pane;	
-	
-		
+		btClose.setOnAction(e -> primaryStage.hide());
+		return pane;
+
 	}
-////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
 
 	public GridPane getReturnCoinsPane(Boolean operator) {
-		
-		GridPane pane 	= new GridPane();
+
+		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
 		pane.setPrefWidth(320);
 		pane.setPrefHeight(175);
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
-		
+
 		Button btReturn = new Button("Click to return coins");
-		Button btClose 	= new Button("Back");
-		TextArea ta 	= new TextArea();
+		Button btClose = new Button("Back");
+		TextArea ta = new TextArea();
 		GridPane.setHalignment(btClose, HPos.RIGHT);
 		pane.add(btReturn, 2, 0);
 		pane.add(btClose, 0, 1);
@@ -323,71 +356,71 @@ public class VendingGUI extends Application {
 		btReturn.setOnAction(e -> ta.setText(machine.removeMoney(operator)));
 		pane.add(ta, 0, 0);
 		pane.setColumnSpan(ta, 2);
-		
+
 		btClose.setOnAction(e -> {
-			if(operator)
+			if (operator)
 				secondaryStage.hide();
 			else
 				primaryStage.hide();
 		});
-		
+
 		return pane;
 	}
-////////////////////////////////////////////////////////////////////////////////////
-		
-	public GridPane getLoginPane(){
-	
-		TextField tfUserName 	 = new TextField();
+	////////////////////////////////////////////////////////////////////////////////////
+
+	public GridPane getLoginPane() {
+
+		TextField tfUserName = new TextField();
 		PasswordField tfPassWord = new PasswordField();
-		TextArea output 		 = new TextArea();
+		TextArea output = new TextArea();
 		output.setPrefHeight(35);
 		output.setPrefWidth(155);
 		output.setEditable(false);
 		output.setMouseTransparent(true);
 		output.setFocusTraversable(false);
-		
-		GridPane pane 			= new GridPane();
+
+		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
-		
+
 		pane.add(output, 0, 3);
-		pane.setColumnSpan(output,2);
+		pane.setColumnSpan(output, 2);
 		pane.add(new Label("User Name:"), 0, 0);
 		pane.add(tfUserName, 1, 0);
-		pane.add(new Label("Password:"), 0, 1); 
+		pane.add(new Label("Password:"), 0, 1);
 		pane.add(tfPassWord, 1, 1);
 		Button btLogin = new Button("Login...");
 		pane.add(btLogin, 1, 2);
 		Button btClose = new Button("Back");
 		pane.add(btClose, 0, 2);
 		GridPane.setHalignment(btLogin, HPos.RIGHT);
-			
-		//What happens when the button is pressed...
-		btLogin.setOnAction(e->{
+
+		// What happens when the button is pressed...
+		btLogin.setOnAction(e -> {
 			String userName = tfUserName.getText();
 			String password = tfPassWord.getText();
-								
-			if(machine.login(userName,password)){
+
+			if (machine.login(userName, password)) {
 				Scene opScene = new Scene(getOperatorMenuPane());
 				primaryStage.setTitle("Operator Menu");
 				primaryStage.setScene(opScene);
 				primaryStage.centerOnScreen();
 				primaryStage.show();
-			}else {
+			} else {
 				output.setText("Login Failed");
-			}							
+			}
 		});
-		
-		btClose.setOnAction(e->primaryStage.hide());
-		
+
+		btClose.setOnAction(e -> primaryStage.hide());
+
 		return pane;
-	}	
-////////////////////////////////////////////////////////////////////////////////////	
-	
-	public GridPane getOperatorMenuPane(){
-		
+	}
+	////////////////////////////////////////////////////////////////////////////////////
+
+	public GridPane getOperatorMenuPane() {
+
 		GridPane gPane = new GridPane();
 		gPane.setAlignment(Pos.CENTER);
 		gPane.setPrefHeight(175);
@@ -395,24 +428,24 @@ public class VendingGUI extends Application {
 		gPane.setPadding(new Insets(16.5, 17.5, 19.5, 20.5));
 		gPane.setHgap(45.5);
 		gPane.setVgap(25.5);
-		
+
 		RadioButton rbWithdrawCoins = new RadioButton("Withdraw Coins");
-		RadioButton rbRestock 		= new RadioButton("Restock");
-		RadioButton rbAddProduct	= new RadioButton("Add Product");
-		RadioButton rbQuit 			= new RadioButton("Back");
-		
-		gPane.add(rbWithdrawCoins,0,0);
-		gPane.add(rbRestock,0,1);
-		gPane.add(rbAddProduct,1,0);
-		gPane.add(rbQuit,1,1);
-	
+		RadioButton rbRestock = new RadioButton("Restock");
+		RadioButton rbAddProduct = new RadioButton("Add Product");
+		RadioButton rbQuit = new RadioButton("Back");
+
+		gPane.add(rbWithdrawCoins, 0, 0);
+		gPane.add(rbRestock, 0, 1);
+		gPane.add(rbAddProduct, 1, 0);
+		gPane.add(rbQuit, 1, 1);
+
 		ToggleGroup group = new ToggleGroup();
 		rbWithdrawCoins.setToggleGroup(group);
 		rbRestock.setToggleGroup(group);
 		rbAddProduct.setToggleGroup(group);
 		rbQuit.setToggleGroup(group);
-		
-		rbWithdrawCoins.setOnAction(e->{
+
+		rbWithdrawCoins.setOnAction(e -> {
 			if (rbWithdrawCoins.isSelected()) {
 				Scene returnCoinsScene = new Scene(getReturnCoinsPane(true));
 				secondaryStage.setTitle("Operator Coin Withdrawl");
@@ -420,7 +453,7 @@ public class VendingGUI extends Application {
 				secondaryStage.show();
 			}
 		});
-		
+
 		rbRestock.setOnAction(e -> {
 			if (rbRestock.isSelected()) {
 				Scene restockScene = new Scene(getRestockPane());
@@ -438,42 +471,41 @@ public class VendingGUI extends Application {
 				secondaryStage.show();
 			}
 		});
-		
+
 		rbQuit.setOnAction(e -> {
 			if (rbQuit.isSelected()) {
 				primaryStage.hide();
 			}
 		});
-		
+
 		return gPane;
 	}
-////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
 
 	public GridPane getRestockPane() {
-		
-		products 		 = machine.getProductTypes(false); // loads the products array with the current stock.
-		GridPane pane 	 = new GridPane();
-		TextArea ta 	 = new TextArea();
-		Button btClose 	 = new Button("Back");
+
+		products = machine.getProductTypes(false); // loads the products array with the current stock.
+		GridPane pane = new GridPane();
+		TextArea ta = new TextArea();
+		Button btClose = new Button("Back");
 		Button btRestock = new Button("Restock Product");
 		ta.setPrefWidth(150);
-		ta.setPrefHeight(100);	
+		ta.setPrefHeight(100);
 		ta.setEditable(false);
 		ta.setMouseTransparent(true);
 		ta.setFocusTraversable(false);
-		
-		
-		if(products.length>0){
+
+		if (products.length > 0) {
 			String[] productNames = new String[products.length];
-			for(int i=0; i<products.length; i++)
-					productNames[i] = products[i].getDescription();
-				
-			String[] productDescriptions = new String[products.length];	
-			for(int i=0; i<products.length; i++)
-					productDescriptions[i] = products[i].toString();
-			
+			for (int i = 0; i < products.length; i++)
+				productNames[i] = products[i].getDescription();
+
+			String[] productDescriptions = new String[products.length];
+			for (int i = 0; i < products.length; i++)
+				productDescriptions[i] = products[i].toString();
+
 			ObservableList<String> items = FXCollections.observableArrayList(productNames);
-			
+
 			ComboBox<String> cbo = new ComboBox<>();
 			TextField tfQuantity = new TextField();
 			cbo.setPrefWidth(150);
@@ -485,54 +517,51 @@ public class VendingGUI extends Application {
 			pane.setHgap(5.5);
 			pane.setVgap(5.5);
 			pane.add(cbo, 1, 0);
-			pane.add(new Label("Quantity:"), 0, 1); 
+			pane.add(new Label("Quantity:"), 0, 1);
 			pane.add(tfQuantity, 1, 1);
-			pane.add(ta, 0,2);
-			pane.setColumnSpan(ta,2);
+			pane.add(ta, 0, 2);
+			pane.setColumnSpan(ta, 2);
 			pane.add(btRestock, 1, 3);
 			pane.add(btClose, 0, 3);
 			GridPane.setHalignment(btRestock, HPos.RIGHT);
-			
+
 			cbo.setOnMouseClicked(e -> ta.clear());
 			tfQuantity.setOnMouseClicked(e -> ta.clear());
 			btRestock.setOnAction(e -> {
-				
-				try{
-					
-					if(Validator.verifyInt(tfQuantity.getText())) {
+
+				try {
+
+					if (Validator.verifyInt(tfQuantity.getText())) {
 						int q = Integer.parseInt(tfQuantity.getText());
-						if(!(q > 0)) {
+						if (!(q > 0)) {
 							ta.setText("\nInvalid Quantity");
+						} else {
+							ta.setText(machine.addProduct(products[items.indexOf(cbo.getValue())], q) + "\n"
+									+ (products[items.indexOf(cbo.getValue())] + " : " + q + " Added"));
 						}
-						else {
-							ta.setText(machine.addProduct(products[items.indexOf(cbo.getValue())], q) + "\n" +
-							(products[items.indexOf(cbo.getValue())] + " : " + q + " Added"));
-						}
-					}
-					else
+					} else
 						ta.setText("\nInvalid Quantity");
-				}
-				catch(NullPointerException ex) {
+				} catch (NullPointerException ex) {
 					ta.setText("No Options Currently Available");
 				}
 				tfQuantity.clear();
 				cbo.setValue("Product...");
 			});
-			
+
 		}
 		btClose.setOnAction(e -> secondaryStage.hide());
 		return pane;
 	}
-////////////////////////////////////////////////////////////////////////////////////
-	
-	public GridPane getAddStockPane(){
+	////////////////////////////////////////////////////////////////////////////////////
+
+	public GridPane getAddStockPane() {
 		TextField tfDescription = new TextField();
-		TextField tfQuantity 	= new TextField();
-		TextField tfPrice 		= new TextField();
-		TextArea ta 			= new TextArea();
-		GridPane pane 			= new GridPane();
-		Button btAdd 			= new Button("Add Product");
-		Button btClose 			= new Button("Back");
+		TextField tfQuantity = new TextField();
+		TextField tfPrice = new TextField();
+		TextArea ta = new TextArea();
+		GridPane pane = new GridPane();
+		Button btAdd = new Button("Add Product");
+		Button btClose = new Button("Back");
 		ta.setPrefWidth(150);
 		ta.setPrefHeight(50);
 		ta.setEditable(false);
@@ -546,7 +575,7 @@ public class VendingGUI extends Application {
 		pane.setColumnSpan(ta, 2);
 		pane.add(new Label("Description:"), 0, 0);
 		pane.add(tfDescription, 1, 0);
-		pane.add(new Label("Quantity:"), 0, 1); 
+		pane.add(new Label("Quantity:"), 0, 1);
 		pane.add(tfQuantity, 1, 1);
 		pane.add(new Label("Price:"), 0, 2);
 		pane.add(tfPrice, 1, 2);
@@ -554,46 +583,45 @@ public class VendingGUI extends Application {
 		pane.add(btAdd, 1, 4);
 		pane.add(btClose, 0, 4);
 		GridPane.setHalignment(btAdd, HPos.RIGHT);
-		
+
 		tfDescription.setOnMouseClicked(e -> ta.clear());
 		tfQuantity.setOnMouseClicked(e -> ta.clear());
 		tfPrice.setOnMouseClicked(e -> ta.clear());
-		
+
 		btAdd.setOnAction(e -> {
-			String description 	= tfDescription.getText();
-			String quantityStr 	= tfQuantity.getText();
-			String priceStr 	= tfPrice.getText();
+			String description = tfDescription.getText();
+			String quantityStr = tfQuantity.getText();
+			String priceStr = tfPrice.getText();
 			tfDescription.clear();
 			tfQuantity.clear();
 			tfPrice.clear();
-			if(Validator.verifyDouble(priceStr) && Validator.verifyInt(quantityStr)){
-					double price = Double.parseDouble(priceStr); int quantity = Integer.parseInt(quantityStr);
-					if(price > 0 && quantity > 0){
-						if(!(machine.containsProduct(price, description)))
-							ta.setText(machine.addProduct(new Product(description, price), quantity));
-						else
-							ta.setText("Product Already In Vending Machine.\nPlease Select \"R)estock\" Option"); 
-					}
-					else 
-						ta.setText("Invaldid Input");
-				}
-				else 
+			if (Validator.verifyDouble(priceStr) && Validator.verifyInt(quantityStr)) {
+				double price = Double.parseDouble(priceStr);
+				int quantity = Integer.parseInt(quantityStr);
+				if (price > 0 && quantity > 0) {
+					if (!(machine.containsProduct(price, description)))
+						ta.setText(machine.addProduct(new Product(description, price), quantity));
+					else
+						ta.setText("Product Already In Vending Machine.\nPlease Select \"R)estock\" Option");
+				} else
 					ta.setText("Invaldid Input");
+			} else
+				ta.setText("Invaldid Input");
 		});
 		btClose.setOnAction(e -> secondaryStage.hide());
-		return pane;						
+		return pane;
 	}
-////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
 
-	public GridPane getQuitPane(){
-		GridPane pane 	= new GridPane();
-		Button btQuit 	= new Button("Quit");
-		Label l1 		= new Label("Returning Unused Coins\n" + machine.removeMoney(false) + "\n" +
-									"Writing files to memory...\n");
-		pane.add(l1,0,0);
+	public GridPane getQuitPane() {
+		GridPane pane = new GridPane();
+		Button btQuit = new Button("Quit");
+		Label l1 = new Label(
+				"Returning Unused Coins\n" + machine.removeMoney(false) + "\n" + "Writing files to memory...\n");
+		pane.add(l1, 0, 0);
 		pane.setPrefWidth(320);
 		pane.setPrefHeight(175);
-		pane.add(btQuit,0,1);
+		pane.add(btQuit, 0, 1);
 		pane.setColumnSpan(l1, 2);
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
@@ -602,19 +630,30 @@ public class VendingGUI extends Application {
 		btQuit.setOnAction(e -> Platform.exit());
 		return pane;
 	}
-////////////////////////////////////////////////////////////////////////////////////
-	
+	////////////////////////////////////////////////////////////////////////////////////
+
 	public void writeFiles() {
+<<<<<<< Updated upstream:VendingGUI.java
 		try{
 		Writer.stockToFile("Stock.txt", machine.getStock());
 		Writer.coinsToFile("Money.txt", machine.getCoins());
 		}catch(IOException e){
 			System.err.println("An IOException was caught :"+e.getMessage());
+=======
+		try {
+			Writr.stockToFile("Stock.txt", machine.getStock());
+			Writr.coinsToFile("Money.txt", machine.getCoins());
+		} catch (IOException e) {
+			System.err.println("An IOException was caught :" + e.getMessage());
+>>>>>>> Stashed changes:src/gui/VendingGUI.java
 		}
-	
-	}
-////////////////////////////////////////////////////////////////////////////////////
-	
 
+	}
+	////////////////////////////////////////////////////////////////////////////////////
+
+<<<<<<< Updated upstream:VendingGUI.java
 	
 }
+=======
+}
+>>>>>>> Stashed changes:src/gui/VendingGUI.java
