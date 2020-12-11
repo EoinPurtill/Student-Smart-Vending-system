@@ -13,16 +13,28 @@ A menu from the vending machine.
 */
 public class VendingMachineMenu extends Menu
 {    
+	//Creates a private and static single instance of VendingMachineMenu()
+	private static VendingMachineMenu instance = new VendingMachineMenu();
+
 	private static Coin[] coins;
 	private OperatorMenu opMenu;
 	/**
         Constructs a UserMenu object
 	*/
-	public VendingMachineMenu() throws IOException
+	private VendingMachineMenu() 
 	{
 		super();
-		opMenu = new OperatorMenu();
-		coins = Readr.currencyReader("Money.txt");
+		
+		try{
+			opMenu = new OperatorMenu();
+			coins = Readr.currencyReader("Money.txt");
+		}catch(IOException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public static VendingMachineMenu getInstance(){
+		return instance;
 	}
    
 	/**

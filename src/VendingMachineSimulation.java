@@ -9,9 +9,11 @@ import gui.*;
    This program simulates a vending machine.
 */
 public class VendingMachineSimulation{ 
-   public static void main(String[] args) throws IOException{ 
-      VendingMachine machine = new VendingMachine();
-      VendingMachineMenu menu = new VendingMachineMenu();
+   public static void main(String[] args) throws IOException{
+	    
+	  VendingMachine machine = VendingMachine.getInstance();
+	  VendingMachineMenu menu = VendingMachineMenu.getInstance();
+	  
 	  Scanner in = new Scanner(System.in); String c = "";
 	  while(!(c.equals("~"))){
 		System.out.println("Enter 'C' for CLI interface\nEnter 'G' for GUI interface\nEnter '~' to exit");

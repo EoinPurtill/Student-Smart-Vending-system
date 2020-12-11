@@ -13,20 +13,34 @@ import io.*;
 */
 public class VendingMachine
 {  
+   //creates a private and static single instance of vendingMachine.
+   private static VendingMachine instance = new VendingMachine();
+
+   
    private ArrayList<LineItem> stock;
    private ArrayList<Operator> operators;
    private ArrayList<CoinLineItem> coins;
    private ArrayList<CoinLineItem> currentCoins;
 
    /**
-      Constructs a VendingMachine object.
+      Privately Constructs a VendingMachine object.
    */
-   public VendingMachine() throws IOException
+   private VendingMachine() 
    { 
-		stock = Readr.stockReader("Stock.txt");
-		coins = Readr.coinReader("Money.txt");
-		currentCoins = new ArrayList<CoinLineItem>();
-		operators = Readr.operatorReader("Operators.txt");
+	   try{
+		  stock = Readr.stockReader("Stock.txt");
+		  coins = Readr.coinReader("Money.txt");
+		  currentCoins = new ArrayList<CoinLineItem>();
+		  operators = Readr.operatorReader("Operators.txt");
+	   }catch (IOException ex) {
+		   ex.printStackTrace();
+
+	   }
+   }
+   
+   //Returns the only available Vending Machine object.
+   public static VendingMachine getInstance(){
+      return instance;
    }
    
    public Product[] getProductTypes(boolean isOperator)
