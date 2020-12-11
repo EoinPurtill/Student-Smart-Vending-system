@@ -21,7 +21,7 @@ import vendingMachine.*;
 public class VendingGUI extends Application {
 
 	private static Coin[] coins;
-	private VendingMachine machine 	= new VendingMachine();
+	private VendingMachine machine 	= VendingMachine.getInstance();
 	private Stage primaryStage 		= new Stage();
 	private Stage secondaryStage 	= new Stage();
 	private Product[] products;
