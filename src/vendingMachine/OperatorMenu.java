@@ -16,8 +16,7 @@ public class OperatorMenu extends Menu
 		while(more){	
 			System.out.println("W)ithdraw Coins  R)estock  A)dd New Stock  E)xit");
 			String option = in.nextLine().toUpperCase();
-			if (option.equals("W"))
-			{  
+			if (option.equals("W")){  
 				System.out.println(machine.removeMoney(true));
 			}
 			else if (option.equals("R")){ 
@@ -55,36 +54,30 @@ public class OperatorMenu extends Menu
 					System.out.println("No Options Currently Available");
 				}
 			}
-			else if (option.equals("A"))
-			{      
+			else if (option.equals("A")){      
 				System.out.println("Description:");
 				String description = in.nextLine();
 				System.out.println("Price:");
 				String priceStr = in.nextLine();
 				System.out.println("Quantity:");
 				String quantityStr = in.nextLine();
-				if(Validator.verifyDouble(priceStr) && Validator.verifyInt(quantityStr))
-				{
+				if(Validator.verifyDouble(priceStr) && Validator.verifyInt(quantityStr)){
 					double price = Double.parseDouble(priceStr); int quantity = Integer.parseInt(quantityStr);
-					if(price > 0 && quantity > 0)
-					{
+					if(price > 0 && quantity > 0){
 						if(!(machine.containsProduct(price, description)))
 						System.out.println(machine.addProduct(new Product(description, price), quantity));
 						else
 						System.out.println("Product Already In Vending Machine.\nPlease Select \"R)estock\" Option"); 
 					}
-					else
-					{
+					else{
 						System.out.println("Invalid Input");
 					}
 				}
-				else
-				{
+				else{
 					System.out.println("Invalid Input");
 				}
 			}        
-			else if (option.equals("E"))
-			{      
+			else if (option.equals("E")){      
 				more = false;
 			}        
 		}
