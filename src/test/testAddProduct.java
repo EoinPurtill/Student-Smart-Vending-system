@@ -28,7 +28,6 @@ public class testAddProduct {
     
     @Test
     public void test_AddProduct() {
-        System.out.println(vm.getStock());
         // Create test product
         Product testProduct = new Product("String Beans", 2.9);
         // Turn product into a line item
