@@ -12,30 +12,25 @@ public class CoinSet
    /**
       Constructs a CoinSet object.
    */
-   public CoinSet()
-	{  
-		set = new ArrayList<Coin>();
-	}
+   public CoinSet(){  
+	set = new ArrayList<Coin>();
+    }
    
-	public void add(Coin c)
-	{
-		set.add(c);
-	}
+   public void add(Coin c){
+	set.add(c);
+   }
    
-	public void remove(Coin c)
-	{
-		set.remove(c);
-	}
+   public void remove(Coin c){
+	set.remove(c);
+   }
 
-	public double total()
-	{
-		double amount = 0;
-		for(int i = 0; i < set.size(); i++)
-		{
-			amount += set.get(i).getValue();
-		}
-		return amount;
+   public double total(){
+	double amount = 0;
+	for(int i = 0; i < set.size(); i++){
+		amount += set.get(i).getValue();
 	}
+	return amount;
+  }
 	
 	public void empty()
 	{
