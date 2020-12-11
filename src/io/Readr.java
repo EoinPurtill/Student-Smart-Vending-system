@@ -59,7 +59,19 @@ public class Readr
 				fileLine = in.nextLine().split(",");
 				if(fileLine[3].equalsIgnoreCase("SNACK")){
 					Product p = pf.getProduct(fileLine[0], fileLine[1]);
-					list.add(new LineItem(pf, Integer.parseInt(fileLine[2])));
+					list.add(new LineItem(pf, Integer.parseInt(fileLine[2]), "SNACK"));
+				}
+				if(fileLine[3].equalsIgnoreCase("FRUIT")){
+					Product p = pf.getProduct(fileLine[0], fileLine[1]);
+					list.add(new LineItem(pf, Integer.parseInt(fileLine[2]), "FRUIT"));
+				}
+				if(fileLine[3].equalsIgnoreCase("TREAT")){
+					Product p = pf.getProduct(fileLine[0], fileLine[1]);
+					list.add(new LineItem(pf, Integer.parseInt(fileLine[2]), "TREAT"));
+				}
+				if(fileLine[3].equalsIgnoreCase("DRINK")){
+					Product p = pf.getProduct(fileLine[0], fileLine[1]);
+					list.add(new LineItem(pf, Integer.parseInt(fileLine[2]), "DRINK"));
 				}
 			}
 			in.close();

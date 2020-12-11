@@ -8,6 +8,7 @@ public class Product implements Comparable<Product>, Writable
 {  
 	private String description;
 	private double price;
+	
 
    /**
       Constructs a Product object
@@ -64,7 +65,7 @@ public class Product implements Comparable<Product>, Writable
 	
 	public String toCSV()
 	{
-		return (description + "," + price);
+		return (description + "," + price + "," + );
 	}
 	
 	public String toString()

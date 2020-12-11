@@ -6,15 +6,16 @@ public class LineItem implements Writable
 {
 	private Product p;
 	private int quantity;
+	private String type;
 	
 	public LineItem(Product prod)
 	{
 		p = prod; quantity = 0;
 	}
 	
-	public LineItem(Product prod, int x)
+	public LineItem(Product prod, int x, String t)
 	{
-		p = prod; quantity = x;
+		p = prod; quantity = x; type = t;
 	}
 	
 	public Product getProd()
@@ -87,7 +88,7 @@ public class LineItem implements Writable
 	
 	public String toCSV()
 	{
-		return (p.toCSV() + "," + quantity);
+		return (p.toCSV() + "," + quantity + "," + type);
 	}
 	
 	public String toString()

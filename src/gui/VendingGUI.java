@@ -51,7 +51,7 @@ public class VendingGUI extends Application {
 		gPane.setHgap(45.5);
 		gPane.setVgap(25.5);
 		
-		RadioButton rbShowProducts 	= new RadioButton("Show Products");
+		RadioButton rbShowProducts 	= new RadioButton("Show !!Products");
 		RadioButton rbInsertCoins 	= new RadioButton("Insert Cash");
 		RadioButton rbBuy 			= new RadioButton("Buy");
 		RadioButton rbReturnCoins 	= new RadioButton("Return Cash");
