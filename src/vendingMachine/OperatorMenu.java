@@ -7,28 +7,22 @@ import product.*;
 
 public class OperatorMenu extends Menu
 {
-	public OperatorMenu()
-	{
+	public OperatorMenu(){
 		super();
 	}
 	
-	public void run(VendingMachine machine) throws IOException
-	{
+	public void run(VendingMachine machine) throws IOException{
 		boolean more = true;
-		while(more)	
-		{	
+		while(more){	
 			System.out.println("W)ithdraw Coins  R)estock  A)dd New Stock  E)xit");
 			String option = in.nextLine().toUpperCase();
 			if (option.equals("W"))
 			{  
 				System.out.println(machine.removeMoney(true));
 			}
-			else if (option.equals("R")) 
-			{ 
-				if(machine.getProductTypes(true).length != 0)
-				{
-					try
-					{
+			else if (option.equals("R")){ 
+				if(machine.getProductTypes(true).length != 0){
+					try{
 						System.out.println("Choose Product To Add:");
 						Product p = (Product) getChoice(machine.getProductTypes(true));
 						System.out.println("Quantity:");
