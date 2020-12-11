@@ -65,7 +65,7 @@ public class Product implements Comparable<Product>, Writable
 	
 	public String toCSV()
 	{
-		return (description + "," + price + "," + );
+		return (description + "," + price + ",");
 	}
 	
 	public String toString()
