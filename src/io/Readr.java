@@ -49,6 +49,7 @@ public class Readr
 	{
 		ArrayList<LineItem> list = new ArrayList<LineItem>();
 		File f = new File(fileName); 
+		ProductFactory pf = new ProductFactory();
 		if(f.exists())
 		{
 			Scanner in = new Scanner(f);
@@ -56,7 +57,10 @@ public class Readr
 			while(in.hasNextLine())
 			{
 				fileLine = in.nextLine().split(",");
-				list.add(new LineItem(new Product(fileLine[0], Double.parseDouble(fileLine[1])), Integer.parseInt(fileLine[2])));
+				if(fileLine[3].equalsIgnoreCase("SNACK")){
+					Product p = pf.getProduct(fileLine[0], fileLine[1]);
+					list.add(new LineItem(pf, Integer.parseInt(fileLine[2])));
+				}
 			}
 			in.close();
 		}
