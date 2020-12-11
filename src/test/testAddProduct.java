@@ -17,9 +17,9 @@ public class testAddProduct {
     private static VendingMachine vm;
 
     /**
-     * Sets up the test fixture. (Called before every test case method.)
-     * 
-     * @throws IOException
+     Sets up the test fixture. (Called before every test case method.)
+     
+     @throws IOException
      */
     @Before
     public void setUp() throws IOException {
