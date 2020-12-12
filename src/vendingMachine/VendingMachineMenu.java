@@ -18,9 +18,7 @@ public class VendingMachineMenu extends Menu
 
 	private static Coin[] coins;
 	private OperatorMenu opMenu;
-	/**
-        Constructs a UserMenu object
-	*/
+
 	private VendingMachineMenu() 
 	{
 		super();
