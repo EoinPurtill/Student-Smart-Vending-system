@@ -28,10 +28,10 @@ public class VendingMachine
    private VendingMachine() 
    { 
 	   try{
-		  stock = Readr.stockReader("Stock.txt");
-		  coins = Readr.coinReader("Money.txt");
+		  stock = DAO.stockReader("Stock.txt");
+		  coins = DAO.coinReader("Money.txt");
 		  currentCoins = new ArrayList<CoinLineItem>();
-		  operators = Readr.operatorReader("Operators.txt");
+		  operators = DAO.operatorReader("Operators.txt");
 	   }catch (IOException ex) {
 		   ex.printStackTrace();
 

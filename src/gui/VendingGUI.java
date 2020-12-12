@@ -28,7 +28,7 @@ public class VendingGUI extends Application {
 		
 	public VendingGUI() throws IOException
 	{
-		coins = Readr.currencyReader("Money.txt");
+		coins = ReadDAO.currencyReader("Money.txt");
 	}
 	
 	@Override
@@ -617,8 +617,8 @@ public class VendingGUI extends Application {
 	
 	public void writeFiles() {
 		try{
-		Writr.stockToFile("Stock.txt", machine.getStock());
-		Writr.coinsToFile("Money.txt", machine.getCoins());
+		DAO.stockToFile("Stock.txt", machine.getStock());
+		DAO.coinsToFile("Money.txt", machine.getCoins());
 		}catch(IOException e){
 			System.err.println("An IOException was caught :"+e.getMessage());
 		}

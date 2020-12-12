@@ -27,7 +27,7 @@ public class VendingMachineMenu extends Menu
 		
 		try{
 			opMenu = new OperatorMenu();
-			coins = Readr.currencyReader("Money.txt");
+			coins = DAO.currencyReader("Money.txt");
 		}catch(IOException ex){
 			ex.printStackTrace();
 		}
@@ -131,8 +131,8 @@ public class VendingMachineMenu extends Menu
 			{ 
 				System.out.println("\nReturning Unused Coins");
 				System.out.println(machine.removeMoney(false));
-				Writr.stockToFile("Stock.txt", machine.getStock());
-				Writr.coinsToFile("Money.txt", machine.getCoins());
+				DAO.stockToFile("Stock.txt", machine.getStock());
+				DAO.coinsToFile("Money.txt", machine.getCoins());
 				more = false;
 			}
 		}
