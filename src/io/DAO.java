@@ -6,9 +6,9 @@ import product.*;
 import users.*;
 import coin.*;
 
-public class Readr
+public class DAO
 {
-	public Readr()
+	public DAO()
 	{
 		super();
 	}
@@ -118,4 +118,25 @@ public class Readr
 
 		return list;
 	}
+
+	public static void stockToFile(String fileName, ArrayList<LineItem> list) throws IOException 
+	{
+		FileWriter writer = new FileWriter(fileName);
+		for (LineItem str : list) 
+		{
+			writer.write(str.toCSV() + "\n");
+		}
+		writer.close();
+	}	
+	
+	public static void coinsToFile(String fileName, ArrayList<CoinLineItem> list) throws IOException 
+	{
+		FileWriter writer = new FileWriter(fileName);
+		for (CoinLineItem str : list) 
+		{
+			writer.write(str.toCSV() + "\n");
+		}
+		writer.close();
+	}
+
 }
