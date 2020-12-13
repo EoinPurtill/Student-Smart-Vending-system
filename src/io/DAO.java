@@ -15,7 +15,7 @@ public class DAO
 	
 	public static Coin[] currencyReader(String fileName) throws IOException
 	{
-		File f = new File(fileName); 
+		File f = new File("txt/" + fileName); 
 		Coin[] coins;
 		if(f.exists())
 		{
@@ -48,7 +48,7 @@ public class DAO
 	public static ArrayList<LineItem> stockReader(String fileName) throws IOException
 	{
 		ArrayList<LineItem> list = new ArrayList<LineItem>();
-		File f = new File(fileName); 
+		File f = new File("txt/" + fileName); 
 
 		ProductFactory pf = new ProductFactory();
 
@@ -86,7 +86,7 @@ public class DAO
 	public static ArrayList<CoinLineItem> coinReader(String fileName) throws IOException
 	{
 		ArrayList<CoinLineItem> list = new ArrayList<CoinLineItem>();
-		File f = new File(fileName); 
+		File f = new File("txt/" + fileName); 
 		if(f.exists())
 		{
 			Scanner in = new Scanner(f);
@@ -105,7 +105,7 @@ public class DAO
 	public static ArrayList<Operator> operatorReader(String fileName) throws IOException
 	{
 		ArrayList<Operator> list = new ArrayList<Operator>();
-		File f = new File(fileName); 
+		File f = new File("txt/" + fileName); 
 		if(f.exists())
 		{
 			Scanner in = new Scanner(f);
@@ -123,7 +123,7 @@ public class DAO
 	
 		public static void stockToFile(String fileName, ArrayList<LineItem> list) throws IOException 
 	{
-		FileWriter writer = new FileWriter(fileName);
+		FileWriter writer = new FileWriter("txt/" + fileName);
 		for (LineItem str : list) 
 		{
 			writer.write(str.toCSV() + "\n");
@@ -133,7 +133,7 @@ public class DAO
 	
 	public static void coinsToFile(String fileName, ArrayList<CoinLineItem> list) throws IOException 
 	{
-		FileWriter writer = new FileWriter(fileName);
+		FileWriter writer = new FileWriter("txt/" + fileName);
 		for (CoinLineItem str : list) 
 		{
 			writer.write(str.toCSV() + "\n");

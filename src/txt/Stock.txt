@@ -9,4 +9,4 @@ Jellies,6.0,10,TREAT
 Melon,1.0,197,FRUIT
 Taytos,99.0,9,SNACK
 Toblerone,2.2,10,TREAT
-Popcorn,1.85,10,SNACK
+Popcorn,1.85,12,SNACK
