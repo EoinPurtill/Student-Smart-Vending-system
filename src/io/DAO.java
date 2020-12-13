@@ -49,7 +49,9 @@ public class DAO
 	{
 		ArrayList<LineItem> list = new ArrayList<LineItem>();
 		File f = new File(fileName); 
+
 		ProductFactory pf = new ProductFactory();
+
 		if(f.exists())
 		{
 			Scanner in = new Scanner(f);
@@ -57,7 +59,7 @@ public class DAO
 			while(in.hasNextLine())
 			{
 				fileLine = in.nextLine().split(",");
-				
+
 				if(fileLine[3].equalsIgnoreCase("SNACK")){
 					Product p = pf.getProduct("SNACK", fileLine[0], Double.parseDouble(fileLine[1]));
 					list.add(new LineItem(p, Integer.parseInt(fileLine[2]), "SNACK"));
@@ -118,8 +120,8 @@ public class DAO
 
 		return list;
 	}
-
-	public static void stockToFile(String fileName, ArrayList<LineItem> list) throws IOException 
+	
+		public static void stockToFile(String fileName, ArrayList<LineItem> list) throws IOException 
 	{
 		FileWriter writer = new FileWriter(fileName);
 		for (LineItem str : list) 
@@ -138,5 +140,4 @@ public class DAO
 		}
 		writer.close();
 	}
-
 }

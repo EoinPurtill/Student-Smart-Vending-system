@@ -28,7 +28,7 @@ public class VendingGUI extends Application {
 		
 	public VendingGUI() throws IOException
 	{
-		coins = ReadDAO.currencyReader("Money.txt");
+		coins = DAO.currencyReader("Money.txt");
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public class VendingGUI extends Application {
 		gPane.setHgap(45.5);
 		gPane.setVgap(25.5);
 		
-		RadioButton rbShowProducts 	= new RadioButton("Show !!Products");
+		RadioButton rbShowProducts 	= new RadioButton("Show Products");
 		RadioButton rbInsertCoins 	= new RadioButton("Insert Cash");
 		RadioButton rbBuy 			= new RadioButton("Buy");
 		RadioButton rbReturnCoins 	= new RadioButton("Return Cash");
@@ -62,9 +62,12 @@ public class VendingGUI extends Application {
 		gPane.add(rbShowProducts,0,0);
 		gPane.add(rbBuy,1,0);
 		gPane.add(rbInsertCoins,0,2);
-		gPane.add(rbReturnCoins,1,2);	
+		gPane.add(rbReturnCoins,1,2);
+		
 		gPane.add(rbAddCredit,2,2);
+		
 		gPane.add(rbOpFuntions,0,4);
+		
 		gPane.add(rbQuit,1,4);
 	
 		ToggleGroup group = new ToggleGroup();

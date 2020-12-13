@@ -5,14 +5,18 @@ import java.util.Scanner;
 import vendingMachine.*;
 import gui.*;
 
-public class VendingMachineSimulation{ 
-   public static void main(String[] args) throws IOException{
-	    
-	  VendingMachine machine = VendingMachine.getInstance();
-	  VendingMachineMenu menu = VendingMachineMenu.getInstance();
-	  
+/**
+   This program simulates a vending machine.
+*/
+public class VendingMachineSimulation
+{ 
+   public static void main(String[] args) throws IOException
+   { 
+      VendingMachine machine = VendingMachine.getInstance();
+      VendingMachineMenu menu = VendingMachineMenu.getInstance();
 	  Scanner in = new Scanner(System.in); String c = "";
-	  while(!(c.equals("~"))){
+	  while(!(c.equals("~")))
+	  {
 		System.out.println("Enter 'C' for CLI interface\nEnter 'G' for GUI interface\nEnter '~' to exit");
 		c = in.nextLine().toUpperCase();
 		if(c.equals("C")){

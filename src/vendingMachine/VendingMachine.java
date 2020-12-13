@@ -7,8 +7,13 @@ import coin.*;
 import users.Operator;
 import io.*;
 
-public class VendingMachine
+
+/**
+   A vending machine.
+*/
+public class VendingMachine 
 {  
+
    //creates a private and static single instance of vendingMachine.
    private static VendingMachine instance = new VendingMachine();
 
