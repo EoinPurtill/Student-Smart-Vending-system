@@ -7,10 +7,6 @@ import coin.*;
 import users.Operator;
 import io.*;
 
-
-/**
-   A vending machine.
-*/
 public class VendingMachine
 {  
    //creates a private and static single instance of vendingMachine.

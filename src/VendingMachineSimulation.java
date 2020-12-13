@@ -5,9 +5,6 @@ import java.util.Scanner;
 import vendingMachine.*;
 import gui.*;
 
-/**
-   This program simulates a vending machine.
-*/
 public class VendingMachineSimulation{ 
    public static void main(String[] args) throws IOException{
 	    
