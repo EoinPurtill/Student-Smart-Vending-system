@@ -8,24 +8,17 @@ import users.Operator;
 import io.*;
 
 
-/**
-   A vending machine.
-*/
 public class VendingMachine 
 {  
 
    //creates a private and static single instance of vendingMachine.
    private static VendingMachine instance = new VendingMachine();
-
    
    private ArrayList<LineItem> stock;
    private ArrayList<Operator> operators;
    private ArrayList<CoinLineItem> coins;
    private ArrayList<CoinLineItem> currentCoins;
 
-   /**
-      Privately Constructs a VendingMachine object.
-   */
    private VendingMachine() 
    { 
 	   try{
