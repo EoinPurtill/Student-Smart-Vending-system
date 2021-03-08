@@ -74,7 +74,7 @@ public class Deal {
         for (Product sandwich : sandwiches){
             price += sandwich.getPrice();
         }
-        return price;
+        return price * discountPercent;
     }
 
     public boolean isComplete(){
