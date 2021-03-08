@@ -2,7 +2,7 @@ package product;
 
 import java.util.ArrayList;
 
-public class Deal {
+public class Deal{
     private String description;
     private int amountTreats, amountDrinks;
     private int amountFruit, amountSandwiches;
