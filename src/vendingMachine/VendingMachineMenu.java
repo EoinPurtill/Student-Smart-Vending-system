@@ -45,7 +45,7 @@ public class VendingMachineMenu extends Menu
       
 		while (more)
 		{ 
-			System.out.println("S)how Products  I)nsert Coin  B)uy  R)eturn Coins  O)perator Functions  Q)uit");
+			System.out.println("S)how Products  M)ulti-order  D)eals  I)nsert Coin  B)uy  R)eturn Coins  O)perator Functions  Q)uit");
 			String command = in.nextLine().toUpperCase();
 
 			if (command.equals("S"))
@@ -61,6 +61,14 @@ public class VendingMachineMenu extends Menu
 						System.out.println(p);
 				}	
 		
+			}
+			else if (command.equals("M")) //allows user to create order
+			{ 
+				//TODO
+			}
+			else if (command.equals("D")) //allows user to create order from offers
+			{ 
+				//TODO
 			}
 			else if (command.equals("I")) //allows one coin be inserted at a time
 			{ 
