@@ -1,11 +1,12 @@
-
-package test;
 import org.junit.*;
 
-import io.Readr;
 import product.LineItem;
 import product.Product;
+import vendingMachine.DrinkMachine;
+import vendingMachine.DrinkStock;
+import vendingMachine.Stockinterface;
 import vendingMachine.VendingMachine;
+import vendingMachine.VendingMachine2;
 
 import static org.junit.Assert.*;
 
@@ -16,8 +17,10 @@ public class testBridgeVending {
     @Test
     public void whenBridgePatternInvoked_thenConfigSuccess() {
         // a drinkmachine with drinks in it
-        VendingMachine2 DrinkMachine = new VendingMachine2(new DrinkStock());
+        DrinkMachine drinkmachine = new DrinkMachine(null){
+            
+        };
 
-        assertEquals(DrinkMachine.createMachine(), "Water is god");
+        assertEquals(DrinkMachine.createMachine(), "Stock");
     }
 }

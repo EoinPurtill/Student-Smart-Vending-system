@@ -1,13 +1,13 @@
 package vendingMachine;
 
 public class DrinkMachine extends VendingMachine2 {
-    public DrinkMachine(Stockinterface s){
-        super();
+    public DrinkMachine(Stockinterface stock){
+        super(stock);
     }
 
     @Override
-    public String[] createMachine() {
-        // TODO Auto-generated method stub
-        return null;
+    public String createMachine() {
+
+        return "Stock";
     }
 }
