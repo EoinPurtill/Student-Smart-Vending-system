@@ -1,6 +1,5 @@
 import org.junit.*;
 
-
 import product.LineItem;
 import product.Product;
 import vendingMachine.VendingMachine;
