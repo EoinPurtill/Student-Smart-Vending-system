@@ -142,9 +142,9 @@ public class VendingMachineMenu extends Menu
 			}
 		}
 	}
-	
+
 	public void multiOrderMenu(VendingMachine machine) throws IOException{
-		order = new Order();
+		Order order = new Order();
 
 		boolean more = true;
 		while(more){

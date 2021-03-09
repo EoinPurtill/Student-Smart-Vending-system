@@ -198,22 +198,21 @@ public class VendingMachine
    }
 
 	public void processOrder(Order order) throws VendingException{
-		itemsList = order.getSingleItems();
-		dealList = order.getDeals();
+		ArrayList<Product> itemsList = order.getSingleItems();
+		ArrayList<Deal> dealList = order.getDeals();
 
 		if(itemsList.size() + dealList.size() == 0){
 			System.out.println("Order is empty");
-			return false;
 		}
 
 		double price = 0.0;
 		String orderDetails = "ORDER:\n";
 		for(Product prod : itemsList){
 			price += prod.getPrice();
-			machine.buyProduct(prod);
+			this.buyProduct(prod);
 			orderDetails += "-" + prod + "\n";
 		}
-		for(Order deal : dealList){
+		for(Deal deal : dealList){
 			//TODO: Stock Removal Logic
 			price += deal.getPrice();
 			orderDetails += "-" + deal + "\n";
@@ -278,10 +277,11 @@ public class VendingMachine
    }
 
    	private double getValueInserted(){
-		   double sum = 0.0;
+		double sum = 0.0;
 		for(int i = 0; i < currentCoins.size(); i++)
 		{
 			sum += currentCoins.get(i).total();
 		}
+		return sum;
 	}
 }

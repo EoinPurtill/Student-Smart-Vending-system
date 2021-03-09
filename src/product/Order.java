@@ -35,6 +35,6 @@ public class Order{
     }
 
     public ArrayList<Deal> getDeals(){
-        return singleItems;
+        return deals;
     }
 }
