@@ -8,7 +8,7 @@ public class Order{
 
     public Order(){
         singleItems = new ArrayList<Product>();
-        deals = new ArrayList<Deal>;
+        deals = new ArrayList<Deal>();
     }
 
     public double getPrice(){
@@ -28,5 +28,13 @@ public class Order{
 
     public void addDeal(Deal deal){
         deals.add(deal);
+    }
+
+    public ArrayList<Product> getSingleItems(){
+        return singleItems;
+    }
+
+    public ArrayList<Deal> getDeals(){
+        return singleItems;
     }
 }

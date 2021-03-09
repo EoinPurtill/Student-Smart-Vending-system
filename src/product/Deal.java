@@ -3,6 +3,8 @@ package product;
 import java.util.ArrayList;
 
 public class Deal{
+    private static final double maxDiscount = 100.0;
+    private static final double minDiscount = 1.0;
     private String description;
     private int amountTreats, amountDrinks;
     private int amountFruit, amountSandwiches;
@@ -17,7 +19,8 @@ public class Deal{
         this.amountDrinks = amountDrinks;
         this.amountFruit = amountFruit;
         this.amountSandwiches = amountSandwiches;
-        this.discountPercent = discountPercent;
+        this.discountPercent = Math.min(discountPercent, maxDiscount);
+        this.discountPercent = Math.max(discountPercent, minDiscount);
         this.treats = new ArrayList<Product>();
         this.drinks = new ArrayList<Product>();
         this.fruits = new ArrayList<Product>();
@@ -74,11 +77,15 @@ public class Deal{
         for (Product sandwich : sandwiches){
             price += sandwich.getPrice();
         }
-        return price * discountPercent;
+        return price - ( price * (discountPercent / 100) );
     }
 
     public boolean isComplete(){
         return(amountTreats==treats.size() && amountDrinks==drinks.size()
         && amountFruit==fruits.size() && amountSandwiches==sandwiches.size());
+    }
+
+    public String toString(){
+        return "Deal.java: toString() PLACEHOLDER";
     }
 }
