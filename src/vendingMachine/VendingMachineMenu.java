@@ -63,7 +63,7 @@ public class VendingMachineMenu extends Menu
 			}
 			else if (command.equals("M")) //allows user to create order
 			{ 
-				//TODO
+				multiOrderMenu(machine);	
 			}
 			else if (command.equals("D")) //allows user to create order from offers
 			{ 
@@ -163,8 +163,7 @@ public class VendingMachineMenu extends Menu
 
 				case "B":		try
 								{
-									machine.processOrder(order);
-									more = false;
+									more = !( machine.processOrder(order) );
 								}
 								catch (VendingException ex)
 								{
