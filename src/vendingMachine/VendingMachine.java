@@ -19,7 +19,7 @@ public class VendingMachine
    private ArrayList<CoinLineItem> coins;
    private ArrayList<CoinLineItem> currentCoins;
 
-   private VendingMachine() 
+   public VendingMachine() 
    { 
 	   try{
 		  stock = DAO.stockReader("Stock.txt");
