@@ -19,6 +19,9 @@ public class ProductFactory {
       } else if(productType.equalsIgnoreCase("DRINK")){
         return new Drink(d, p);
       }
+      else if(productType.equalsIgnoreCase("SANDWICH")){
+         return new Sandwich(d, p);
+      }
 
       return null;
    }

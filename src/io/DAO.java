@@ -76,7 +76,12 @@ public class DAO
 					Product p = pf.getProduct("DRINK", fileLine[0], Double.parseDouble(fileLine[1]));
 					list.add(new LineItem(p, Integer.parseInt(fileLine[2]), "DRINK"));
 				}
+				if(fileLine[3].equalsIgnoreCase("SANDWICH")){
+					Product p = pf.getProduct("SANDWICH", fileLine[0], Double.parseDouble(fileLine[1]));
+					list.add(new LineItem(p, Integer.parseInt(fileLine[2]), "SANDWICH"));
+				}
 			}
+			
 			in.close();
 		}
 		

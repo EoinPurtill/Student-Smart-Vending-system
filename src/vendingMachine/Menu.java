@@ -29,7 +29,7 @@ public abstract class Menu
 				String input = in.nextLine();
 				int n = input.toUpperCase().charAt(0) - 'A';
 				if (0 <= n && n < choices.length)
-				return choices[n];
+					return choices[n];
 			}
 			catch(StringIndexOutOfBoundsException ex)
 			{

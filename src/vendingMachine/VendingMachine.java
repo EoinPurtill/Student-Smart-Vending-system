@@ -147,12 +147,8 @@ public class VendingMachine
    public String buyProduct(Product prod) throws VendingException
    {
 		String output = ""; 
-		double sum = 0;
-		double credit = 10;
-		for(int i = 0; i < currentCoins.size(); i++)
-		{
-			sum += currentCoins.get(i).total();
-		}
+		double sum = getValueInserted();
+		double credit = 10.0;
 		if(prod.getPrice() <= sum || prod.getPrice() <= credit)
 		{
 			for(int j = 0; j < stock.size(); j++)
@@ -200,6 +196,40 @@ public class VendingMachine
 	   }
 	   return output;
    }
+
+	public boolean processOrder(Order order) throws VendingException{
+		ArrayList<Product> itemsList = order.getSingleItems();
+		ArrayList<Deal> dealList = order.getDeals();
+
+		if(itemsList.size() + dealList.size() == 0){
+			System.out.println("Order is empty");
+			return false;
+		}
+
+		double price = 0.0;
+		String orderDetails = "ORDER:\n";
+		for(Product prod : itemsList){
+			try{
+				this.buyProduct(prod);
+				price += prod.getPrice();
+				orderDetails += "-" + prod + "\n";
+			}catch(VendingException ex){
+				throw new VendingException(ex.getMessage());
+			}
+		}
+		for(Deal deal : dealList){
+			//TODO: Stock Removal Logic
+			price += deal.getPrice();
+			orderDetails += "-" + deal + "\n";
+		}
+		
+		if(getValueInserted() < price){
+			//TODO: implement memento here to restore vending mahine state
+			throw new VendingException("Not enough credit to complete order");
+		}
+
+		return true;
+	}
    
    public boolean containsProduct(Product p)
    {
@@ -252,4 +282,13 @@ public class VendingMachine
    {
 	   return coins;
    }
+
+   	private double getValueInserted(){
+		double sum = 0.0;
+		for(int i = 0; i < currentCoins.size(); i++)
+		{
+			sum += currentCoins.get(i).total();
+		}
+		return sum;
+	}
 }

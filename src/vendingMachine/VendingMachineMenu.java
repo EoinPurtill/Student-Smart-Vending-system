@@ -39,13 +39,12 @@ public class VendingMachineMenu extends Menu
 	Runs the vending machine system.
 	@param machine the vending machine
 	*/
-	public void run(VendingMachine machine) throws IOException
-	{
+	public void run(VendingMachine machine) throws IOException{
 		boolean more = true;
       
 		while (more)
 		{ 
-			System.out.println("S)how Products  I)nsert Coin  B)uy  R)eturn Coins  O)perator Functions  Q)uit");
+			System.out.println("S)how Products  M)ulti-order  D)eals  I)nsert Coin  B)uy  R)eturn Coins  O)perator Functions  Q)uit");
 			String command = in.nextLine().toUpperCase();
 
 			if (command.equals("S"))
@@ -61,6 +60,14 @@ public class VendingMachineMenu extends Menu
 						System.out.println(p);
 				}	
 		
+			}
+			else if (command.equals("M")) //allows user to create order
+			{ 
+				multiOrderMenu(machine);	
+			}
+			else if (command.equals("D")) //allows user to create order from offers
+			{ 
+				//TODO
 			}
 			else if (command.equals("I")) //allows one coin be inserted at a time
 			{ 
@@ -132,6 +139,75 @@ public class VendingMachineMenu extends Menu
 				DAO.stockToFile("Stock.txt", machine.getStock());
 				DAO.coinsToFile("Money.txt", machine.getCoins());
 				more = false;
+			}
+		}
+	}
+
+	public void multiOrderMenu(VendingMachine machine) throws IOException{
+		Order order = new Order();
+
+		boolean more = true;
+		while(more){
+			System.out.println("S)how Products  B)uy  D)eals  I)nsert Coin  A)dd  R)eturn Coins  C)ancel");
+			String command = in.nextLine().toUpperCase();
+
+			switch(command){
+				case "S":  		if(machine.getProductTypes(false).length == 0)
+									System.out.println("No Options Currently Available");
+								else
+								{
+									for (Product p : machine.getProductTypes(false))
+										System.out.println(p);
+								}
+								break;
+
+				case "B":		try
+								{
+									more = !( machine.processOrder(order) );
+								}
+								catch (VendingException ex)
+								{
+									System.out.println(ex.getMessage());
+								}
+								break;
+
+				case "D":		System.out.println("PLACEHOLDER: TODO: add special offer functionality");
+								break;
+
+				case "I":		try
+								{	
+									System.out.println(machine.addCoin((Coin) getChoice(coins)));
+								}
+								catch(NullPointerException ex)
+								{
+									System.out.println("No Options Currently Available");
+								}
+								break;
+
+				case "A":		try
+								{
+									Product p = (Product) getChoice(machine.getProductTypes(false));
+									order.addProduct(p);
+									System.out.println(p + " added to order");
+								}
+								catch(NullPointerException except)
+								{
+									System.out.println("No Options Currently Available");
+								}
+								catch (VendingException ex)
+								{
+									System.out.println(ex.getMessage());
+								}
+								break;
+
+				case "R":		System.out.println(machine.removeMoney(false));
+								break;
+
+				case "C":		System.out.println("Order cancelled\n\n");
+								more = false;
+								break;
+
+				default:	System.out.println("Invalid input\n\n");
 			}
 		}
 	}
