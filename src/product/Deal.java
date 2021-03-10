@@ -27,7 +27,18 @@ public class Deal{
         this.sandwiches = new ArrayList<Product>();
     }
 
-    public void addTreat(Product treat){
+    public void addItem(Product prod){
+        if(prod instanceof Treat)
+            addTreat(prod);
+        if(prod instanceof Drink)
+            addDrink(prod);
+        if(prod instanceof Fruit)
+            addFruit(prod);
+        if(prod instanceof Sandwich)
+            addSandwich(prod);
+    }
+
+    private void addTreat(Product treat){
         if(amountTreats == 0)
             System.out.println("No treats in this offer.");
         else if(treats.size() < amountTreats)
@@ -36,16 +47,16 @@ public class Deal{
             System.out.println(amountTreats + "/" + amountTreats + " already selected.");
     }
 
-    public void addDrink(Product drink){
+    private void addDrink(Product drink){
         if(amountDrinks == 0)
             System.out.println("No drinks in this offer.");
-        else if(drinks.size() < amountTreats)
+        else if(drinks.size() < amountDrinks)
             drinks.add(drink);
         else
             System.out.println(amountDrinks + "/" + amountDrinks + " already selected.");
     }
 
-    public void addFruit(Product fruit){
+    private void addFruit(Product fruit){
         if(amountFruit == 0)
             System.out.println("No fruit in this offer.");
         else if(fruits.size() < amountFruit)
@@ -54,7 +65,7 @@ public class Deal{
             System.out.println(amountFruit + "/" + amountFruit + " already selected.");
     }
 
-    public void addSandwich(Product sandwich){
+    private void addSandwich(Product sandwich){
         if(amountSandwiches == 0)
             System.out.println("No sandwiches in this offer.");
         else if(sandwiches.size() < amountSandwiches)
@@ -86,6 +97,40 @@ public class Deal{
     }
 
     public String toString(){
-        return "Deal.java: toString() PLACEHOLDER";
+        String details = "Includes:\n";
+
+        if(amountTreats > 0)
+            details += amountTreats + " treats\n";
+        if(amountDrinks > 0)
+        details += amountDrinks + " drinks\n";
+        if(amountFruit > 0)
+        details += amountFruit + " fruit\n";
+        if(amountSandwiches > 0)
+        details += amountSandwiches + " sandwiches\n";
+        return String.format("%s\n%s", description, details);
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public ArrayList<Product> getTreats(){
+        return treats;
+    }
+
+    public ArrayList<Product> getDrinks(){
+        return drinks;
+    }
+
+    public ArrayList<Product> getFruits(){
+        return fruits;
+    }
+
+    public ArrayList<Product> getSandwiches(){
+        return sandwiches;
+    }
+
+    public double getDiscount(){
+        return discountPercent;
     }
 }

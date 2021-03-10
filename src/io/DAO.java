@@ -92,6 +92,26 @@ public class DAO
 
 		return list;
 	}
+
+	public static ArrayList<Deal> dealReader(String fileName) throws IOException
+	{
+		ArrayList<Deal> list = new ArrayList<Deal>();
+		File f = new File("txt/" + fileName); 
+		if(f.exists())
+		{
+			Scanner in = new Scanner(f);
+			String[] fileLine;
+			while(in.hasNextLine())
+			{
+				fileLine = in.nextLine().split(",");
+				list.add( new Deal( fileLine[0], Integer.parseInt(fileLine[1]), Integer.parseInt(fileLine[2]),
+							Integer.parseInt(fileLine[3]), Integer.parseInt(fileLine[4]), Double.parseDouble(fileLine[5]) ) );
+			}
+			in.close();
+		}
+
+		return list;
+	}
 	
 	public static void stockToFile(String fileName, ArrayList<LineItem> list) throws IOException 
 	{

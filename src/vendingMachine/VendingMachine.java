@@ -17,6 +17,7 @@ public class VendingMachine
    private ArrayList<LineItem> stock;
    private ArrayList<Operator> operators;
    private ArrayList<User> users;
+   private ArrayList<Deal> deals;
 
    private VendingMachine() 
    { 
@@ -24,6 +25,7 @@ public class VendingMachine
 		  stock = DAO.stockReader("Stock.txt");
 		  operators = DAO.operatorReader("Operators.txt");
 		  users = DAO.userReader("Users.txt");
+		  deals = DAO.dealReader("Deals.txt");
 	   }catch (IOException ex) {
 		   ex.printStackTrace();
 
@@ -76,6 +78,32 @@ public class VendingMachine
 		return output;
 	}
    
+	public String buyDeal(Deal deal, User user) throws VendingException
+   {
+		String output = "";
+		if( !deal.isComplete() ){
+			System.out.println("Deal is not complete!");
+			return output;
+		}
+		if( user.getCredit() >= deal.getPrice() ){
+			for(Product treat : deal.getTreats())
+				buyProduct(treat, user);
+			for(Product drink : deal.getDrinks())
+				buyProduct(drink, user);
+			for(Product fruit : deal.getFruits())
+				buyProduct(fruit, user);
+			for(Product sandwich : deal.getSandwiches())
+				buyProduct(sandwich, user);
+
+			user.increaseBalance( ( deal.getPrice() / (100 - deal.getDiscount()) ) * deal.getDiscount() );
+			return "Purchased: " + deal.getDescription() + "Total Price:  " + String.format("%.2f", deal.getPrice()) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
+		}
+		else
+		{
+			throw new VendingException("Not enough credit!\n");
+		}
+	}
+
    public String addProduct(Product prod, int quant)
    {   
 	   String output = ""; //I added this guy to this method to collect our output 
@@ -205,5 +233,10 @@ public class VendingMachine
    public ArrayList<User> getUsers()
    {
 	   return users;
+   }
+
+   public ArrayList<Deal> getDeals()
+   {
+	   return deals;
    }
 }

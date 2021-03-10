@@ -80,7 +80,7 @@ public class VendingMachineMenu extends Menu
 				}
 				else if (command.equals("D")) //allows user to create order from offers
 				{ 
-					System.out.println("PLACEHOLDER: TODO: add special offer functionality");
+					dealMenu(machine, user);
 				}
 				else if (command.equals("B")) 
 				{              
@@ -206,6 +206,67 @@ public class VendingMachineMenu extends Menu
 								break;
 
 				default:	System.out.println("Invalid input\n\n");
+			}
+		}
+	}
+
+	//TODO: add UNDO functionality to include memento
+	public void dealMenu(VendingMachine machine, User user) throws IOException{
+		double orderValue = 0.0;
+		Deal deal = null;
+		boolean more = true;
+		while(more){
+			System.out.println("D)eals  B)uy  S)elect Deal  A)dd  V)iew Balance  C)ancel");
+			String command = in.nextLine().toUpperCase();
+			switch(command){
+				case "D":	for(Deal d : machine.getDeals())
+								System.out.println(d);
+							break;
+
+				case "B":	if(deal == null){
+								System.out.println("No deal selected!\n");
+							} else {
+								try{
+									more = false;
+									machine.buyDeal(deal, user);
+								} catch(VendingException ex) {
+									more = true;
+									System.out.println(ex.getMessage());
+								}
+							}
+							break;
+
+				case "S":	deal = (Deal) getChoice(machine.getDeals().toArray());
+							break;
+
+				case "A":	if(deal == null){
+								System.out.println("No deal selected!\n");
+							} else {
+								try
+								{
+									Product p = (Product) getChoice(machine.getProductTypes(false));
+									deal.addItem(p);
+									System.out.printf("%s added to order\n", p.getDescription());
+								}
+								catch(NullPointerException except)
+								{
+									System.out.println("No Options Currently Available");
+								}
+								catch (VendingException ex)
+								{
+									System.out.println(ex.getMessage());
+								}
+								break;
+							}
+				
+				case "V":	System.out.printf("Balance:  $%.2f\n", user.getCredit());
+								break;
+
+				case "C":	System.out.println("Returning to previous menu\n");
+							more = false;
+							break;
+
+				default:	System.out.println("Invalid input\n\n"); break;
 			}
 		}
 	}
