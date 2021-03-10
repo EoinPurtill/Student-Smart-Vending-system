@@ -4,45 +4,12 @@ import java.util.*;
 import java.io.*;
 import product.*;
 import users.*;
-import coin.*;
 
 public class DAO
 {
 	public DAO()
 	{
 		super();
-	}
-	
-	public static Coin[] currencyReader(String fileName) throws IOException
-	{
-		File f = new File("txt/" + fileName); 
-		Coin[] coins;
-		if(f.exists())
-		{
-			Scanner in = new Scanner(f);
-			Scanner counter = new Scanner(f); int lines = 0;
-			while(counter.hasNextLine())
-			{
-				lines++;
-				counter.nextLine();
-			}
-			coins = new Coin[lines];
-			int i = 0;
-			String[] fileLine;
-			while(in.hasNextLine())
-			{
-				fileLine = in.nextLine().split(",");
-				coins[i] = new Coin(Double.parseDouble(fileLine[1]), fileLine[0]);
-				i++;
-			}
-			counter.close(); in.close();
-		}
-		else
-		{
-			coins = new Coin[1];
-		}
-
-		return coins;
 	}
 	
 	public static ArrayList<LineItem> stockReader(String fileName) throws IOException
@@ -86,25 +53,6 @@ public class DAO
 		}
 		
 		return list;
-	}
-	
-	public static ArrayList<CoinLineItem> coinReader(String fileName) throws IOException
-	{
-		ArrayList<CoinLineItem> list = new ArrayList<CoinLineItem>();
-		File f = new File("txt/" + fileName); 
-		if(f.exists())
-		{
-			Scanner in = new Scanner(f);
-			String[] fileLine;
-			while(in.hasNextLine())
-			{
-				fileLine = in.nextLine().split(",");
-				list.add(new CoinLineItem(new Coin(Double.parseDouble(fileLine[1]), fileLine[0]), Integer.parseInt(fileLine[2])));
-			}
-			in.close();
-		}
-
-			return list;
 	}
 	
 	public static ArrayList<Operator> operatorReader(String fileName) throws IOException
@@ -161,16 +109,6 @@ public class DAO
 		for (User user : list) 
 		{
 			writer.write(user.toCSV() + "\n");
-		}
-		writer.close();
-	}
-	
-	public static void coinsToFile(String fileName, ArrayList<CoinLineItem> list) throws IOException 
-	{
-		FileWriter writer = new FileWriter("txt/" + fileName);
-		for (CoinLineItem str : list) 
-		{
-			writer.write(str.toCSV() + "\n");
 		}
 		writer.close();
 	}

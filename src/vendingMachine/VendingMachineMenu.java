@@ -6,7 +6,6 @@ import java.io.Console;
 import users.Operator;
 import users.User;
 import product.*;
-import coin.*;
 import io.*;
 
 /**   
@@ -17,7 +16,6 @@ public class VendingMachineMenu extends Menu
 	//Creates a private and static single instance of VendingMachineMenu()
 	private static VendingMachineMenu instance = new VendingMachineMenu();
 
-	private static Coin[] coins;
 	private OperatorMenu opMenu;
 
 	private VendingMachineMenu(){
@@ -25,8 +23,7 @@ public class VendingMachineMenu extends Menu
 		
 		try{
 			opMenu = new OperatorMenu();
-			coins = DAO.currencyReader("Money.txt");
-		}catch(IOException ex){
+		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}

@@ -3,7 +3,6 @@ package vendingMachine;
 import java.util.ArrayList;
 import java.io.*;
 import product.*;
-import coin.*;
 import users.Operator;
 import users.User;
 import io.*;
@@ -18,15 +17,11 @@ public class VendingMachine
    private ArrayList<LineItem> stock;
    private ArrayList<Operator> operators;
    private ArrayList<User> users;
-   private ArrayList<CoinLineItem> coins;
-   private ArrayList<CoinLineItem> currentCoins;
 
    private VendingMachine() 
    { 
 	   try{
 		  stock = DAO.stockReader("Stock.txt");
-		  coins = DAO.coinReader("Money.txt");
-		  currentCoins = new ArrayList<CoinLineItem>();
 		  operators = DAO.operatorReader("Operators.txt");
 		  users = DAO.userReader("Users.txt");
 	   }catch (IOException ex) {
@@ -56,95 +51,6 @@ public class VendingMachine
 	   Product[] ret = new Product[temp.size()];
 	   ret = temp.toArray(ret);
 	   return ret;
-   }
-   
-   public String addCoin(Coin money)
-   {
-	   
-	   String output = ""; 
-	   boolean addNew = true;
-	   for(int i = 0; i < currentCoins.size(); i++)
-	   {
-		   if(currentCoins.get(i).getCoin().compareTo(money) == 0)
-		   {
-			   currentCoins.get(i).add();
-			   addNew = false;
-			   i = currentCoins.size();
-		   }
-	   }
-	   if(addNew)
-	   {
-			currentCoins.add(new CoinLineItem(money, 1));
-	   }
-	   double sum = 0;
-		for(int i = 0; i < currentCoins.size(); i++)
-		{
-			sum += currentCoins.get(i).total();
-		}
-	   output=("Total Credit:  $" + String.format("%1.2f", sum) + "\n");
-	   
-	   return output;
-   }
-   
-   public String removeMoney(boolean isOperator)
-   {
-	   if(isOperator)
-	   {
-		   String ret = "Machine Empty: No Coins to Collect";
-		   if(!(coins.isEmpty()))
-		   {
-			   double sum= 0;
-				for(int j = 0; j < coins.size(); j++)
-				{
-					sum += coins.get(j).total(); coins.get(j).empty();
-				}
-				if(sum > 0)
-				{					
-					ret = String.format("$%1.2f", sum) + ": All Coins Collected";
-				}
-		   }
-		   return ret;
-	   }
-	   else
-	   {
-		   String ret = "No Money Inserted";
-		   if(!(currentCoins.isEmpty()))
-		   {
-			   double sum = 0;
-			   for(int i = 0; i < currentCoins.size(); i++)
-			   {
-				   sum += currentCoins.get(i).total(); currentCoins.get(i).empty();
-			   }
-				if(sum > 0)
-				{
-					ret = String.format("$%1.2f", sum) + " Returned";
-				}
-				return ret;
-			}
-			return ret;
-	   }
-   }
-   
-   public void transferCoins()
-   {
-		for(int i = 0; i < currentCoins.size(); i++)
-		{
-			boolean addNew = true;
-			for(int j = 0; j < coins.size(); j++)
-			{
-				if(currentCoins.get(i).getCoin().compareTo(coins.get(j).getCoin()) == 0)
-				{
-					coins.get(j).add(currentCoins.get(i).getQuantity());
-					currentCoins.get(i).empty();
-					addNew = false; j = coins.size();
-				}
-			}
-			if(addNew)
-			{
-				coins.add(new CoinLineItem(currentCoins.get(i).getCoin(), currentCoins.get(i).getQuantity()));
-				currentCoins.get(i).empty();
-			}
-		}
    }
    
    public String buyProduct(Product prod, User user) throws VendingException
@@ -300,18 +206,4 @@ public class VendingMachine
    {
 	   return users;
    }
-
-   public ArrayList<CoinLineItem> getCoins()
-   {
-	   return coins;
-   }
-
-   	private double getValueInserted(){
-		double sum = 0.0;
-		for(int i = 0; i < currentCoins.size(); i++)
-		{
-			sum += currentCoins.get(i).total();
-		}
-		return sum;
-	}
 }
