@@ -1,26 +1,38 @@
 package users;
+import io.Writable;
 
-public class User{
+public class User implements Writable{
 
-    private String id;
-    private String pWord;
+    private String studentID;
+    private String nfcHash;
     private double credit;
     private String salesHistory;
 	
-	
-	public User(String idx, String pass)
-	{
-		id = idx;
-        pWord = pass;
-        credit = 0.0;
+	public User(String id, String nfc, double credit_){
+		nfcHash = nfc;
+        studentID = id;
+		credit = credit_;
 	}
     
-
-
-	public boolean assertDetails(String idx, String pass)
-	{
-		return(id.compareTo(idx) == 0 && pWord.compareTo(pass) == 0);
+	public void lowerBalance(double amount){
+		credit -= amount;
 	}
 
+	public void increaseBalance(double amount){
+		credit += amount;
+	}
+	
+	public double getCredit(){
+		return credit;
+	}
 
+	public boolean assertDetails(String id)
+	{
+		return(id.compareTo(studentID) == 0);
+	}
+
+	public String toCSV()
+  	{
+	   return (studentID + "," + nfcHash + "," + String.format("%.2f", credit));
+   	}
 }

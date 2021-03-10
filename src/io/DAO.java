@@ -125,8 +125,27 @@ public class DAO
 
 		return list;
 	}
+
+	public static ArrayList<User> userReader(String fileName) throws IOException
+	{
+		ArrayList<User> list = new ArrayList<User>();
+		File f = new File("txt/" + fileName); 
+		if(f.exists())
+		{
+			Scanner in = new Scanner(f);
+			String[] fileLine;
+			while(in.hasNextLine())
+			{
+				fileLine = in.nextLine().split(",");
+				list.add(new User( fileLine[0], fileLine[1], Double.parseDouble(fileLine[2]) ));
+			}
+			in.close();
+		}
+
+		return list;
+	}
 	
-		public static void stockToFile(String fileName, ArrayList<LineItem> list) throws IOException 
+	public static void stockToFile(String fileName, ArrayList<LineItem> list) throws IOException 
 	{
 		FileWriter writer = new FileWriter("txt/" + fileName);
 		for (LineItem str : list) 
@@ -134,7 +153,17 @@ public class DAO
 			writer.write(str.toCSV() + "\n");
 		}
 		writer.close();
-	}	
+	}
+
+	public static void usersToFile(String fileName, ArrayList<User> list) throws IOException 
+	{
+		FileWriter writer = new FileWriter("txt/" + fileName);
+		for (User user : list) 
+		{
+			writer.write(user.toCSV() + "\n");
+		}
+		writer.close();
+	}
 	
 	public static void coinsToFile(String fileName, ArrayList<CoinLineItem> list) throws IOException 
 	{
