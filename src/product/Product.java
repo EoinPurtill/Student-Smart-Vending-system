@@ -8,6 +8,7 @@ public class Product implements Comparable<Product>, Writable
 {  
 	private String description;
 	private double price;
+	
 
    /**
       Constructs a Product object

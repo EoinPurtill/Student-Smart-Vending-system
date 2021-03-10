@@ -3,30 +3,38 @@ package vendingMachine;
 import java.util.ArrayList;
 import java.io.*;
 import product.*;
-import coin.*;
 import users.Operator;
+import users.User;
 import io.*;
 
 
-/**
-   A vending machine.
-*/
-public class VendingMachine
+public class VendingMachine 
 {  
+
+   //creates a private and static single instance of vendingMachine.
+   private static VendingMachine instance = new VendingMachine();
+   
    private ArrayList<LineItem> stock;
    private ArrayList<Operator> operators;
-   private ArrayList<CoinLineItem> coins;
-   private ArrayList<CoinLineItem> currentCoins;
+   private ArrayList<User> users;
+   private ArrayList<Deal> deals;
 
-   /**
-      Constructs a VendingMachine object.
-   */
-   public VendingMachine() throws IOException
+   private VendingMachine() 
    { 
-		stock = Readr.stockReader("Stock.txt");
-		coins = Readr.coinReader("Money.txt");
-		currentCoins = new ArrayList<CoinLineItem>();
-		operators = Readr.operatorReader("Operators.txt");
+	   try{
+		  stock = DAO.stockReader("Stock.txt");
+		  operators = DAO.operatorReader("Operators.txt");
+		  users = DAO.userReader("Users.txt");
+		  deals = DAO.dealReader("Deals.txt");
+	   }catch (IOException ex) {
+		   ex.printStackTrace();
+
+	   }
+   }
+   
+   //Returns the only available Vending Machine object.
+   public static VendingMachine getInstance(){
+      return instance;
    }
    
    public Product[] getProductTypes(boolean isOperator)
@@ -47,105 +55,10 @@ public class VendingMachine
 	   return ret;
    }
    
-   public String addCoin(Coin money)
+   public String buyProduct(Product prod, User user) throws VendingException
    {
-	   
-	   String output = ""; 
-	   boolean addNew = true;
-	   for(int i = 0; i < currentCoins.size(); i++)
-	   {
-		   if(currentCoins.get(i).getCoin().compareTo(money) == 0)
-		   {
-			   currentCoins.get(i).add();
-			   addNew = false;
-			   i = currentCoins.size();
-		   }
-	   }
-	   if(addNew)
-	   {
-			currentCoins.add(new CoinLineItem(money, 1));
-	   }
-	   double sum = 0;
-		for(int i = 0; i < currentCoins.size(); i++)
-		{
-			sum += currentCoins.get(i).total();
-		}
-	   output=("Total Credit:  $" + String.format("%1.2f", sum) + "\n");
-	   
-	   return output;
-   }
-   
-   public String removeMoney(boolean isOperator)
-   {
-	   if(isOperator)
-	   {
-		   String ret = "Machine Empty: No Coins to Collect";
-		   if(!(coins.isEmpty()))
-		   {
-			   double sum= 0;
-				for(int j = 0; j < coins.size(); j++)
-				{
-					sum += coins.get(j).total(); coins.get(j).empty();
-				}
-				if(sum > 0)
-				{					
-					ret = String.format("$%1.2f", sum) + ": All Coins Collected";
-				}
-		   }
-		   return ret;
-	   }
-	   else
-	   {
-		   String ret = "No Money Inserted";
-		   if(!(currentCoins.isEmpty()))
-		   {
-			   double sum = 0;
-			   for(int i = 0; i < currentCoins.size(); i++)
-			   {
-				   sum += currentCoins.get(i).total(); currentCoins.get(i).empty();
-			   }
-				if(sum > 0)
-				{
-					ret = String.format("$%1.2f", sum) + " Returned";
-				}
-				return ret;
-			}
-			return ret;
-	   }
-   }
-   
-   public void transferCoins()
-   {
-		for(int i = 0; i < currentCoins.size(); i++)
-		{
-			boolean addNew = true;
-			for(int j = 0; j < coins.size(); j++)
-			{
-				if(currentCoins.get(i).getCoin().compareTo(coins.get(j).getCoin()) == 0)
-				{
-					coins.get(j).add(currentCoins.get(i).getQuantity());
-					currentCoins.get(i).empty();
-					addNew = false; j = coins.size();
-				}
-			}
-			if(addNew)
-			{
-				coins.add(new CoinLineItem(currentCoins.get(i).getCoin(), currentCoins.get(i).getQuantity()));
-				currentCoins.get(i).empty();
-			}
-		}
-   }
-   
-   public String buyProduct(Product prod) throws VendingException
-   {
-		String output = ""; 
-		double sum = 0;
-		double credit = 10;
-		for(int i = 0; i < currentCoins.size(); i++)
-		{
-			sum += currentCoins.get(i).total();
-		}
-		if(prod.getPrice() <= sum || prod.getPrice() <= credit)
+		String output = "";
+		if(prod.getPrice() <= user.getCredit())
 		{
 			for(int j = 0; j < stock.size(); j++)
 			{
@@ -155,16 +68,42 @@ public class VendingMachine
 					j = stock.size();
 				}
 			}
-			output = "Purchased: " + prod.getDescription() + ".\nCredit remaining: " + (credit - prod.getPrice());
-			transferCoins();
+			user.lowerBalance(prod.getPrice());
+			output = "Purchased: " + prod.getDescription() + ".\nNew Balance: $" + String.format("%.2f", user.getCredit());
 		}
 		else
 		{
-			throw new VendingException("Not enough money\n" + this.removeMoney(false));
+			throw new VendingException("Not enough credit!\n");
 		}
 		return output;
 	}
    
+	public String buyDeal(Deal deal, User user) throws VendingException
+   {
+		String output = "";
+		if( !deal.isComplete() ){
+			System.out.println("Deal is not complete!");
+			return output;
+		}
+		if( user.getCredit() >= deal.getPrice() ){
+			for(Product treat : deal.getTreats())
+				buyProduct(treat, user);
+			for(Product drink : deal.getDrinks())
+				buyProduct(drink, user);
+			for(Product fruit : deal.getFruits())
+				buyProduct(fruit, user);
+			for(Product sandwich : deal.getSandwiches())
+				buyProduct(sandwich, user);
+
+			user.increaseBalance( ( deal.getPrice() / (100 - deal.getDiscount()) ) * deal.getDiscount() );
+			return "Purchased: " + deal.getDescription() + "Total Price:  " + String.format("%.2f", deal.getPrice()) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
+		}
+		else
+		{
+			throw new VendingException("Not enough credit!\n");
+		}
+	}
+
    public String addProduct(Product prod, int quant)
    {   
 	   String output = ""; //I added this guy to this method to collect our output 
@@ -187,11 +126,50 @@ public class VendingMachine
 	   }
 	   if(go)
 	   {   
-			stock.add(new LineItem(prod, quant)); 
+			stock.add(new LineItem(prod, quant, "")); 
 			output = "Successfully added"; 
 	   }
 	   return output;
    }
+
+	public boolean processOrder(Order order, User user) throws VendingException{
+		ArrayList<Product> itemsList = order.getSingleItems();
+		ArrayList<Deal> dealList = order.getDeals();
+
+		if(itemsList.size() + dealList.size() == 0){
+			System.out.println("Order is empty");
+			return false;
+		}
+
+		double totalPrice = 0.0;
+		String orderDetails = "ORDER:\n";
+		for(Product prod : itemsList){
+			try{
+				this.buyProduct(prod, user);
+				totalPrice += prod.getPrice();
+				orderDetails += "-" + prod + "\n";
+			}catch(VendingException ex){
+				//TODO: implement memento here to restore vending machine state and user balance
+				throw new VendingException(ex.getMessage());
+			}
+		}
+		double dealsPrice = 0.0;
+		for(Deal deal : dealList){
+			//TODO: Stock Removal Logic
+			dealsPrice += deal.getPrice();
+			totalPrice += dealsPrice;
+			orderDetails += "-" + deal + "\n";
+		}
+		
+		if(user.getCredit() < dealsPrice){
+			//TODO: implement memento here to restore vending machine state
+			throw new VendingException("Not enough credit to complete order");
+		}
+
+		System.out.printf("ORDER COMPLETE:\nTotal Price:  $%.2f\nNew Balance:  $%.2f\n\n", totalPrice, user.getCredit());
+
+		return true;
+	}
    
    public boolean containsProduct(Product p)
    {
@@ -225,6 +203,18 @@ public class VendingMachine
 		return false;
    }
 
+   public User userLogin(String id) throws NullPointerException
+   {
+		for(int i = 0; i < users.size(); i++)
+		{
+			if(users.get(i).assertDetails(id))
+			{
+				return users.get(i);
+			}
+		}
+		return null;
+   }
+
    public void trackSales(String prodDesc){
 	   
 
@@ -240,8 +230,13 @@ public class VendingMachine
 	   return operators;
    }
    
-   public ArrayList<CoinLineItem> getCoins()
+   public ArrayList<User> getUsers()
    {
-	   return coins;
+	   return users;
+   }
+
+   public ArrayList<Deal> getDeals()
+   {
+	   return deals;
    }
 }

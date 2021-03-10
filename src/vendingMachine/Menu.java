@@ -12,7 +12,7 @@ public abstract class Menu
 		in = new Scanner(System.in);
 	}
 	
-	public abstract void run(VendingMachine machine) throws IOException; 
+	public abstract void run(VendingMachine machine) throws IOException;
 	
 	protected Object getChoice(Object[] choices) throws NullPointerException
 	{ 
@@ -29,7 +29,7 @@ public abstract class Menu
 				String input = in.nextLine();
 				int n = input.toUpperCase().charAt(0) - 'A';
 				if (0 <= n && n < choices.length)
-				return choices[n];
+					return choices[n];
 			}
 			catch(StringIndexOutOfBoundsException ex)
 			{
