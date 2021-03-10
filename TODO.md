@@ -4,3 +4,4 @@
 - [ ] Implement UNDO functionality for orders and deals (Memento DP)
 - [ ] Possibly implement momento to restore stock levels if order fails
 - [ ] Possibly create subclasses for order and deal submenus (currently functions in VendingMachineMenu.java)
+- [ ] Refactor cash to NFC
