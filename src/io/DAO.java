@@ -105,7 +105,7 @@ public class DAO
 			{
 				fileLine = in.nextLine().split(",");
 				list.add( new Deal( fileLine[0], Integer.parseInt(fileLine[1]), Integer.parseInt(fileLine[2]),
-							Integer.parseInt(fileLine[3]), Integer.parseInt(fileLine[4]), Double.parseDouble(fileLine[5]) ) );
+							Integer.parseInt(fileLine[3]), Integer.parseInt(fileLine[4]), Integer.parseInt(fileLine[5]),Double.parseDouble(fileLine[5]) ) );
 			}
 			in.close();
 		}

@@ -2,29 +2,33 @@ package product;
 
 import java.util.ArrayList;
 
+import product.Snack;
+
 public class Deal{
     private static final double maxDiscount = 100.0;
     private static final double minDiscount = 1.0;
     private String description;
     private int amountTreats, amountDrinks;
-    private int amountFruit, amountSandwiches;
+    private int amountFruit, amountSandwiches, amountSnacks;
     private double discountPercent;
     private ArrayList<Product> treats, drinks;
-    private ArrayList<Product> fruits, sandwiches;
+    private ArrayList<Product> fruits, sandwiches, snacks;
 
     public Deal(String description, int amountTreats, int amountDrinks,
-                int amountFruit, int amountSandwiches, double discountPercent){
+                int amountFruit, int amountSandwiches,int amountSnacks, double discountPercent){
         this.description = description;
         this.amountTreats = amountTreats;
         this.amountDrinks = amountDrinks;
         this.amountFruit = amountFruit;
         this.amountSandwiches = amountSandwiches;
+        this.amountSnacks = amountSnacks;
         this.discountPercent = Math.min(discountPercent, maxDiscount);
         this.discountPercent = Math.max(discountPercent, minDiscount);
         this.treats = new ArrayList<Product>();
         this.drinks = new ArrayList<Product>();
         this.fruits = new ArrayList<Product>();
         this.sandwiches = new ArrayList<Product>();
+        this.snacks = new ArrayList<Product>();
     }
 
     public void addItem(Product prod){
@@ -36,6 +40,8 @@ public class Deal{
             addFruit(prod);
         if(prod instanceof Sandwich)
             addSandwich(prod);
+        if(prod instanceof Snack)
+            addSnack(prod);
     }
 
     private void addTreat(Product treat){
@@ -74,6 +80,15 @@ public class Deal{
             System.out.println(amountSandwiches + "/" + amountSandwiches + " already selected.");
     }
 
+    private void addSnack(Product snack){
+        if(amountSnacks == 0)
+            System.out.println("No snacks in this offer.");
+        else if(sandwiches.size() < amountSnacks)
+            sandwiches.add(snack);
+        else
+            System.out.println(amountSnacks + "/" + amountSnacks + " already selected.");
+    }
+
     public double getPrice(){
         double price = 0.0;
         for (Product treat : treats){
@@ -88,12 +103,15 @@ public class Deal{
         for (Product sandwich : sandwiches){
             price += sandwich.getPrice();
         }
+        for (Product snack : snacks){
+            price += snack.getPrice();
+        }
         return price - ( price * (discountPercent / 100) );
     }
 
     public boolean isComplete(){
         return(amountTreats==treats.size() && amountDrinks==drinks.size()
-        && amountFruit==fruits.size() && amountSandwiches==sandwiches.size());
+        && amountFruit==fruits.size() && amountSandwiches==sandwiches.size() && amountSnacks==snacks.size());
     }
 
     public String toString(){
@@ -107,6 +125,8 @@ public class Deal{
         details += amountFruit + " fruit\n";
         if(amountSandwiches > 0)
         details += amountSandwiches + " sandwiches\n";
+        if(amountSnacks > 0)
+        details += amountSnacks + " snacks\n";
         return String.format("%s\n%s", description, details);
     }
 
@@ -128,6 +148,10 @@ public class Deal{
 
     public ArrayList<Product> getSandwiches(){
         return sandwiches;
+    }
+
+    public ArrayList<Product> getSnacks(){
+        return snacks;
     }
 
     public double getDiscount(){
