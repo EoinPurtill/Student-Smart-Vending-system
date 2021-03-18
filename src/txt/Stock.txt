@@ -1,6 +1,6 @@
-Tea,0.5,367,DRINK
+Tea,0.5,362,DRINK
 Coffee,1.5,0,DRINK
-Cola,1.05,29,DRINK
+Cola,1.05,27,DRINK
 Pretzel,1.3,36,SNACK
 Chocolate,2.0,11,TREAT
 Apple,35.99,3,FRUIT

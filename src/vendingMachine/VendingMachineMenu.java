@@ -80,7 +80,18 @@ public class VendingMachineMenu extends Menu
 				}
 				else if (command.equals("D")) //allows user to create order from offers
 				{ 
-					dealMenu(machine, user);
+					Deal deal = dealMenu(machine, user);
+					if(deal!=null){
+						try{
+							String msg = machine.buyDeal(deal, user);
+							System.out.println(msg);
+							deal.clearDeal();
+							DAO.stockToFile("Stock.txt", machine.getStock());
+							DAO.usersToFile("Users.txt", machine.getUsers());
+						} catch(VendingException ex){
+							System.out.println(ex.getMessage());
+						}
+					}
 				}
 				else if (command.equals("B")) 
 				{              
@@ -211,7 +222,7 @@ public class VendingMachineMenu extends Menu
 	}
 
 	//TODO: add UNDO functionality to include memento
-	public void dealMenu(VendingMachine machine, User user) throws IOException{
+	public Deal dealMenu(VendingMachine machine, User user) throws IOException{
 		double orderValue = 0.0;
 		Deal deal = null;
 		boolean more = true;
@@ -225,18 +236,10 @@ public class VendingMachineMenu extends Menu
 
 				case "B":	if(deal == null){
 								System.out.println("No deal selected!\n");
-							} else {
-								try{
-									String msg = machine.buyDeal(deal, user);
-									System.out.println(msg);
-									deal.clearDeal();
-									DAO.stockToFile("Stock.txt", machine.getStock());
-									DAO.usersToFile("Users.txt", machine.getUsers());
-									more = false;
-								} catch(VendingException ex) {
-									System.out.println(ex.getMessage());
-									more = true;
-								}
+							} else if(!deal.isComplete()){
+								System.out.println("Deal not complete!\n");
+							}else{
+								return deal;
 							}
 							break;
 
@@ -270,11 +273,13 @@ public class VendingMachineMenu extends Menu
 
 				case "C":	System.out.println("Returning to previous menu\n");
 							deal.clearDeal();
+							deal = null;
 							more = false;
 							break;
 
 				default:	System.out.println("Invalid input\n\n"); break;
 			}
 		}
+		return deal;
 	}
 }

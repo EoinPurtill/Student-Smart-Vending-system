@@ -94,6 +94,7 @@ public class VendingMachine
 				buyProduct(sandwich, user);
 
 			user.increaseBalance( ( deal.getPrice() / (100 - deal.getDiscount()) ) * deal.getDiscount() );
+			deal.clearDeal();
 			return "Purchased: " + deal.getDescription() + " Total Price:  " + String.format("$%.2f", deal.getPrice()) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
 		}
 		else
