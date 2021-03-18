@@ -1,6 +1,7 @@
 package vendingMachine;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.io.IOException;
 import java.io.Console;
 import users.Operator;
@@ -84,7 +85,7 @@ public class VendingMachineMenu extends Menu
 					if(deal!=null){
 						try{
 							String msg = machine.buyDeal(deal, user);
-							System.out.println(msg);
+							System.out.println("Purchased: " + msg);
 							deal.clearDeal();
 							DAO.stockToFile("Stock.txt", machine.getStock());
 							DAO.usersToFile("Users.txt", machine.getUsers());
@@ -189,7 +190,19 @@ public class VendingMachineMenu extends Menu
 								}
 								break;
 
-				case "D":		System.out.println("PLACEHOLDER: TODO: add special offer functionality");
+				case "D":		Deal deal = dealMenu(machine, user);
+								if(deal!=null){
+									try{
+										System.out.println("Added to order:\n" + deal.getDescription() + ": " + String.format("$%.2f", deal.getPrice()));
+										orderValue += deal.getPrice();
+										System.out.println("Order value: " + String.format("$%.2f", orderValue));
+										order.addDeal(deal);
+									} catch(VendingException ex){
+										System.out.println(ex.getMessage());
+									}
+								}else{
+									System.out.println("No deal added.");
+								}
 								break;
 
 				case "A":		try
@@ -222,6 +235,7 @@ public class VendingMachineMenu extends Menu
 	}
 
 	//TODO: add UNDO functionality to include memento
+	@SuppressWarnings("unchecked")
 	public Deal dealMenu(VendingMachine machine, User user) throws IOException{
 		double orderValue = 0.0;
 		Deal deal = null;
@@ -239,7 +253,11 @@ public class VendingMachineMenu extends Menu
 							} else if(!deal.isComplete()){
 								System.out.println("Deal not complete!\n");
 							}else{
-								return deal;
+								Deal returnDeal = new Deal( deal.getDescription(), deal.getAmountTreats(), deal.getAmountDrinks(), deal.getAmountSnacks(), deal.getAmountFruit(), deal.getAmountSandwiches(),
+															deal.getDiscount(), (ArrayList<Product>)deal.getTreats().clone(), (ArrayList<Product>)deal.getDrinks().clone(),
+															(ArrayList<Product>)deal.getSnacks().clone(), (ArrayList<Product>)deal.getFruits().clone(), (ArrayList<Product>)deal.getSandwiches().clone() );
+								deal.clearDeal();
+								return returnDeal;
 							}
 							break;
 
@@ -265,11 +283,11 @@ public class VendingMachineMenu extends Menu
 								{
 									System.out.println(ex.getMessage());
 								}
-								break;
 							}
+							break;
 				
 				case "V":	System.out.printf("Balance:  $%.2f\n", user.getCredit());
-								break;
+							break;
 
 				case "C":	System.out.println("Returning to previous menu\n");
 							deal.clearDeal();
@@ -280,6 +298,6 @@ public class VendingMachineMenu extends Menu
 				default:	System.out.println("Invalid input\n\n"); break;
 			}
 		}
-		return deal;
+		return null;
 	}
 }

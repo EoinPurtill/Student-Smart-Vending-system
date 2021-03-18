@@ -29,6 +29,25 @@ public class Deal{
         this.snacks = new ArrayList<Product>();
     }
 
+    public Deal(String description, int amountTreats, int amountDrinks, int amountSnacks,
+                int amountFruit, int amountSandwiches, double discountPercent,
+                ArrayList<Product> treats, ArrayList<Product> drinks, ArrayList<Product> snacks,
+                ArrayList<Product> fruits, ArrayList<Product> sandwiches){
+        this.description = description;
+        this.amountTreats = amountTreats;
+        this.amountDrinks = amountDrinks;
+        this.amountSnacks = amountSnacks;
+        this.amountFruit = amountFruit;
+        this.amountSandwiches = amountSandwiches;
+        this.discountPercent = Math.min(discountPercent, maxDiscount);
+        this.discountPercent = Math.max(discountPercent, minDiscount);
+        this.treats = treats;
+        this.drinks = drinks;
+        this.fruits = fruits;
+        this.sandwiches = sandwiches;
+        this.snacks = snacks;
+    }
+
     public boolean addItem(Product prod){
         if(prod instanceof Treat)
             return addTreat(prod);
@@ -135,7 +154,7 @@ public class Deal{
         for (Product snack : sandwiches){
             price += snack.getPrice();
         }
-        return price - ( price * (discountPercent / 100) );
+        return price - ( price * (discountPercent / 100.0) );
     }
 
     public boolean isComplete(){
@@ -181,9 +200,34 @@ public class Deal{
         return fruits;
     }
 
+    public ArrayList<Product> getSnacks(){
+        return snacks;
+    }
+
     public ArrayList<Product> getSandwiches(){
         return sandwiches;
     }
+
+    public int getAmountFruit(){
+        return amountFruit;
+    }
+
+    public int getAmountSnacks(){
+        return amountSnacks;
+    }
+
+    public int getAmountDrinks(){
+        return amountDrinks;
+    }
+
+    public int getAmountSandwiches(){
+        return amountSandwiches;
+    }
+
+    public int getAmountTreats(){
+        return amountTreats;
+    }
+
 
     public double getDiscount(){
         return discountPercent;

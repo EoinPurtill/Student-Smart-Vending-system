@@ -83,7 +83,8 @@ public class VendingMachine
 		if( !deal.isComplete() ){
 			throw new VendingException("Deal is not complete!\n");
 		}
-		if( user.getCredit() >= deal.getPrice() ){
+		double price = deal.getPrice();
+		if( user.getCredit() >= price ){
 			for(Product treat : deal.getTreats())
 				buyProduct(treat, user);
 			for(Product drink : deal.getDrinks())
@@ -95,7 +96,7 @@ public class VendingMachine
 
 			user.increaseBalance( ( deal.getPrice() / (100 - deal.getDiscount()) ) * deal.getDiscount() );
 			deal.clearDeal();
-			return "Purchased: " + deal.getDescription() + " Total Price:  " + String.format("$%.2f", deal.getPrice()) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
+			return deal.getDescription() + " Total Price:  " + String.format("$%.2f", price) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
 		}
 		else
 		{
@@ -103,8 +104,56 @@ public class VendingMachine
 		}
 	}
 
+	public boolean processOrder(Order order, User user) throws VendingException{
+		ArrayList<Product> itemsList = order.getSingleItems();
+		ArrayList<Deal> dealList = order.getDeals();
+
+		if(itemsList.size() + dealList.size() == 0){
+			System.out.println("Order is empty");
+			return false;
+		}
+
+		double totalPrice = 0.0;
+		for(Product prod : itemsList){
+				totalPrice += prod.getPrice();
+		}
+		double dealsPrice = 0.0;
+		for(Deal deal : dealList){
+			dealsPrice += deal.getPrice();
+			totalPrice += dealsPrice;
+		}
+		
+		if(user.getCredit() < totalPrice){
+			throw new VendingException("Not enough credit to complete order");
+		}
+
+		String orderDetails = "ORDER:\n";
+		for(Product prod : itemsList){
+			try{
+				this.buyProduct(prod, user);
+				orderDetails += "-" + prod + "\n";		
+			}catch(VendingException ex){
+				//TODO: implement memento here to restore vending machine state and user balance
+				throw new VendingException(ex.getMessage());
+			}
+		}
+		for(Deal deal : dealList){
+			try{
+				this.buyDeal(deal, user);
+				orderDetails += "-" + deal + "\n";
+			}catch(VendingException ex){
+				//TODO: implement memento here to restore vending machine state and user balance
+				throw new VendingException(ex.getMessage());
+			}
+		}
+
+		System.out.printf("ORDER COMPLETE:\nTotal Price:  $%.2f\nNew Balance:  $%.2f\n\n", totalPrice, user.getCredit());
+
+		return true;
+	}
+   
    public String addProduct(Product prod, int quant)
-   {   
+	{   
 	   String output = ""; //I added this guy to this method to collect our output 
 							//and return it, it helps with the GUI, i also changed
 							//the statement where this is called from OperatorMenu to
@@ -129,47 +178,8 @@ public class VendingMachine
 			output = "Successfully added"; 
 	   }
 	   return output;
-   }
-
-	public boolean processOrder(Order order, User user) throws VendingException{
-		ArrayList<Product> itemsList = order.getSingleItems();
-		ArrayList<Deal> dealList = order.getDeals();
-
-		if(itemsList.size() + dealList.size() == 0){
-			System.out.println("Order is empty");
-			return false;
-		}
-
-		double totalPrice = 0.0;
-		String orderDetails = "ORDER:\n";
-		for(Product prod : itemsList){
-			try{
-				this.buyProduct(prod, user);
-				totalPrice += prod.getPrice();
-				orderDetails += "-" + prod + "\n";
-			}catch(VendingException ex){
-				//TODO: implement memento here to restore vending machine state and user balance
-				throw new VendingException(ex.getMessage());
-			}
-		}
-		double dealsPrice = 0.0;
-		for(Deal deal : dealList){
-			//TODO: Stock Removal Logic
-			dealsPrice += deal.getPrice();
-			totalPrice += dealsPrice;
-			orderDetails += "-" + deal + "\n";
-		}
-		
-		if(user.getCredit() < dealsPrice){
-			//TODO: implement memento here to restore vending machine state
-			throw new VendingException("Not enough credit to complete order");
-		}
-
-		System.out.printf("ORDER COMPLETE:\nTotal Price:  $%.2f\nNew Balance:  $%.2f\n\n", totalPrice, user.getCredit());
-
-		return true;
 	}
-   
+
    public boolean containsProduct(Product p)
    {
 	   for(int i = 0; i < stock.size(); i++)
