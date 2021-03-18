@@ -17,13 +17,9 @@ public class OperatorMenu extends Menu
 		boolean more = true;
 		while(more)	
 		{	
-			System.out.println("W)ithdraw Coins  R)estock  A)dd New Stock  E)xit");
+			System.out.println("R)estock  A)dd New Stock  E)xit");
 			String option = in.nextLine().toUpperCase();
-			if (option.equals("W"))
-			{  
-				System.out.println(machine.removeMoney(true));
-			}
-			else if (option.equals("R")) 
+			if (option.equals("R")) 
 			{ 
 				if(machine.getProductTypes(true).length != 0)
 				{
