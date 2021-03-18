@@ -227,16 +227,22 @@ public class VendingMachineMenu extends Menu
 								System.out.println("No deal selected!\n");
 							} else {
 								try{
+									String msg = machine.buyDeal(deal, user);
+									System.out.println(msg);
+									deal.clearDeal();
+									DAO.stockToFile("Stock.txt", machine.getStock());
+									DAO.usersToFile("Users.txt", machine.getUsers());
 									more = false;
-									machine.buyDeal(deal, user);
 								} catch(VendingException ex) {
-									more = true;
 									System.out.println(ex.getMessage());
+									more = true;
 								}
 							}
 							break;
 
-				case "S":	deal = (Deal) getChoice(machine.getDeals().toArray());
+				case "S":	if(deal!=null)
+								deal.clearDeal();
+							deal = (Deal) getChoice(machine.getDeals().toArray());
 							break;
 
 				case "A":	if(deal == null){
@@ -245,8 +251,8 @@ public class VendingMachineMenu extends Menu
 								try
 								{
 									Product p = (Product) getChoice(machine.getProductTypes(false));
-									deal.addItem(p);
-									System.out.printf("%s added to order\n", p.getDescription());
+									if(deal.addItem(p))
+										System.out.printf("%s added to order\n", p.getDescription());
 								}
 								catch(NullPointerException except)
 								{
@@ -263,6 +269,7 @@ public class VendingMachineMenu extends Menu
 								break;
 
 				case "C":	System.out.println("Returning to previous menu\n");
+							deal.clearDeal();
 							more = false;
 							break;
 

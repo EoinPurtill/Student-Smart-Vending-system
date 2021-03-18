@@ -80,10 +80,8 @@ public class VendingMachine
    
 	public String buyDeal(Deal deal, User user) throws VendingException
    {
-		String output = "";
 		if( !deal.isComplete() ){
-			System.out.println("Deal is not complete!");
-			return output;
+			throw new VendingException("Deal is not complete!\n");
 		}
 		if( user.getCredit() >= deal.getPrice() ){
 			for(Product treat : deal.getTreats())
@@ -96,7 +94,7 @@ public class VendingMachine
 				buyProduct(sandwich, user);
 
 			user.increaseBalance( ( deal.getPrice() / (100 - deal.getDiscount()) ) * deal.getDiscount() );
-			return "Purchased: " + deal.getDescription() + "Total Price:  " + String.format("%.2f", deal.getPrice()) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
+			return "Purchased: " + deal.getDescription() + " Total Price:  " + String.format("$%.2f", deal.getPrice()) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
 		}
 		else
 		{

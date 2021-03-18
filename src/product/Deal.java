@@ -6,17 +6,18 @@ public class Deal{
     private static final double maxDiscount = 100.0;
     private static final double minDiscount = 1.0;
     private String description;
-    private int amountTreats, amountDrinks;
+    private int amountTreats, amountDrinks, amountSnacks;
     private int amountFruit, amountSandwiches;
     private double discountPercent;
-    private ArrayList<Product> treats, drinks;
+    private ArrayList<Product> treats, drinks, snacks;
     private ArrayList<Product> fruits, sandwiches;
 
-    public Deal(String description, int amountTreats, int amountDrinks,
+    public Deal(String description, int amountTreats, int amountDrinks, int amountSnacks,
                 int amountFruit, int amountSandwiches, double discountPercent){
         this.description = description;
         this.amountTreats = amountTreats;
         this.amountDrinks = amountDrinks;
+        this.amountSnacks = amountSnacks;
         this.amountFruit = amountFruit;
         this.amountSandwiches = amountSandwiches;
         this.discountPercent = Math.min(discountPercent, maxDiscount);
@@ -25,53 +26,96 @@ public class Deal{
         this.drinks = new ArrayList<Product>();
         this.fruits = new ArrayList<Product>();
         this.sandwiches = new ArrayList<Product>();
+        this.snacks = new ArrayList<Product>();
     }
 
-    public void addItem(Product prod){
+    public boolean addItem(Product prod){
         if(prod instanceof Treat)
-            addTreat(prod);
+            return addTreat(prod);
         if(prod instanceof Drink)
-            addDrink(prod);
+            return addDrink(prod);
         if(prod instanceof Fruit)
-            addFruit(prod);
+            return addFruit(prod);
         if(prod instanceof Sandwich)
-            addSandwich(prod);
+            return addSandwich(prod);
+        if(prod instanceof Snack)
+            return addSnack(prod);
+        return false;
     }
 
-    private void addTreat(Product treat){
-        if(amountTreats == 0)
+    private boolean addTreat(Product treat){
+        if(amountTreats == 0){
             System.out.println("No treats in this offer.");
-        else if(treats.size() < amountTreats)
+            return false;
+        }
+        else if(treats.size() < amountTreats){
             treats.add(treat);
-        else
+            return true;
+        }
+        else{
             System.out.println(amountTreats + "/" + amountTreats + " already selected.");
+            return false;
+        }
     }
 
-    private void addDrink(Product drink){
-        if(amountDrinks == 0)
+    private boolean addDrink(Product drink){
+        if(amountDrinks == 0){
             System.out.println("No drinks in this offer.");
-        else if(drinks.size() < amountDrinks)
+            return false;
+        }
+        else if(drinks.size() < amountDrinks){
             drinks.add(drink);
-        else
+            return true;
+        }
+        else{
             System.out.println(amountDrinks + "/" + amountDrinks + " already selected.");
+            return false;
+        }
     }
 
-    private void addFruit(Product fruit){
-        if(amountFruit == 0)
+    private boolean addFruit(Product fruit){
+        if(amountFruit == 0){
             System.out.println("No fruit in this offer.");
-        else if(fruits.size() < amountFruit)
+            return false;
+        }
+        else if(fruits.size() < amountFruit){
             fruits.add(fruit);
-        else
+            return true;
+        }
+        else{
             System.out.println(amountFruit + "/" + amountFruit + " already selected.");
+            return false;
+        }
     }
 
-    private void addSandwich(Product sandwich){
-        if(amountSandwiches == 0)
+    private boolean addSandwich(Product sandwich){
+        if(amountSandwiches == 0){
             System.out.println("No sandwiches in this offer.");
-        else if(sandwiches.size() < amountSandwiches)
+            return false;
+        }
+        else if(sandwiches.size() < amountSandwiches){
             sandwiches.add(sandwich);
-        else
+            return true;
+        }
+        else{
             System.out.println(amountSandwiches + "/" + amountSandwiches + " already selected.");
+            return false;
+        }
+    }
+
+    private boolean addSnack(Product snack){
+        if(amountSnacks == 0){
+            System.out.println("No snacks in this offer.");
+            return false;
+        }
+        else if(snacks.size() < amountSnacks){
+            snacks.add(snack);
+            return true;
+        }
+        else{
+            System.out.println(amountSnacks + "/" + amountSnacks + " already selected.");
+            return false;
+        }
     }
 
     public double getPrice(){
@@ -87,6 +131,9 @@ public class Deal{
         }
         for (Product sandwich : sandwiches){
             price += sandwich.getPrice();
+        }
+        for (Product snack : sandwiches){
+            price += snack.getPrice();
         }
         return price - ( price * (discountPercent / 100) );
     }
@@ -107,7 +154,15 @@ public class Deal{
         details += amountFruit + " fruit\n";
         if(amountSandwiches > 0)
         details += amountSandwiches + " sandwiches\n";
+        if(amountSnacks > 0)
+        details += amountSnacks + " snacks\n";
+
         return String.format("%s\n%s", description, details);
+    }
+
+    public void clearDeal(){
+        treats.clear(); drinks.clear(); snacks.clear();
+        fruits.clear(); sandwiches.clear();
     }
 
     public String getDescription(){
