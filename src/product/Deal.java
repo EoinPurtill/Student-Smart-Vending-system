@@ -228,7 +228,6 @@ public class Deal{
         return amountTreats;
     }
 
-
     public double getDiscount(){
         return discountPercent;
     }
