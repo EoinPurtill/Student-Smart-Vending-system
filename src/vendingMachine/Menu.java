@@ -12,7 +12,7 @@ public abstract class Menu
 		in = new Scanner(System.in);
 	}
 	
-	public abstract void run(VendingMachine machine) throws IOException;
+	public abstract Object run(VendingMachine machine) throws IOException;
 	
 	protected Object getChoice(Object[] choices) throws NullPointerException
 	{ 

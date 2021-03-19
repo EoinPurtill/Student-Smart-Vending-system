@@ -18,12 +18,14 @@ public class VendingMachineMenu extends Menu
 	private static VendingMachineMenu instance = new VendingMachineMenu();
 
 	private OperatorMenu opMenu;
+	private String sessionSummary;
 
 	private VendingMachineMenu(){
 		super();
 		
 		try{
 			opMenu = new OperatorMenu();
+			sessionSummary = "";
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
@@ -37,7 +39,7 @@ public class VendingMachineMenu extends Menu
 	Runs the vending machine system.
 	@param machine the vending machine
 	*/
-	public void run(VendingMachine machine) throws IOException, NullPointerException{
+	public Object run(VendingMachine machine) throws IOException, NullPointerException{
 		boolean continueSim = true;
 		boolean more = false;
 
@@ -47,6 +49,7 @@ public class VendingMachineMenu extends Menu
 			System.out.println("Enter ~ to exit");
 			String enteredID = in.nextLine().toUpperCase();
 			if(enteredID.equals("~")){
+				more = false;
 				continueSim = false;
 			}
 			else{
@@ -56,8 +59,7 @@ public class VendingMachineMenu extends Menu
 					System.out.println("Card not recognized\n");
 			}			
 				
-			while (more)
-			{ 
+			while (more){ 
 				System.out.println("S)how Products  M)ulti-order  D)eals  B)uy  V)iew Balance  O)perator Functions  Q)uit");
 				String command = in.nextLine().toUpperCase();
 
@@ -76,19 +78,35 @@ public class VendingMachineMenu extends Menu
 			
 				}
 				else if (command.equals("M")) //allows user to create order
-				{ 
-					multiOrderMenu(machine, user);	
+				{
+					MultiOrderMenu multiMenu = MultiOrderMenu.getInstance(user);
+					Order order = (Order)multiMenu.run(machine);
+					try{
+						String orderSummary = "ORDER:\n" + order.toString() + "\n";
+						System.out.println(machine.processOrder(order, user));
+						DAO.stockToFile("Stock.txt", machine.getStock());
+						DAO.usersToFile("Users.txt", machine.getUsers());
+						this.sessionSummary += orderSummary + "\n" + "\n";
+					}catch(VendingException ex){
+						System.out.println(ex.getMessage());
+					}catch(NullPointerException ex){
+						System.out.println("Nothing Added to Order\n");
+					}
 				}
 				else if (command.equals("D")) //allows user to create order from offers
 				{ 
-					Deal deal = dealMenu(machine, user);
+					DealMenu dealMenu = DealMenu.getInstance(user);
+					Deal deal = (Deal)dealMenu.run(machine);
 					if(deal!=null){
 						try{
+							String dealDescription = deal.getDescription();
+							double dealPrice = deal.getPrice();
 							String msg = machine.buyDeal(deal, user);
 							System.out.println("Purchased: " + msg);
 							deal.clearDeal();
 							DAO.stockToFile("Stock.txt", machine.getStock());
 							DAO.usersToFile("Users.txt", machine.getUsers());
+							this.sessionSummary += dealDescription + ": $" + String.format("%.2f", dealPrice) + "\n" + "\n";
 						} catch(VendingException ex){
 							System.out.println(ex.getMessage());
 						}
@@ -105,6 +123,7 @@ public class VendingMachineMenu extends Menu
 							System.out.println(output);
 							DAO.stockToFile("Stock.txt", machine.getStock());
 							DAO.usersToFile("Users.txt", machine.getUsers());
+							this.sessionSummary += p.getDescription() + ": $" + String.format("%.2f", p.getPrice()) + "\n";
 						}
 						catch(NullPointerException except)
 						{
@@ -136,7 +155,8 @@ public class VendingMachineMenu extends Menu
 					{
 						if(machine.login(id, pass))
 						{
-							opMenu.run(machine);
+							String opSummary = (String)opMenu.run(machine);
+							System.out.println(opSummary);
 						}
 						else
 						{
@@ -153,151 +173,12 @@ public class VendingMachineMenu extends Menu
 					System.out.println("Returning to home screen\n");
 					DAO.stockToFile("Stock.txt", machine.getStock());
 					DAO.usersToFile("Users.txt", machine.getUsers());
-					more = false;
+					more = false;			
 				}
 			}
 		}
-	}
-
-	//TODO: add UNDO functionality to include memento
-	public void multiOrderMenu(VendingMachine machine, User user) throws IOException{
-		Order order = new Order();
-		double orderValue = 0.0;
-		boolean more = true;
-		while(more){
-			System.out.println("S)how Products  B)uy  D)eals  A)dd  V)iew Balance  C)ancel");
-			String command = in.nextLine().toUpperCase();
-
-			switch(command){
-				case "S":  		if(machine.getProductTypes(false).length == 0)
-									System.out.println("No Options Currently Available");
-								else
-								{
-									for (Product p : machine.getProductTypes(false))
-										System.out.println(p);
-								}
-								break;
-
-				case "B":		try
-								{
-									more = !( machine.processOrder(order, user) );
-									DAO.stockToFile("Stock.txt", machine.getStock());
-									DAO.usersToFile("Users.txt", machine.getUsers());
-								}
-								catch (VendingException ex)
-								{
-									System.out.println(ex.getMessage());
-								}
-								break;
-
-				case "D":		Deal deal = dealMenu(machine, user);
-								if(deal!=null){
-									try{
-										System.out.println("Added to order:\n" + deal.getDescription() + ": " + String.format("$%.2f", deal.getPrice()));
-										orderValue += deal.getPrice();
-										System.out.println("Order value: " + String.format("$%.2f", orderValue));
-										order.addDeal(deal);
-									} catch(VendingException ex){
-										System.out.println(ex.getMessage());
-									}
-								}else{
-									System.out.println("No deal added.");
-								}
-								break;
-
-				case "A":		try
-								{
-									Product p = (Product) getChoice(machine.getProductTypes(false));
-									order.addProduct(p);
-									orderValue += p.getPrice();
-									System.out.printf("%s added to order\nOrder value:  $%.2f\n", p, orderValue);
-								}
-								catch(NullPointerException except)
-								{
-									System.out.println("No Options Currently Available");
-								}
-								catch (VendingException ex)
-								{
-									System.out.println(ex.getMessage());
-								}
-								break;
-
-				case "V":		System.out.printf("Balance:  $%.2f\n", user.getCredit());
-								break;
-
-				case "C":		System.out.println("Order cancelled\n\n");
-								more = false;
-								break;
-
-				default:	System.out.println("Invalid input\n\n");
-			}
-		}
-	}
-
-	//TODO: add UNDO functionality to include memento
-	@SuppressWarnings("unchecked")
-	public Deal dealMenu(VendingMachine machine, User user) throws IOException{
-		double orderValue = 0.0;
-		Deal deal = null;
-		boolean more = true;
-		while(more){
-			System.out.println("D)eals  B)uy  S)elect Deal  A)dd  V)iew Balance  C)ancel");
-			String command = in.nextLine().toUpperCase();
-			switch(command){
-				case "D":	for(Deal d : machine.getDeals())
-								System.out.println(d);
-							break;
-
-				case "B":	if(deal == null){
-								System.out.println("No deal selected!\n");
-							} else if(!deal.isComplete()){
-								System.out.println("Deal not complete!\n");
-							}else{
-								Deal returnDeal = new Deal( deal.getDescription(), deal.getAmountTreats(), deal.getAmountDrinks(), deal.getAmountSnacks(), deal.getAmountFruit(), deal.getAmountSandwiches(),
-															deal.getDiscount(), (ArrayList<Product>)deal.getTreats().clone(), (ArrayList<Product>)deal.getDrinks().clone(),
-															(ArrayList<Product>)deal.getSnacks().clone(), (ArrayList<Product>)deal.getFruits().clone(), (ArrayList<Product>)deal.getSandwiches().clone() );
-								deal.clearDeal();
-								return returnDeal;
-							}
-							break;
-
-				case "S":	if(deal!=null)
-								deal.clearDeal();
-							deal = (Deal) getChoice(machine.getDeals().toArray());
-							break;
-
-				case "A":	if(deal == null){
-								System.out.println("No deal selected!\n");
-							} else {
-								try
-								{
-									Product p = (Product) getChoice(machine.getProductTypes(false));
-									if(deal.addItem(p))
-										System.out.printf("%s added to order\n", p.getDescription());
-								}
-								catch(NullPointerException except)
-								{
-									System.out.println("No Options Currently Available");
-								}
-								catch (VendingException ex)
-								{
-									System.out.println(ex.getMessage());
-								}
-							}
-							break;
-				
-				case "V":	System.out.printf("Balance:  $%.2f\n", user.getCredit());
-							break;
-
-				case "C":	System.out.println("Returning to previous menu\n");
-							deal.clearDeal();
-							deal = null;
-							more = false;
-							break;
-
-				default:	System.out.println("Invalid input\n\n"); break;
-			}
-		}
-		return null;
+		if(this.sessionSummary.equals(""))
+			return "No Sales This Session";
+		return "Sales Summary For This Session:\n\n" + this.sessionSummary;
 	}
 }

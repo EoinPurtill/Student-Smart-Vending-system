@@ -104,13 +104,12 @@ public class VendingMachine
 		}
 	}
 
-	public boolean processOrder(Order order, User user) throws VendingException{
+	public String processOrder(Order order, User user) throws VendingException{
 		ArrayList<Product> itemsList = order.getSingleItems();
 		ArrayList<Deal> dealList = order.getDeals();
 
 		if(itemsList.size() + dealList.size() == 0){
-			System.out.println("Order is empty");
-			return false;
+			throw new VendingException("Order is empty");
 		}
 
 		double totalPrice = 0.0;
@@ -120,8 +119,8 @@ public class VendingMachine
 		double dealsPrice = 0.0;
 		for(Deal deal : dealList){
 			dealsPrice += deal.getPrice();
-			totalPrice += dealsPrice;
 		}
+		totalPrice += dealsPrice;
 		
 		if(user.getCredit() < totalPrice){
 			throw new VendingException("Not enough credit to complete order");
@@ -147,9 +146,7 @@ public class VendingMachine
 			}
 		}
 
-		System.out.printf("ORDER COMPLETE:\nTotal Price:  $%.2f\nNew Balance:  $%.2f\n\n", totalPrice, user.getCredit());
-
-		return true;
+		return "Price:  " + String.format("$%.2f", totalPrice) + "\nNew Balance:  " + String.format("$%.2f", user.getCredit()) + "\n";
 	}
    
    public String addProduct(Product prod, int quant)

@@ -37,4 +37,18 @@ public class Order{
     public ArrayList<Deal> getDeals(){
         return deals;
     }
+
+    public boolean itemsAdded(){
+        return !( singleItems.isEmpty() && deals.isEmpty() );
+    }
+
+    public String toString(){
+        String returnString = "Items:\n";
+        for(Product p : singleItems)
+            returnString += p.getDescription() + "\n";
+        returnString += "Deals:\n";
+        for(Deal d : deals)
+            returnString += d.getDescription() + "\n";
+        return returnString + "Total Price: $" + String.format("%.2f", this.getPrice());
+    }
 }
