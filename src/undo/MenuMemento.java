@@ -1,5 +1,5 @@
 package undo;
 
-public interface Memento{
+public interface MenuMemento{
 
 }

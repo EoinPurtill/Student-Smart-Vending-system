@@ -2,7 +2,7 @@ package undo;
 
 import java.lang.Integer;
 
-public class DealMenuOriginator implements MenuOriginator{
+public class OrderMenuOriginator implements MenuOriginator{
     private int value;
 
     public void setValue(int value){
@@ -14,13 +14,13 @@ public class DealMenuOriginator implements MenuOriginator{
     }
 
     public MenuMemento createMemento(){
-        DealMenuMemento dmMemento = new DealMenuMemento();
+        OrderMenuMemento dmMemento = new OrderMenuMemento();
         dmMemento.setState(Integer.valueOf(this.value));
         return dmMemento;
     }
 
     public void restore(MenuMemento memento){
-        DealMenuMemento dmMemento = (DealMenuMemento)memento;
+        OrderMenuMemento dmMemento = (OrderMenuMemento)memento;
         this.value = ((Integer)dmMemento.getState()).intValue();
     }
 }

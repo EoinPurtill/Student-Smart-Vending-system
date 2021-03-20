@@ -3,6 +3,8 @@ package product;
 import java.util.ArrayList;
 
 public class Deal{
+    private static final int TREATS = 0, DRINKS = 1, SNACKS = 2;
+	private static final int FRUIT = 3, SANDWICHES = 4;
     private static final double maxDiscount = 100.0;
     private static final double minDiscount = 1.0;
     private String description;
@@ -48,7 +50,7 @@ public class Deal{
         this.snacks = snacks;
     }
 
-    public boolean addItem(Product prod){
+    public int addItem(Product prod){
         if(prod instanceof Treat)
             return addTreat(prod);
         if(prod instanceof Drink)
@@ -59,81 +61,118 @@ public class Deal{
             return addSandwich(prod);
         if(prod instanceof Snack)
             return addSnack(prod);
-        return false;
+        return -1;
     }
 
-    private boolean addTreat(Product treat){
+    public String removeItem(int itemType){
+        switch(itemType){
+            case TREATS:        if(treats.size() > 0){
+                                    String s =  treats.get(treats.size() - 1).getDescription() + " removed from deal\n";
+                                    treats.remove(treats.size() - 1);
+                                    return s;
+                                }
+                                break;
+            case DRINKS:        if(drinks.size() > 0){
+                                    String s =  drinks.get(drinks.size() - 1).getDescription() + " removed from deal\n";
+                                    drinks.remove(drinks.size() - 1);
+                                    return s;
+                                }
+                                break;
+            case FRUIT:         if(fruits.size() > 0){
+                                    String s =  fruits.get(fruits.size() - 1).getDescription() + " removed from deal\n";
+                                    fruits.remove(fruits.size() - 1);
+                                    return s;
+                                }
+                                break;
+            case SNACKS:        if(snacks.size() > 0){
+                                    String s =  snacks.get(snacks.size() - 1).getDescription() + " removed from deal\n";
+                                    snacks.remove(snacks.size() - 1);
+                                    return s;
+                                }
+                                break;
+            case SANDWICHES:    if(sandwiches.size() > 0){
+                                    String s =  sandwiches.get(sandwiches.size() - 1).getDescription() + " removed from deal\n";
+                                    sandwiches.remove(sandwiches.size() - 1);
+                                    return s;
+                                }
+                                break;
+            default:            return "Nothing added to deal yet!";
+        }
+        return "Nothing added to deal yet!";
+    }
+
+    private int addTreat(Product treat){
         if(amountTreats == 0){
             System.out.println("No treats in this offer.");
-            return false;
+            return -1;
         }
         else if(treats.size() < amountTreats){
             treats.add(treat);
-            return true;
+            return TREATS;
         }
         else{
             System.out.println(amountTreats + "/" + amountTreats + " already selected.");
-            return false;
+            return -1;
         }
     }
 
-    private boolean addDrink(Product drink){
+    private int addDrink(Product drink){
         if(amountDrinks == 0){
             System.out.println("No drinks in this offer.");
-            return false;
+            return -1;
         }
         else if(drinks.size() < amountDrinks){
             drinks.add(drink);
-            return true;
+            return DRINKS;
         }
         else{
             System.out.println(amountDrinks + "/" + amountDrinks + " already selected.");
-            return false;
+            return -1;
         }
     }
 
-    private boolean addFruit(Product fruit){
+    private int addFruit(Product fruit){
         if(amountFruit == 0){
             System.out.println("No fruit in this offer.");
-            return false;
+            return -1;
         }
         else if(fruits.size() < amountFruit){
             fruits.add(fruit);
-            return true;
+            return FRUIT;
         }
         else{
             System.out.println(amountFruit + "/" + amountFruit + " already selected.");
-            return false;
+            return -1;
         }
     }
 
-    private boolean addSandwich(Product sandwich){
+    private int addSandwich(Product sandwich){
         if(amountSandwiches == 0){
             System.out.println("No sandwiches in this offer.");
-            return false;
+            return -1;
         }
         else if(sandwiches.size() < amountSandwiches){
             sandwiches.add(sandwich);
-            return true;
+            return SANDWICHES;
         }
         else{
             System.out.println(amountSandwiches + "/" + amountSandwiches + " already selected.");
-            return false;
+            return -1;
         }
     }
 
-    private boolean addSnack(Product snack){
+    private int addSnack(Product snack){
         if(amountSnacks == 0){
             System.out.println("No snacks in this offer.");
-            return false;
+            return -1;
         }
         else if(snacks.size() < amountSnacks){
             snacks.add(snack);
-            return true;
+            return SNACKS;
         }
         else{
             System.out.println(amountSnacks + "/" + amountSnacks + " already selected.");
-            return false;
+            return -1;
         }
     }
 
