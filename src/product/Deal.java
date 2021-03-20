@@ -96,9 +96,9 @@ public class Deal{
                                     return s;
                                 }
                                 break;
-            default:            return "Nothing added to deal yet";
+            default:            return "Nothing added to deal yet!";
         }
-        return "Nothing added to deal yet";
+        return "Nothing added to deal yet!";
     }
 
     private int addTreat(Product treat){

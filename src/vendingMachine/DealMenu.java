@@ -22,11 +22,6 @@ public class DealMenu extends Menu{
 
     private DealMenu(){
 		super();
-		
-		try{
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
 	}
 
     public static DealMenu getInstance(User user_){
@@ -130,7 +125,6 @@ public class DealMenu extends Menu{
 							}else{
 								System.out.println("No deal selected!\n");
 							}
-
 							break;
 
 				case "C":	System.out.println("Returning to previous menu\n");
