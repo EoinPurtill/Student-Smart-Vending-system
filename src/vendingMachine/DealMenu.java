@@ -8,11 +8,16 @@ import java.io.Console;
 import users.Operator;
 import users.User;
 import product.*;
+import undo.DealMenuMemento;
+import undo.DealMenuOriginator;
+import undo.MenuMemento;
+import undo.MenuOriginator;
 import io.*;
 
 public class DealMenu extends Menu{
     private static DealMenu instance = new DealMenu();
     private static Stack mementoStack = new Stack<>(), originatorStack = new Stack<>();
+	private static DealMenuOriginator originator = new DealMenuOriginator();
     private static User user;
 
     private DealMenu(){
@@ -27,6 +32,32 @@ public class DealMenu extends Menu{
     public static DealMenu getInstance(User user_){
         user = user_;
 		return instance;
+	}
+
+	public void setOriginator(DealMenuOriginator originator_){
+		originator = originator_;
+	}
+
+	public void undo(Deal deal){
+		if(mementoStack.size() > 0 && originatorStack.size() > 0){
+			System.out.println( deal.removeItem( ((Integer)((DealMenuMemento)mementoStack.peek()).getState()).intValue() ) );
+			originator = (DealMenuOriginator)originatorStack.pop();
+			originator.restore((MenuMemento)mementoStack.pop());
+		}else{
+			System.out.println("No items to remove!");
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setOriginatorState(int state){
+		originator.setValue(state);
+		mementoStack.push(originator.createMemento());
+		originatorStack.push(originator);
+		originator = new DealMenuOriginator();
+	}
+
+	public int getOriginatorState(){
+		return originator.getValue();
 	}
    
     //TODO: add UNDO functionality to include memento
@@ -45,7 +76,7 @@ public class DealMenu extends Menu{
 
 				case "B":	if(deal == null){
 								System.out.println("No deal selected!\n");
-							} else if(!deal.isComplete()){
+							}else if(!deal.isComplete()){
 								System.out.println("Deal not complete!\n");
 							}else{
 								Deal returnDeal = new Deal( deal.getDescription(), deal.getAmountTreats(), deal.getAmountDrinks(), deal.getAmountSnacks(), deal.getAmountFruit(), deal.getAmountSandwiches(),
@@ -60,6 +91,9 @@ public class DealMenu extends Menu{
 
 				case "S":	if(deal!=null)
 								deal.clearDeal();
+							originatorStack.clear();
+							mementoStack.clear();
+							originator = new DealMenuOriginator();
 							deal = (Deal) getChoice(machine.getDeals().toArray());
 							break;
 
@@ -69,8 +103,13 @@ public class DealMenu extends Menu{
 								try
 								{
 									Product p = (Product) getChoice(machine.getProductTypes(false));
-									if(deal.addItem(p))
-										System.out.printf("%s added to order\n", p.getDescription());
+									int itemType = deal.addItem(p);
+									if(itemType < 0){
+										System.out.println("Nothing added to order");
+									}else{
+										System.out.printf("%s added to deal\n", p.getDescription());
+										this.setOriginatorState(itemType);
+									}
 								}
 								catch(NullPointerException except)
 								{
@@ -83,7 +122,15 @@ public class DealMenu extends Menu{
 							}
 							break;
 				
-				case "V":	System.out.printf("Balance:  $%.2f\n", this.user.getCredit());
+				case "V":	System.out.printf("Balance:  $%.2f\n", user.getCredit());
+							break;
+
+				case "U":	if(deal != null){
+								undo(deal);
+							}else{
+								System.out.println("No deal selected!\n");
+							}
+
 							break;
 
 				case "C":	System.out.println("Returning to previous menu\n");

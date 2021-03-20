@@ -1,6 +1,6 @@
 package undo;
 
-public class DealMenuMemento implements Memento{
+public class DealMenuMemento implements MenuMemento{
     private Integer state;
 
     public Object getState(){
