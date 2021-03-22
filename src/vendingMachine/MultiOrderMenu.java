@@ -3,6 +3,13 @@ package vendingMachine;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Stack;
+
+import commands.MultiOrderBuyCommand;
+import commands.MultiOrderCancelCommand;
+import commands.MultiOrderDealsCommand;
+import commands.MultiOrderShowCommand;
+import commands.ViewBalanceCommand;
+
 import java.io.IOException;
 import java.io.Console;
 import users.Operator;
@@ -64,40 +71,12 @@ public class MultiOrderMenu extends Menu{
 			String command = in.nextLine().toUpperCase();
 
 			switch(command){
-				case "S":  		if(machine.getProductTypes(false).length == 0)
-									System.out.println("No Options Currently Available");
-								else
-								{
-									for (Product p : machine.getProductTypes(false))
-										System.out.println(p);
-								}
+				case "S":  		MultiOrderShowCommand mosc = new MultiOrderShowCommand(machine);
+								mosc.execute();
 								break;
 
-				case "B":		if(order.itemsAdded())
-                                    return order;
-                                else
-                                    System.out.println("Order Empty!");;
-								break;
-
-				case "D":		DealMenu dealMenu = DealMenu.getInstance(user);
-                                Deal deal = (Deal)dealMenu.run(machine);
-								if(deal!=null){
-									try{
-										int orderComponentType = order.add(deal);
-										if(orderComponentType < 0){
-											System.out.println("Nothing added to order");
-										}else{
-											System.out.println("Added to order:\n" + deal.getDescription() + ": " + String.format("$%.2f", deal.getPrice()));
-											orderValue += deal.getPrice();
-											System.out.println("Order value: " + String.format("$%.2f", orderValue));
-											this.setOriginatorState(orderComponentType);
-										}
-									} catch(VendingException ex){
-										System.out.println(ex.getMessage());
-									}
-								}else{
-									System.out.println("No deal added.");
-								}
+				case "B":		MultiOrderBuyCommand mobc = new MultiOrderBuyCommand(order);
+								mobc.execute();
 								break;
 
 				case "A":		try
@@ -122,14 +101,25 @@ public class MultiOrderMenu extends Menu{
 								}
 								break;
 
-				case "V":		System.out.printf("Balance:  $%.2f\n", user.getCredit());
+				case "D":		MultiOrderDealsCommand modc = new MultiOrderDealsCommand(machine, user, order, orderValue);
+								modc.execute();
+								orderValue = modc.getOrderValue();
+								int orderComponentType = modc.getOrderComponentType();
+								if(orderComponentType > 0){
+									this.setOriginatorState(orderComponentType);
+								}
+								break;
+								
+				case "V":		ViewBalanceCommand vbc = new ViewBalanceCommand(user);
+								vbc.execute();
 								break;
 
 				case "U":		undo(order);
 								orderValue = order.getPrice();
 								break;
 
-				case "C":		System.out.println("Order cancelled\n\n");
+				case "C":		MultiOrderCancelCommand mocc = new MultiOrderCancelCommand();
+								mocc.execute();
 								more = false;
                                 return null;
 

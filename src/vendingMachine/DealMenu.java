@@ -3,6 +3,12 @@ package vendingMachine;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Stack;
+
+import commands.DealBuyCommand;
+import commands.DealCancelCommand;
+import commands.DealCommand;
+import commands.ViewBalanceCommand;
+
 import java.io.IOException;
 import java.io.Console;
 import users.Operator;
@@ -29,11 +35,11 @@ public class DealMenu extends Menu{
 		return instance;
 	}
 
-	public void setOriginator(DealMenuOriginator originator_){
+	public static void setOriginator(DealMenuOriginator originator_){
 		originator = originator_;
 	}
 
-	public void undo(Deal deal){
+	public static void undo(Deal deal){
 		if(mementoStack.size() > 0 && originatorStack.size() > 0){
 			System.out.println( deal.removeItem( ((Integer)((DealMenuMemento)mementoStack.peek()).getState()).intValue() ) );
 			originator = (DealMenuOriginator)originatorStack.pop();
@@ -44,7 +50,7 @@ public class DealMenu extends Menu{
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setOriginatorState(int state){
+	public static void setOriginatorState(int state){
 		originator.setValue(state);
 		mementoStack.push(originator.createMemento());
 		originatorStack.push(originator);
@@ -65,27 +71,17 @@ public class DealMenu extends Menu{
 			System.out.println("D)eals  B)uy  S)elect Deal  A)dd  V)iew Balance  U)ndo  C)ancel");
 			String command = in.nextLine().toUpperCase();
 			switch(command){
-				case "D":	for(Deal d : machine.getDeals())
-								System.out.println(d);
+				case "D":	DealCommand dc = new DealCommand(machine);
+							dc.execute();
 							break;
 
-				case "B":	if(deal == null){
-								System.out.println("No deal selected!\n");
-							}else if(!deal.isComplete()){
-								System.out.println("Deal not complete!\n");
-							}else{
-								Deal returnDeal = new Deal( deal.getDescription(), deal.getAmountTreats(), deal.getAmountDrinks(), deal.getAmountSnacks(), deal.getAmountFruit(), deal.getAmountSandwiches(),
-															deal.getDiscount(), (ArrayList<Product>)deal.getTreats().clone(), (ArrayList<Product>)deal.getDrinks().clone(),
-															(ArrayList<Product>)deal.getSnacks().clone(), (ArrayList<Product>)deal.getFruits().clone(), (ArrayList<Product>)deal.getSandwiches().clone() );
+				case "B":	DealBuyCommand dbc = new DealBuyCommand(deal, mementoStack, originatorStack);
+							dbc.execute();
+							break;
+
+				case "S":	if(deal!=null){
 								deal.clearDeal();
-                                mementoStack.clear();
-                                originatorStack.clear();
-								return returnDeal;
 							}
-							break;
-
-				case "S":	if(deal!=null)
-								deal.clearDeal();
 							originatorStack.clear();
 							mementoStack.clear();
 							originator = new DealMenuOriginator();
@@ -117,7 +113,8 @@ public class DealMenu extends Menu{
 							}
 							break;
 				
-				case "V":	System.out.printf("Balance:  $%.2f\n", user.getCredit());
+				case "V":	ViewBalanceCommand vbc = new ViewBalanceCommand(user);
+							vbc.execute();
 							break;
 
 				case "U":	if(deal != null){
@@ -126,16 +123,13 @@ public class DealMenu extends Menu{
 								System.out.println("No deal selected!\n");
 							}
 							break;
-
 				case "C":	System.out.println("Returning to previous menu\n");
 							if(deal != null)
 								deal.clearDeal();
 							deal = null;
 							more = false;
-                            mementoStack.clear();
-                            originatorStack.clear();
 							break;
-
+							
 				default:	System.out.println("Invalid input\n\n"); break;
 			}
 		}

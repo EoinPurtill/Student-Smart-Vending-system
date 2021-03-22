@@ -199,6 +199,7 @@ public class VendingMachine
    
    public boolean login(String id, String pass) throws NullPointerException
    {
+	    
 		for(int i = 0; i < operators.size(); i++)
 		{
 			if(operators.get(i).assertDetails(id, pass))

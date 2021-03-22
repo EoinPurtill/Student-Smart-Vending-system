@@ -1,6 +1,9 @@
 package vendingMachine;
 
 import java.util.Scanner;
+
+import commands.OperatorAddCommand;
+
 import java.io.IOException;
 import io.*;
 import product.*;
@@ -64,32 +67,12 @@ public class OperatorMenu extends Menu
 				}
 			}
 			else if (option.equals("A"))
-			{      
-				System.out.println("Description:");
-				String description = in.nextLine();
-				System.out.println("Price:");
-				String priceStr = in.nextLine();
-				System.out.println("Quantity:");
-				String quantityStr = in.nextLine();
-				if(Validator.verifyDouble(priceStr) && Validator.verifyInt(quantityStr)){
-					double price = Double.parseDouble(priceStr); int quantity = Integer.parseInt(quantityStr);
-					if(price > 0 && quantity > 0){
-						if(!(machine.containsProduct(price, description))){
-							Product prod = new Product(description, price);
-							System.out.println(machine.addProduct(prod, quantity));
-							this.newItemSummary += prod.getDescription() + ": +" + quantity + "\n";
-						}
-						else{
-							System.out.println("Product Already In Vending Machine.\nPlease Select \"R)estock\" Option"); 
-						}
-					}else{
-						System.out.println("Invalid Input");
-					}
-				}
-				else
-				{
-					System.out.println("Invalid Input");
-				}
+			{    
+				OperatorAddCommand oac = new OperatorAddCommand(machine);
+				oac.execute();
+				this.newItemSummary += oac.getNewItemSummary();
+				
+				
 			}        
 			else if (option.equals("E"))
 			{      
