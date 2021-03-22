@@ -20,12 +20,15 @@ public class OperatorFunctionsCommand implements Command{
 
     public void execute(){
 
-        Console con = System.console(); String pass = "";
-        System.out.println("Enter Operator ID:"); String id = in.nextLine();
-        System.out.println("Enter Password:"); char[] passArray = con.readPassword();
+        Console con = System.console(); 
+        String pass = "";
+        System.out.println("Enter Operator ID:"); 
+        String id = in.nextLine();
+        System.out.println("Enter Password:"); 
+        char[] passArray = con.readPassword();
         for(char c : passArray)
             pass += c;
-        
+              
         try
         {
             if(machine.login(id, pass))
@@ -40,6 +43,7 @@ public class OperatorFunctionsCommand implements Command{
         }
         catch(NullPointerException ex)
         {
+            System.out.println("!!!!!!!!22222222");
             System.out.println("LOGIN FAILED\nReturning to menu...");
         }
         catch(IOException ex){

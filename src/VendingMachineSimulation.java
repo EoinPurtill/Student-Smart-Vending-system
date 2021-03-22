@@ -11,7 +11,7 @@ public class VendingMachineSimulation
    { 
       VendingMachine machine = VendingMachine.getInstance();
       VendingMachineMenu menu = VendingMachineMenu.getInstance();
-	  String summary = (String)menu.run(machine);
-	  System.out.println("\n" + summary);
+	   String summary = (String)menu.run(machine);
+	   System.out.println("\n" + summary);
    }
 }

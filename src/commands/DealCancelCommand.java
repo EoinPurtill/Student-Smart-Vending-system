@@ -20,7 +20,9 @@ public class DealCancelCommand implements Command{
     @Override
     public void execute() {
         System.out.println("Returning to previous menu\n");
-	    deal.clearDeal();
+	    if(deal!= null){
+            deal.clearDeal();
+        }
 		deal = null;
 		
         mementoStack.clear();

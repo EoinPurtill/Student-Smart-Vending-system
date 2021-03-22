@@ -118,8 +118,30 @@ public class VendingMachineMenu extends Menu
 				}
 				else if (command.equals("O"))
 				{  		
-					OperatorFunctionsCommand ofc = new OperatorFunctionsCommand(machine);
-					ofc.execute();
+					//OperatorFunctionsCommand ofc = new OperatorFunctionsCommand(machine);
+					//ofc.execute();
+					Console con = System.console(); String pass = "";
+					System.out.println("Enter Operator ID:"); String id = in.nextLine();
+					System.out.println("Enter Password:"); char[] passArray = con.readPassword();
+					for(char c : passArray)
+						pass += c;
+					
+					try
+					{
+						if(machine.login(id, pass))
+						{
+							String opSummary = (String)opMenu.run(machine);
+							System.out.println(opSummary);
+						}
+						else
+						{
+							System.out.println("LOGIN FAILED\nReturning to menu...");
+						}
+					}
+					catch(NullPointerException ex)
+					{
+						System.out.println("LOGIN FAILED\nReturning to menu...");
+					}
 				}
 				else if (command.equals("Q"))
 				{

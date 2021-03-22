@@ -14,6 +14,7 @@ public class Operator
 	
 	public boolean assertDetails(String idx, String pass)
 	{
+		System.out.println(id.compareTo(idx) == 0 && passWord.compareTo(pass) == 0);
 		return(id.compareTo(idx) == 0 && passWord.compareTo(pass) == 0);
 	}
 }
