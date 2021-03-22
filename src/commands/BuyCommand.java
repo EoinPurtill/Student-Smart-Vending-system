@@ -26,10 +26,9 @@ public class BuyCommand implements Command{
     }
 
     public void execute(){
-        Product p = (Product) menu.getChoice(machine.getProductTypes(false));
         if(machine.getProductTypes(false).length != 0){
 		    try{
-			    //Product p = (Product) menu.getChoice(machine.getProductTypes(false));
+			    Product p = (Product) menu.getChoice(machine.getProductTypes(false));
 				String output = machine.buyProduct(p, user);
 				System.out.println(output);
 				DAO.stockToFile("Stock.txt", machine.getStock());

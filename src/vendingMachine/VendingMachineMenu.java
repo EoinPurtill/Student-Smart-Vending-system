@@ -87,6 +87,7 @@ public class VendingMachineMenu extends Menu
 					//BuyCommand bc = new BuyCommand(machine, user);
 					//bc.execute();
 					//this.sessionSummary += bc.getSessionSummary();
+
 					if(machine.getProductTypes(false).length != 0){
 						try{
 							Product p = (Product) getChoice(machine.getProductTypes(false));
