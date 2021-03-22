@@ -128,7 +128,8 @@ public class DealMenu extends Menu{
 							break;
 
 				case "C":	System.out.println("Returning to previous menu\n");
-							deal.clearDeal();
+							if(deal != null)
+								deal.clearDeal();
 							deal = null;
 							more = false;
                             mementoStack.clear();
