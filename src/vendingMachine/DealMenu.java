@@ -123,9 +123,10 @@ public class DealMenu extends Menu{
 								System.out.println("No deal selected!\n");
 							}
 							break;
-
-				case "C":	DealCancelCommand dcc = new DealCancelCommand(deal, mementoStack, originatorStack);
-							dcc.execute();
+				case "C":	System.out.println("Returning to previous menu\n");
+							if(deal != null)
+								deal.clearDeal();
+							deal = null;
 							more = false;
 							break;
 							
