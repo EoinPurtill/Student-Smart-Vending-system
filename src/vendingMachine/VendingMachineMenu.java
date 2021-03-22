@@ -8,6 +8,7 @@ import users.Operator;
 import users.User;
 import product.*;
 import io.*;
+import commands.*;
 
 /**   
 A menu from the vending machine.
@@ -65,114 +66,64 @@ public class VendingMachineMenu extends Menu
 
 				if (command.equals("S"))
 				{  
-					if(machine.getProductTypes(false).length == 0)
-						System.out.println("No Options Currently Available");
-					else
-					{	
-						/*
-						getProductTypes() returns an array of products that doesn't contain duplicates
-						*/
-						for (Product p : machine.getProductTypes(false))
-							System.out.println(p);
-					}	
-			
+					ShowProductCommand spc = new ShowProductCommand(machine);
+					spc.execute();	
 				}
 				else if (command.equals("M")) //allows user to create order
 				{
-					MultiOrderMenu multiMenu = MultiOrderMenu.getInstance(user);
-					Order order = (Order)multiMenu.run(machine);
-					try{
-						String orderSummary = "ORDER:\n" + order.toString() + "\n";
-						System.out.println(machine.processOrder(order, user));
-						DAO.stockToFile("Stock.txt", machine.getStock());
-						DAO.usersToFile("Users.txt", machine.getUsers());
-						this.sessionSummary += orderSummary + "\n" + "\n";
-					}catch(VendingException ex){
-						System.out.println(ex.getMessage());
-					}catch(NullPointerException ex){
-						System.out.println("Nothing Added to Order\n");
-					}
+					MultiOrderCommand moc = new MultiOrderCommand(machine, user);
+					moc.execute();
+					this.sessionSummary += moc.getSessionSummary();
+
 				}
 				else if (command.equals("D")) //allows user to create order from offers
 				{ 
-					DealMenu dealMenu = DealMenu.getInstance(user);
-					Deal deal = (Deal)dealMenu.run(machine);
-					if(deal!=null){
-						try{
-							String dealDescription = deal.getDescription();
-							double dealPrice = deal.getPrice();
-							String msg = machine.buyDeal(deal, user);
-							System.out.println("Purchased: " + msg);
-							deal.clearDeal();
-							DAO.stockToFile("Stock.txt", machine.getStock());
-							DAO.usersToFile("Users.txt", machine.getUsers());
-							this.sessionSummary += dealDescription + ": $" + String.format("%.2f", dealPrice) + "\n" + "\n";
-						} catch(VendingException ex){
-							System.out.println(ex.getMessage());
-						}
-					}
+					DealMenuCommand dc = new DealMenuCommand(machine, user);
+					dc.execute();
+					this.sessionSummary += dc.getSessionSummary();
 				}
 				else if (command.equals("B")) 
 				{              
-					if(machine.getProductTypes(false).length != 0)
-					{
-						try
-						{
+					//BuyCommand bc = new BuyCommand(machine, user);
+					//bc.execute();
+					//this.sessionSummary += bc.getSessionSummary();
+					if(machine.getProductTypes(false).length != 0){
+						try{
 							Product p = (Product) getChoice(machine.getProductTypes(false));
 							String output = machine.buyProduct(p, user);
 							System.out.println(output);
 							DAO.stockToFile("Stock.txt", machine.getStock());
 							DAO.usersToFile("Users.txt", machine.getUsers());
-							this.sessionSummary += p.getDescription() + ": $" + String.format("%.2f", p.getPrice()) + "\n";
-						}
-						catch(NullPointerException except)
-						{
+							sessionSummary += p.getDescription() + ": $" + String.format("%.2f", p.getPrice()) + "\n";
+						}	
+						catch(NullPointerException except){
 							System.out.println("No Options Currently Available");
 						}
-						catch (VendingException ex)
-						{
+						catch (VendingException ex){
 							System.out.println(ex.getMessage());
 						}
+						catch (IOException ex){
+							System.out.println("IO Exception caught");
+						}
 					}
-					else
-					{
+					else{
 						System.out.println("No Options Currently Available");
 					}
 				}
 				else if (command.equals("V"))
 				{
-					System.out.printf("Balance:  $%.2f\n", user.getCredit());
+					ViewBalanceCommand vbc = new ViewBalanceCommand(user);
+					vbc.execute();
 				}
 				else if (command.equals("O"))
 				{  		
-					Console con = System.console(); String pass = "";
-					System.out.println("Enter Operator ID:"); String id = in.nextLine();
-					System.out.println("Enter Password:"); char[] passArray = con.readPassword();
-					for(char c : passArray)
-						pass += c;
-					
-					try
-					{
-						if(machine.login(id, pass))
-						{
-							String opSummary = (String)opMenu.run(machine);
-							System.out.println(opSummary);
-						}
-						else
-						{
-							System.out.println("LOGIN FAILED\nReturning to menu...");
-						}
-					}
-					catch(NullPointerException ex)
-					{
-						System.out.println("LOGIN FAILED\nReturning to menu...");
-					}
+					OperatorFunctionsCommand ofc = new OperatorFunctionsCommand(machine);
+					ofc.execute();
 				}
 				else if (command.equals("Q"))
 				{
-					System.out.println("Returning to home screen\n");
-					DAO.stockToFile("Stock.txt", machine.getStock());
-					DAO.usersToFile("Users.txt", machine.getUsers());
+					QuitCommand qc = new QuitCommand(machine);
+					qc.execute();
 					more = false;			
 				}
 			}

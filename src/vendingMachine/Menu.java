@@ -14,7 +14,7 @@ public abstract class Menu
 	
 	public abstract Object run(VendingMachine machine) throws IOException;
 	
-	protected Object getChoice(Object[] choices) throws NullPointerException
+	public Object getChoice(Object[] choices) throws NullPointerException
 	{ 
 		while (true)
 		{
