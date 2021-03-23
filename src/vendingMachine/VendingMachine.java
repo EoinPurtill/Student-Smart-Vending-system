@@ -6,6 +6,7 @@ import product.*;
 import users.Operator;
 import users.User;
 import io.*;
+import payment.Payment;
 
 
 public class VendingMachine 
@@ -221,6 +222,9 @@ public class VendingMachine
 		return null;
    }
 
+   public double requestPayment(Payment p){
+	   return 0;
+   }
    public void trackSales(String prodDesc){
 	   
 
