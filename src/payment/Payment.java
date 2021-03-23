@@ -9,3 +9,11 @@ public abstract class Payment {
     }
     
 }
+
+/* public interface Payment {
+
+    public void confirmtransaction();
+
+    
+    public double getValue();
+} */
