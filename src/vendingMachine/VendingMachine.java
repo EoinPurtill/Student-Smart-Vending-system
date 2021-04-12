@@ -200,6 +200,7 @@ public class VendingMachine
    
    public boolean login(String id, String pass) throws NullPointerException
    {
+	    
 		for(int i = 0; i < operators.size(); i++)
 		{
 			if(operators.get(i).assertDetails(id, pass))
@@ -222,9 +223,12 @@ public class VendingMachine
 		return null;
    }
 
-   public double requestPayment(Payment p){
-	   return 0;
+   public double confirmPayment(double value){
+	Payment p;
+	   p.confirmtransaction();
    }
+
+
    public void trackSales(String prodDesc){
 	   
 
