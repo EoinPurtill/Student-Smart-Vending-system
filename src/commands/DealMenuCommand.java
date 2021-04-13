@@ -16,6 +16,7 @@ public class DealMenuCommand implements Command{
     public DealMenuCommand(VendingMachine machine, User user){
         this.machine = machine;
         this.user = user;
+        this.sessionSummary = "";
     }
 
     public String getSessionSummary(){

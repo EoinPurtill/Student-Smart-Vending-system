@@ -16,7 +16,7 @@ public class MultiOrderCommand implements Command {
 
         this.machine = machine;
         this.user = user;
-
+        this.sessionSummary = "";
     }
 
     public String getSessionSummary(){
