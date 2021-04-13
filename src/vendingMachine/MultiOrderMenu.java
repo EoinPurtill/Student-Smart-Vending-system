@@ -1,7 +1,5 @@
 package vendingMachine;
 
-import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.Stack;
 
 import commands.MultiOrderCancelCommand;
@@ -10,15 +8,12 @@ import commands.MultiOrderShowCommand;
 import commands.ViewBalanceCommand;
 
 import java.io.IOException;
-import java.io.Console;
-import users.Operator;
 import users.User;
 import product.*;
 import undo.OrderMenuMemento;
 import undo.OrderMenuOriginator;
 import undo.MenuMemento;
-import undo.MenuOriginator;
-import io.*;
+
 
 public class MultiOrderMenu extends Menu{
     private static MultiOrderMenu instance = new MultiOrderMenu();

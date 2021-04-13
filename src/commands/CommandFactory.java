@@ -1,8 +1,5 @@
 package commands;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import users.User;
 import vendingMachine.VendingMachine;
 

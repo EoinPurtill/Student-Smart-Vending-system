@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import product.Deal;
 import undo.DealMenuOriginator;
-import vendingMachine.DealMenu;
+
 import vendingMachine.VendingMachine;
 
 public class SelectDealCommand extends Command implements CommandInterface{
@@ -13,7 +13,7 @@ public class SelectDealCommand extends Command implements CommandInterface{
     Deal deal;
     Stack mementoStack;
     Stack originatorStack;
-    //DealMenu menu = new DealMenu(); 
+ 
 
     public SelectDealCommand(VendingMachine machine, Deal deal, Stack m, Stack o){
         this.deal = deal;
@@ -28,7 +28,7 @@ public class SelectDealCommand extends Command implements CommandInterface{
 		originatorStack.clear();
 		mementoStack.clear();
 		DealMenuOriginator originator = new DealMenuOriginator();
-		//deal = (Deal) menu.getChoice(machine.getDeals().toArray());
+		
     }
 
 }
