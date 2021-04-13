@@ -60,7 +60,6 @@ public class VendingMachine {
 	} */
 
 	public String buyProduct(Product prod, User user) throws VendingException {
-		//payMachine(prod.getPrice());
 		String output = "";
 		if (prod.getPrice() <= user.getCredit()) {
 			for (int j = 0; j < stock.size(); j++) {
