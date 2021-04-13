@@ -19,9 +19,13 @@ C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\Select
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\ShowProductCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\ViewBalanceCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\ContextObject.java
+C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\DealContextObject.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\DealLogger.java
+C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\DealSaleInterceptor.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\Dispatcher.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\Logger.java
+C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\LogContextObject.java
+C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\SystemLogger.java
+C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\SystemLogInterceptor.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\io\DAO.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\io\Validator.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\io\Writable.java

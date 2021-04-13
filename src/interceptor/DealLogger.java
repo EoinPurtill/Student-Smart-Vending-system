@@ -1,16 +1,15 @@
 package interceptor;
 import product.Deal;
 
-public class DealLogger implements Logger {
+public class DealLogger implements DealSaleInterceptor {
     
-    public void onDealPurchase(ContextObject co){
+    public void onDealSale(DealContextObject co){
         Deal deal = co.getDeal();
 
         if(deal == null){
             co.setDeal(null);
         }
         else{
-            System.out.print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             System.out.println(deal);
         }
     }

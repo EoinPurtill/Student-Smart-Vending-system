@@ -1,16 +1,13 @@
 package vendingMachine;
 
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.IOException;
 import java.io.Console;
-import users.Operator;
 import users.User;
 import product.*;
 import io.*;
 import commands.*;
+import interceptor.LogContextObject;
+import interceptor.SystemLogger;
 
 /**   
 A menu from the vending machine.
@@ -22,6 +19,7 @@ public class VendingMachineMenu extends Menu
 
 	private OperatorMenu opMenu;
 	private String sessionSummary;
+	
 	private VendingMachineMenu(){
 		super();
 		
@@ -36,6 +34,10 @@ public class VendingMachineMenu extends Menu
 	public static VendingMachineMenu getInstance(){
 		return instance;
 	}
+
+	LogContextObject loc = new LogContextObject();	
+	SystemLogger sysLog = new SystemLogger();
+	CommandFactory cf = new CommandFactory();
    
 	/**
 	Runs the vending machine system.
@@ -47,8 +49,10 @@ public class VendingMachineMenu extends Menu
 		
 		while(continueSim){
 			User user = null;
-			System.out.println("Please present student ID card(Enter Student ID Number)");
-			System.out.println("Enter ~ to exit");
+
+			loc.setMessage("Please present student ID card(Enter Student ID Number)\nEnter ~ to exit");
+			sysLog.onLogEvent(loc);
+
 			String enteredID = in.nextLine().toUpperCase();
 			if(enteredID.equals("~")){
 				more = false;
@@ -57,15 +61,16 @@ public class VendingMachineMenu extends Menu
 			else{
 				user = machine.userLogin(enteredID);
 				more = (user != null);
-				if(!more)
-					System.out.println("Card not recognized\n");
+				if(!more){
+					loc.setMessage("Card not recognized\n");
+					sysLog.onLogEvent(loc);
+				}
 			}			
 				
 			while (more){ 
 
-				CommandFactory cf = new CommandFactory();
-
-				System.out.println("S)how_Products  M)ulti-order  D)eals  B)uy  V)iew_Balance  O)perator_Functions  P)roduct_Types  Q)uit");
+				loc.setMessage("S)how_Products  M)ulti-order  D)eals  B)uy  V)iew_Balance  O)perator_Functions  P)roduct_Types  Q)uit");
+				sysLog.onLogEvent(loc);
 				String command = in.nextLine().toUpperCase();
 
 				if (command.equals("S"))
@@ -88,31 +93,34 @@ public class VendingMachineMenu extends Menu
 				}
 				else if (command.equals("B")) 
 				{              
-					//BuyCommand bc = new BuyCommand(machine, user);
-					//bc.execute();
-					//this.sessionSummary += bc.getSessionSummary();
-
 					if(machine.getProductTypes(false).length != 0){
 						try{
 							Product p = (Product) getChoice(machine.getProductTypes(false));
 							String output = machine.buyProduct(p, user);
-							System.out.println(output);
+							loc.setMessage(output);
+							sysLog.onLogEvent(loc);
 							DAO.stockToFile("Stock.txt", machine.getStock());
 							DAO.usersToFile("Users.txt", machine.getUsers());
 							sessionSummary += p.getDescription() + ": $" + String.format("%.2f", p.getPrice()) + "\n";
 						}	
 						catch(NullPointerException except){
-							System.out.println("No Options Currently Available");
+							loc.setMessage("No Options Currently Available");
+							sysLog.onLogEvent(loc);
+							
 						}
 						catch (VendingException ex){
-							System.out.println(ex.getMessage());
+							loc.setMessage(ex.getMessage());
+							sysLog.onLogEvent(loc);
 						}
 						catch (IOException ex){
-							System.out.println("IO Exception caught");
+							loc.setMessage("IO Exception caught");
+							sysLog.onLogEvent(loc);
+							
 						}
 					}
 					else{
-						System.out.println("No Options Currently Available");
+						loc.setMessage("No Options Currently Available");
+						sysLog.onLogEvent(loc);
 					}
 				}
 				else if (command.equals("V"))
@@ -122,11 +130,16 @@ public class VendingMachineMenu extends Menu
 				}
 				else if (command.equals("O"))
 				{  		
-					//OperatorFunctionsCommand ofc = new OperatorFunctionsCommand(machine);
-					//ofc.execute();
+
 					Console con = System.console(); String pass = "";
-					System.out.println("Enter Operator ID:"); String id = in.nextLine();
-					System.out.println("Enter Password:"); char[] passArray = con.readPassword();
+					loc.setMessage("Enter Operator ID:");
+					sysLog.onLogEvent(loc);
+					String id = in.nextLine();
+
+					loc.setMessage("Enter Password:");
+					sysLog.onLogEvent(loc);
+					char[] passArray = con.readPassword();
+
 					for(char c : passArray)
 						pass += c;
 					
@@ -135,16 +148,19 @@ public class VendingMachineMenu extends Menu
 						if(machine.login(id, pass))
 						{
 							String opSummary = (String)opMenu.run(machine);
-							System.out.println(opSummary);
+							loc.setMessage(opSummary);
+							sysLog.onLogEvent(loc);
 						}
 						else
 						{
-							System.out.println("LOGIN FAILED\nReturning to menu...");
+							loc.setMessage("LOGIN FAILED\nReturning to menu...");
+							sysLog.onLogEvent(loc);
 						}
 					}
 					catch(NullPointerException ex)
 					{
-						System.out.println("LOGIN FAILED\nReturning to menu...");
+						loc.setMessage("LOGIN FAILED\nReturning to menu...");
+						sysLog.onLogEvent(loc);
 					}
 				}
 				else if (command.equals("P"))

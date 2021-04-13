@@ -1,7 +1,5 @@
 package commands;
 
-import java.beans.PropertyDescriptor;
-
 import product.ProductDescriptorFacade;
 
 public class ProductTypeCommand extends Command implements CommandInterface{
