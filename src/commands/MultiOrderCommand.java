@@ -17,7 +17,7 @@ public class MultiOrderCommand extends Command implements CommandInterface{
 
         this.machine = machine;
         this.user = user;
-
+        this.sessionSummary = "";
     }
 
     public String getSessionSummary(){

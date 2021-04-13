@@ -4,7 +4,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import commands.DealBuyCommand;
 import commands.DealCancelCommand;
 import commands.DealCommand;
 import commands.ViewBalanceCommand;
@@ -89,8 +88,9 @@ public class DealMenu extends Menu{
 								mementoStack.clear();
 								originatorStack.clear();
 								return returnDeal;
-							};
-							
+
+							}
+
 							break;
 
 				case "S":	if(deal!=null){

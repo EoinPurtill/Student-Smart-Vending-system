@@ -16,6 +16,7 @@ public class DealMenuCommand extends Command implements CommandInterface{
     public DealMenuCommand(VendingMachine machine, User user){
         this.machine = machine;
         this.user = user;
+        this.sessionSummary = "";
     }
 
     public String getSessionSummary(){
