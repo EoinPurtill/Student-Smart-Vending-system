@@ -1,13 +1,8 @@
 package payment;
 
-public class Paymenthandler {
+public abstract class Paymenthandler {
 
-    double value;
-    boolean confirmed;
+    public Payment payment; 
 
-    public Paymenthandler(double value, boolean confirmed) {
-        this.value = value;
-        this.confirmed = confirmed;
-    }
-    
+    public abstract double makePayment(double balance);
 }

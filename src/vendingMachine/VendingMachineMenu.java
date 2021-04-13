@@ -48,17 +48,7 @@ public class VendingMachineMenu extends Menu
 			System.out.println("Please present student ID card(Enter Student ID Number)");
 			System.out.println("Enter ~ to exit");
 			String enteredID = in.nextLine().toUpperCase();
-			if(enteredID.equals("~")){
-				more = false;
-				continueSim = false;
-			}
-			else{
-				user = machine.userLogin(enteredID);
-				more = (user != null);
-				if(!more)
-					System.out.println("Card not recognized\n");
-			}			
-				
+	
 			while (more){ 
 				System.out.println("S)how Products  M)ulti-order  D)eals  B)uy  V)iew Balance  O)perator Functions  Q)uit");
 				String command = in.nextLine().toUpperCase();

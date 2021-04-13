@@ -6,7 +6,10 @@ import product.*;
 import users.Operator;
 import users.User;
 import io.*;
+import payment.BalancePayment;
+import payment.Gateway;
 import payment.Payment;
+import payment.Paymenthandler;
 
 
 public class VendingMachine 
@@ -55,9 +58,34 @@ public class VendingMachine
 	   ret = temp.toArray(ret);
 	   return ret;
    }
-   
+   public String makePayment(Product prod, User user) throws VendingException {
+	Payment payment;
+	String output = "";
+	if(prod.getPrice() <= user.getCredit())
+	{
+		for(int j = 0; j < stock.size(); j++)
+		{
+			if((stock.get(j).getProd().compareTo(prod)) == 0)
+			{
+				stock.get(j).remove();
+				j = stock.size();
+			}
+		}
+		user.lowerBalance(prod.getPrice());
+		output = "Purchased: " + prod.getDescription() + ".\nNew Balance: $" + String.format("%.2f", user.getCredit());
+	}
+	else
+	{
+		throw new VendingException("Not enough credit!\n");
+	}
+	return output;
+
+
+   }
    public String buyProduct(Product prod, User user) throws VendingException
-   {
+{		Paymenthandler order1 = new BalancePayment();  
+		order1.payment = new Gateway();  
+		order1.makePayment(prod.getPrice()); 
 		String output = "";
 		if(prod.getPrice() <= user.getCredit())
 		{
@@ -222,12 +250,6 @@ public class VendingMachine
 		}
 		return null;
    }
-
-   public double confirmPayment(double value){
-	Payment p;
-	   p.confirmtransaction();
-   }
-
 
    public void trackSales(String prodDesc){
 	   

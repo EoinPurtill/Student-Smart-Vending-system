@@ -1,19 +1,8 @@
 package payment;
 
-public abstract class Payment {
-    double value;
-    boolean confirmed;
-    
-    public boolean confirmtransaction(){
-        return false;
-    }
-    
-}
+public interface Payment {  
+    //Payment system methods
+    void ProcessPayment();  
+    void ProcessPayment(String string);  
+}  
 
-/* public interface Payment {
-
-    public void confirmtransaction();
-
-    
-    public double getValue();
-} */
