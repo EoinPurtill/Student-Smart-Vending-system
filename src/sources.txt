@@ -3,11 +3,9 @@ C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\Comman
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\CommandFactory.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\CommandInterface.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\CommandMap.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\DealBuyCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\DealCancelCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\DealCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\DealMenuCommand.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiOrderBuyCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiOrderCancelCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiOrderCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiOrderDealsCommand.java
@@ -21,9 +19,9 @@ C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\Select
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\ShowProductCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\ViewBalanceCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\ContextObject.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\DealInterceptor.java
+C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\DealLogger.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\Dispatcher.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\Interceptor.java
+C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\Logger.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\io\DAO.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\io\Validator.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\io\Writable.java

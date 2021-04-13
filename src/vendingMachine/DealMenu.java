@@ -9,6 +9,7 @@ import commands.DealCommand;
 import commands.ViewBalanceCommand;
 
 import interceptor.ContextObject;
+import interceptor.DealLogger;
 
 import java.io.IOException;
 import java.io.Console;
@@ -69,7 +70,7 @@ public class DealMenu extends Menu{
 		Deal deal = null;
 		boolean more = true;
 		while(more){
-			System.out.println("D)eals  B)uy  S)elect Deal  A)dd  V)iew Balance  U)ndo  C)ancel");
+			System.out.println("D)eals  B)uy  S)elect_Deal  A)dd  V)iew_Balance  U)ndo  C)ancel");
 			String command = in.nextLine().toUpperCase();
 			switch(command){
 				case "D":	DealCommand dc = new DealCommand(machine);
@@ -85,6 +86,11 @@ public class DealMenu extends Menu{
 															deal.getDiscount(), (ArrayList<Product>)deal.getTreats().clone(), (ArrayList<Product>)deal.getDrinks().clone(),
 															(ArrayList<Product>)deal.getSnacks().clone(), (ArrayList<Product>)deal.getFruits().clone(), (ArrayList<Product>)deal.getSandwiches().clone() );
 								deal.clearDeal();
+								
+								ContextObject dco = new ContextObject(deal);
+								DealLogger di = new DealLogger();
+								di.onDealPurchase(dco);
+
 								mementoStack.clear();
 								originatorStack.clear();
 								return returnDeal;
