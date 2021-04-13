@@ -11,7 +11,13 @@ import vendingMachine.*;
 public class VendingMachineSimulation
 { 
    //implement concrete in
-   
+   DealLogger myDealLogger = new DealLogger () {
+      public void onDealPurchase(ContextObject context) {
+      }
+   };
+
+
+
    public static void main(String[] args) throws IOException
    { 
       VendingMachine machine = VendingMachine.getInstance();

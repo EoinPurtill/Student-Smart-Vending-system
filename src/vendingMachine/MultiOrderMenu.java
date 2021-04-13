@@ -70,61 +70,62 @@ public class MultiOrderMenu extends Menu{
 			String command = in.nextLine().toUpperCase();
 
 			switch(command){
-				case "S":  		MultiOrderShowCommand mosc = new MultiOrderShowCommand(machine);
-								mosc.execute();
-								break;
+			case "S":  		MultiOrderShowCommand mosc = new MultiOrderShowCommand(machine);
+							mosc.execute();
+							break;
 
 
-				case "B":	
-                if(order.itemsAdded())
-									return order;
-								else
-									System.out.println("Order Empty!");
-								break;
+			case "B":	
+							if(order.itemsAdded()){
+								return order;
+							}
+							else
+								System.out.println("Order Empty!");
+							break;
 
-				case "A":		try
-								{
-									Product p = (Product) getChoice(machine.getProductTypes(false));
-									int orderComponentType = order.add(p);
-									if(orderComponentType < 0){
-										System.out.println("Nothing added to order");
-									}else{
-										orderValue += p.getPrice();
-										System.out.printf("%s added to order\nOrder value:  $%.2f\n", p, orderValue);
-										this.setOriginatorState(orderComponentType);
-									}
-								}
-								catch(NullPointerException except)
-								{
-									System.out.println("No Options Currently Available");
-								}
-								catch (VendingException ex)
-								{
-									System.out.println(ex.getMessage());
-								}
-								break;
-
-				case "D":		MultiOrderDealsCommand modc = new MultiOrderDealsCommand(machine, user, order, orderValue);
-								modc.execute();
-								orderValue = modc.getOrderValue();
-								int orderComponentType = modc.getOrderComponentType();
-								if(orderComponentType > 0){
+			case "A":		try
+							{
+								Product p = (Product) getChoice(machine.getProductTypes(false));
+								int orderComponentType = order.add(p);
+								if(orderComponentType < 0){
+									System.out.println("Nothing added to order");
+								}else{
+									orderValue += p.getPrice();
+									System.out.printf("%s added to order\nOrder value:  $%.2f\n", p, orderValue);
 									this.setOriginatorState(orderComponentType);
 								}
-								break;
-								
-				case "V":		ViewBalanceCommand vbc = new ViewBalanceCommand(user);
-								vbc.execute();
-								break;
+							}
+							catch(NullPointerException except)
+							{
+								System.out.println("No Options Currently Available");
+							}
+							catch (VendingException ex)
+							{
+								System.out.println(ex.getMessage());
+							}
+							break;
 
-				case "U":		undo(order);
-								orderValue = order.getPrice();
-								break;
+			case "D":		MultiOrderDealsCommand modc = new MultiOrderDealsCommand(machine, user, order, orderValue);
+							modc.execute();
+							orderValue = modc.getOrderValue();
+							int orderComponentType = modc.getOrderComponentType();
+							if(orderComponentType > 0){
+								this.setOriginatorState(orderComponentType);
+							}
+							break;
+							
+			case "V":		ViewBalanceCommand vbc = new ViewBalanceCommand(user);
+							vbc.execute();
+							break;
 
-				case "C":		MultiOrderCancelCommand mocc = new MultiOrderCancelCommand();
-								mocc.execute();
-								more = false;
-                                return null;
+			case "U":		undo(order);
+							orderValue = order.getPrice();
+							break;
+
+			case "C":		MultiOrderCancelCommand mocc = new MultiOrderCancelCommand();
+							mocc.execute();
+							more = false;
+							return null;
 
 				default:	System.out.println("Invalid input\n\n");
 			}

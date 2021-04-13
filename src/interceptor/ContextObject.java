@@ -16,6 +16,10 @@ public class ContextObject {
     public Deal getDeal() {
         return deal;
     }
+
+    public String getObj(){
+        return "Deal Context Object";
+    }
     
     //more getters and setters
 
