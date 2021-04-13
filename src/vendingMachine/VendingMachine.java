@@ -5,6 +5,7 @@ import java.io.*;
 import product.*;
 import users.Operator;
 import users.User;
+import interceptor.*;
 import io.*;
 
 
@@ -80,12 +81,11 @@ public class VendingMachine
    
 	public String buyDeal(Deal deal, User user) throws VendingException
    {
-		String output = "";
 		if( !deal.isComplete() ){
-			System.out.println("Deal is not complete!");
-			return output;
+			throw new VendingException("Deal is not complete!\n");
 		}
-		if( user.getCredit() >= deal.getPrice() ){
+		double price = deal.getPrice();
+		if( user.getCredit() >= price ){
 			for(Product treat : deal.getTreats())
 				buyProduct(treat, user);
 			for(Product drink : deal.getDrinks())
@@ -96,7 +96,8 @@ public class VendingMachine
 				buyProduct(sandwich, user);
 
 			user.increaseBalance( ( deal.getPrice() / (100 - deal.getDiscount()) ) * deal.getDiscount() );
-			return "Purchased: " + deal.getDescription() + "Total Price:  " + String.format("%.2f", deal.getPrice()) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
+			deal.clearDeal();
+			return deal.getDescription() + " Total Price:  " + String.format("$%.2f", price) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
 		}
 		else
 		{
@@ -104,8 +105,53 @@ public class VendingMachine
 		}
 	}
 
+	public String processOrder(Order order, User user) throws VendingException{
+		ArrayList<Product> itemsList = order.getSingleItems();
+		ArrayList<Deal> dealList = order.getDeals();
+
+		if(itemsList.size() + dealList.size() == 0){
+			throw new VendingException("Order is empty");
+		}
+
+		double totalPrice = 0.0;
+		for(Product prod : itemsList){
+				totalPrice += prod.getPrice();
+		}
+		double dealsPrice = 0.0;
+		for(Deal deal : dealList){
+			dealsPrice += deal.getPrice();
+		}
+		totalPrice += dealsPrice;
+		
+		if(user.getCredit() < totalPrice){
+			throw new VendingException("Not enough credit to complete order");
+		}
+
+		String orderDetails = "ORDER:\n";
+		for(Product prod : itemsList){
+			try{
+				this.buyProduct(prod, user);
+				orderDetails += "-" + prod + "\n";		
+			}catch(VendingException ex){
+				//TODO: implement memento here to restore vending machine state and user balance
+				throw new VendingException(ex.getMessage());
+			}
+		}
+		for(Deal deal : dealList){
+			try{
+				this.buyDeal(deal, user);
+				orderDetails += "-" + deal + "\n";
+			}catch(VendingException ex){
+				//TODO: implement memento here to restore vending machine state and user balance
+				throw new VendingException(ex.getMessage());
+			}
+		}
+
+		return "Price:  " + String.format("$%.2f", totalPrice) + "\nNew Balance:  " + String.format("$%.2f", user.getCredit()) + "\n";
+	}
+   
    public String addProduct(Product prod, int quant)
-   {   
+	{   
 	   String output = ""; //I added this guy to this method to collect our output 
 							//and return it, it helps with the GUI, i also changed
 							//the statement where this is called from OperatorMenu to
@@ -130,47 +176,8 @@ public class VendingMachine
 			output = "Successfully added"; 
 	   }
 	   return output;
-   }
-
-	public boolean processOrder(Order order, User user) throws VendingException{
-		ArrayList<Product> itemsList = order.getSingleItems();
-		ArrayList<Deal> dealList = order.getDeals();
-
-		if(itemsList.size() + dealList.size() == 0){
-			System.out.println("Order is empty");
-			return false;
-		}
-
-		double totalPrice = 0.0;
-		String orderDetails = "ORDER:\n";
-		for(Product prod : itemsList){
-			try{
-				this.buyProduct(prod, user);
-				totalPrice += prod.getPrice();
-				orderDetails += "-" + prod + "\n";
-			}catch(VendingException ex){
-				//TODO: implement memento here to restore vending machine state and user balance
-				throw new VendingException(ex.getMessage());
-			}
-		}
-		double dealsPrice = 0.0;
-		for(Deal deal : dealList){
-			//TODO: Stock Removal Logic
-			dealsPrice += deal.getPrice();
-			totalPrice += dealsPrice;
-			orderDetails += "-" + deal + "\n";
-		}
-		
-		if(user.getCredit() < dealsPrice){
-			//TODO: implement memento here to restore vending machine state
-			throw new VendingException("Not enough credit to complete order");
-		}
-
-		System.out.printf("ORDER COMPLETE:\nTotal Price:  $%.2f\nNew Balance:  $%.2f\n\n", totalPrice, user.getCredit());
-
-		return true;
 	}
-   
+
    public boolean containsProduct(Product p)
    {
 	   for(int i = 0; i < stock.size(); i++)
@@ -193,6 +200,7 @@ public class VendingMachine
    
    public boolean login(String id, String pass) throws NullPointerException
    {
+	    
 		for(int i = 0; i < operators.size(); i++)
 		{
 			if(operators.get(i).assertDetails(id, pass))

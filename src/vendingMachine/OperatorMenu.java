@@ -1,18 +1,26 @@
 package vendingMachine;
 
 import java.util.Scanner;
+
+import commands.OperatorAddCommand;
+
 import java.io.IOException;
 import io.*;
 import product.*;
 
 public class OperatorMenu extends Menu
 {
+	private String restockSummary;
+	private String newItemSummary;
+
 	public OperatorMenu()
 	{
 		super();
+		this.restockSummary = "";
+		this.newItemSummary = "";
 	}
 	
-	public void run(VendingMachine machine) throws IOException
+	public Object run(VendingMachine machine) throws IOException
 	{
 		boolean more = true;
 		while(more)	
@@ -40,6 +48,7 @@ public class OperatorMenu extends Menu
 							{
 								System.out.println(machine.addProduct(p, q));
 								System.out.println(p + " : " + q + " Added");
+								this.restockSummary += p.getDescription() + ": +" + q + "\n";
 							}
 						}
 						else
@@ -58,38 +67,24 @@ public class OperatorMenu extends Menu
 				}
 			}
 			else if (option.equals("A"))
-			{      
-				System.out.println("Description:");
-				String description = in.nextLine();
-				System.out.println("Price:");
-				String priceStr = in.nextLine();
-				System.out.println("Quantity:");
-				String quantityStr = in.nextLine();
-				if(Validator.verifyDouble(priceStr) && Validator.verifyInt(quantityStr))
-				{
-					double price = Double.parseDouble(priceStr); int quantity = Integer.parseInt(quantityStr);
-					if(price > 0 && quantity > 0)
-					{
-						if(!(machine.containsProduct(price, description)))
-						System.out.println(machine.addProduct(new Product(description, price), quantity));
-						else
-						System.out.println("Product Already In Vending Machine.\nPlease Select \"R)estock\" Option"); 
-					}
-					else
-					{
-						System.out.println("Invalid Input");
-					}
-				}
-				else
-				{
-					System.out.println("Invalid Input");
-				}
+			{    
+				OperatorAddCommand oac = new OperatorAddCommand(machine);
+				oac.execute();
+				this.newItemSummary += oac.getNewItemSummary();
+				
+				
 			}        
 			else if (option.equals("E"))
 			{      
 				more = false;
 			}        
 		}
+		String fullSummary = "";
+		if(!this.restockSummary.equals(""))
+			fullSummary += "Items Restocked:\n" + this.restockSummary + "\n";
+		if(!this.newItemSummary.equals(""))
+			fullSummary += "New Items:\n" + this.newItemSummary + "\n";
+		return fullSummary;
 	}
 }
 
