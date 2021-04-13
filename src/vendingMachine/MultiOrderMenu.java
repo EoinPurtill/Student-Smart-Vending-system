@@ -75,8 +75,11 @@ public class MultiOrderMenu extends Menu{
 								mosc.execute();
 								break;
 
-				case "B":		MultiOrderBuyCommand mobc = new MultiOrderBuyCommand(order);
-								mobc.execute();
+				case "B":		
+								if(order.itemsAdded())
+									return order;
+								else
+									System.out.println("Order Empty!");
 								break;
 
 				case "A":		try
