@@ -16,5 +16,7 @@ public class ContextObject {
     public Deal getDeal() {
         return deal;
     }
+    
+    //more getters and setters
 
 }

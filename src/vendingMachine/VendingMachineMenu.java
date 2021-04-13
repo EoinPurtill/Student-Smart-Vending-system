@@ -65,7 +65,7 @@ public class VendingMachineMenu extends Menu
 
 				CommandFactory cf = new CommandFactory();
 
-				System.out.println("S)how Products  M)ulti-order  D)eals  B)uy  V)iew Balance  O)perator Functions  P)roduct Types Q)uit");
+				System.out.println("S)how Products  M)ulti-order  D)eals  B)uy  V)iew Balance  O)perator Functions  P)roduct Types  Q)uit");
 				String command = in.nextLine().toUpperCase();
 
 				if (command.equals("S"))

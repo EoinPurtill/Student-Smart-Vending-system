@@ -9,6 +9,14 @@ public class ProductDescriptorFacade {
     private Treat treat;
 
     
+    //tie in product factory
+    //Parameterise the constructor to reference business tier
+    //sonarqube
+    //jdepends plugin to compute martin's metric.
+    //documentation to be on point!
+    //team contribution documentd 
+
+
     public ProductDescriptorFacade(){
         drink       = new Drink("Drink", 0.0);
         fruit       = new Fruit("Fruit", 0.0);
