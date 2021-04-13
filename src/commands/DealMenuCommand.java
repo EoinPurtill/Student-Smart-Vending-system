@@ -7,7 +7,7 @@ import users.*;
 import vendingMachine.*;
 import vendingMachine.VendingMachine;
 
-public class DealMenuCommand implements Command{
+public class DealMenuCommand extends Command implements CommandInterface{
 
     VendingMachine machine;
     User user;

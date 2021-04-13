@@ -9,6 +9,8 @@ import commands.DealCancelCommand;
 import commands.DealCommand;
 import commands.ViewBalanceCommand;
 
+import interceptor.ContextObject;
+
 import java.io.IOException;
 import java.io.Console;
 import users.Operator;
@@ -61,7 +63,7 @@ public class DealMenu extends Menu{
 		return originator.getValue();
 	}
    
-    //TODO: add UNDO functionality to include memento
+
 	@SuppressWarnings("unchecked")
 	public Object run(VendingMachine machine) throws IOException, NullPointerException{
 		double orderValue = 0.0;
@@ -75,8 +77,20 @@ public class DealMenu extends Menu{
 							dc.execute();
 							break;
 
-				case "B":	DealBuyCommand dbc = new DealBuyCommand(deal, mementoStack, originatorStack);
-							dbc.execute();
+				case "B":	if(deal == null){
+								System.out.println("No deal selected!\n");
+							}else if(!deal.isComplete()){
+								System.out.println("Deal not complete!\n");
+							}else{
+								Deal returnDeal = new Deal( deal.getDescription(), deal.getAmountTreats(), deal.getAmountDrinks(), deal.getAmountSnacks(), deal.getAmountFruit(), deal.getAmountSandwiches(),
+															deal.getDiscount(), (ArrayList<Product>)deal.getTreats().clone(), (ArrayList<Product>)deal.getDrinks().clone(),
+															(ArrayList<Product>)deal.getSnacks().clone(), (ArrayList<Product>)deal.getFruits().clone(), (ArrayList<Product>)deal.getSandwiches().clone() );
+								deal.clearDeal();
+								mementoStack.clear();
+								originatorStack.clear();
+								return returnDeal;
+							};
+							
 							break;
 
 				case "S":	if(deal!=null){

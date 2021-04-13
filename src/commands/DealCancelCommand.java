@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import product.Deal;
 
-public class DealCancelCommand implements Command{
+public class DealCancelCommand extends Command implements CommandInterface{
 
     Deal deal;
     Stack mementoStack;

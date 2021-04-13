@@ -7,7 +7,7 @@ import undo.DealMenuOriginator;
 import vendingMachine.DealMenu;
 import vendingMachine.VendingMachine;
 
-public class SelectDealCommand implements Command{
+public class SelectDealCommand extends Command implements CommandInterface{
 
     VendingMachine machine;
     Deal deal;

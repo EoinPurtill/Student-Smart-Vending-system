@@ -2,7 +2,7 @@ package commands;
 
 import product.Order;
 
-public class MultiOrderBuyCommand implements Command {
+public class MultiOrderBuyCommand extends Command implements CommandInterface{
 
     Order order;
 
@@ -15,7 +15,7 @@ public class MultiOrderBuyCommand implements Command {
         if(order.itemsAdded())
             returnOrder(order);
         else
-            System.out.println("Order Empty!");;
+            System.out.println("Order Empty!");
     }
    
     public Order returnOrder(Order order){

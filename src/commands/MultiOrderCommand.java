@@ -6,11 +6,12 @@ import product.*;
 import io.*;
 import users.*;
 
-public class MultiOrderCommand implements Command {
+public class MultiOrderCommand extends Command implements CommandInterface{
     
     VendingMachine machine;
     User user;
     private String sessionSummary;
+
 
     public MultiOrderCommand(VendingMachine machine, User user){
 

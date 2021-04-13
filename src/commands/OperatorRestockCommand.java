@@ -1,6 +1,6 @@
 package commands;
 
-public class OperatorRestockCommand implements Command {
+public class OperatorRestockCommand extends Command implements CommandInterface{
 
     @Override
     public void execute() {

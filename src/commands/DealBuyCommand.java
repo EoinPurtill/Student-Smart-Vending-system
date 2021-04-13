@@ -6,7 +6,7 @@ import java.util.Stack;
 import product.Deal;
 import product.Product;
 
-public class DealBuyCommand implements Command{
+public class DealBuyCommand extends Command implements CommandInterface{
 
     Deal deal;
     Stack mementoStack;

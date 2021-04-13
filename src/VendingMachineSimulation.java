@@ -1,4 +1,7 @@
 import java.io.IOException;
+
+import interceptor.*;
+
 import java.io.*;
 import vendingMachine.*;
 
@@ -7,6 +10,8 @@ import vendingMachine.*;
 */
 public class VendingMachineSimulation
 { 
+
+   
    public static void main(String[] args) throws IOException
    { 
       VendingMachine machine = VendingMachine.getInstance();

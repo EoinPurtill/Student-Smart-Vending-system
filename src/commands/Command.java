@@ -1,6 +1,5 @@
 package commands;
 
-interface Command {
-    public void execute();
+public class Command {
+    
 }
-

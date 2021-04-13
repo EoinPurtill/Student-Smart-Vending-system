@@ -2,7 +2,7 @@ package commands;
 
 import users.User;
 
-public class ViewBalanceCommand implements Command{
+public class ViewBalanceCommand extends Command implements CommandInterface{
     User user;
 
     public ViewBalanceCommand(User user){

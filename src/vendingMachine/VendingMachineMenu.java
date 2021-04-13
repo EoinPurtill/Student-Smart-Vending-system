@@ -2,6 +2,8 @@ package vendingMachine;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.IOException;
 import java.io.Console;
 import users.Operator;
@@ -20,7 +22,6 @@ public class VendingMachineMenu extends Menu
 
 	private OperatorMenu opMenu;
 	private String sessionSummary;
-
 	private VendingMachineMenu(){
 		super();
 		
@@ -31,7 +32,7 @@ public class VendingMachineMenu extends Menu
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static VendingMachineMenu getInstance(){
 		return instance;
 	}
@@ -43,7 +44,7 @@ public class VendingMachineMenu extends Menu
 	public Object run(VendingMachine machine) throws IOException, NullPointerException{
 		boolean continueSim = true;
 		boolean more = false;
-
+		
 		while(continueSim){
 			User user = null;
 			System.out.println("Please present student ID card(Enter Student ID Number)");
@@ -61,24 +62,27 @@ public class VendingMachineMenu extends Menu
 			}			
 				
 			while (more){ 
-				System.out.println("S)how Products  M)ulti-order  D)eals  B)uy  V)iew Balance  O)perator Functions  Q)uit");
+
+				CommandFactory cf = new CommandFactory();
+
+				System.out.println("S)how Products  M)ulti-order  D)eals  B)uy  V)iew Balance  O)perator Functions  P)roduct Types Q)uit");
 				String command = in.nextLine().toUpperCase();
 
 				if (command.equals("S"))
 				{  
-					ShowProductCommand spc = new ShowProductCommand(machine);
+					ShowProductCommand spc = (ShowProductCommand) cf.getCommand("SHOW_PRODUCT", machine);
 					spc.execute();	
 				}
 				else if (command.equals("M")) //allows user to create order
 				{
-					MultiOrderCommand moc = new MultiOrderCommand(machine, user);
+					MultiOrderCommand moc = (MultiOrderCommand) cf.getCommand("MULTI_ORDER", machine, user);
 					moc.execute();
 					this.sessionSummary += moc.getSessionSummary();
 
 				}
 				else if (command.equals("D")) //allows user to create order from offers
 				{ 
-					DealMenuCommand dc = new DealMenuCommand(machine, user);
+					DealMenuCommand dc = (DealMenuCommand) cf.getCommand("DEAL_MENU",machine, user);
 					dc.execute();
 					this.sessionSummary += dc.getSessionSummary();
 				}
@@ -91,7 +95,7 @@ public class VendingMachineMenu extends Menu
 					if(machine.getProductTypes(false).length != 0){
 						try{
 							Product p = (Product) getChoice(machine.getProductTypes(false));
-							String output = machine.buyProduct(p, user,);
+							String output = machine.buyProduct(p, user);
 							System.out.println(output);
 							DAO.stockToFile("Stock.txt", machine.getStock());
 							DAO.usersToFile("Users.txt", machine.getUsers());
@@ -113,7 +117,7 @@ public class VendingMachineMenu extends Menu
 				}
 				else if (command.equals("V"))
 				{
-					ViewBalanceCommand vbc = new ViewBalanceCommand(user);
+					ViewBalanceCommand vbc = (ViewBalanceCommand) cf.getCommand("VIEW_BALANCE", machine, user);
 					vbc.execute();
 				}
 				else if (command.equals("O"))
@@ -143,9 +147,14 @@ public class VendingMachineMenu extends Menu
 						System.out.println("LOGIN FAILED\nReturning to menu...");
 					}
 				}
+				else if (command.equals("P"))
+				{
+					ProductTypeCommand ptc = (ProductTypeCommand) cf.getCommand("PRODUCT_TYPES");
+					ptc.execute();
+				}
 				else if (command.equals("Q"))
 				{
-					QuitCommand qc = new QuitCommand(machine);
+					QuitCommand qc = (QuitCommand) cf.getCommand("QUIT", machine);
 					qc.execute();
 					more = false;			
 				}

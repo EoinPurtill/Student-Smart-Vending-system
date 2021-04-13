@@ -1,6 +1,6 @@
 package commands;
 
-public class MultiOrderCancelCommand implements Command {
+public class MultiOrderCancelCommand extends Command implements CommandInterface{
 
     @Override
     public void execute() {
