@@ -1,8 +1,12 @@
 package payment;
 
-public interface Payment {  
-    //Payment system methods
-    void ProcessPayment();  
-    void ProcessPayment(String string);  
-}  
+import product.Product;
+import users.User;
 
+public abstract class Payment {
+
+    public Paymentsystem payment; // instance
+
+    public abstract void makePayment(Product prod, User user); // method responsible to makePayment
+
+}

@@ -41,7 +41,7 @@ public class VendingMachineMenu extends Menu
 	*/
 	public Object run(VendingMachine machine) throws IOException, NullPointerException{
 		boolean continueSim = true;
-		boolean more = false;
+		boolean more = true;
 
 		while(continueSim){
 			User user = null;

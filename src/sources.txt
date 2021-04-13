@@ -2,9 +2,10 @@ C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-S
 C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\io\DAO.java
 C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\io\Validator.java
 C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\io\Writable.java
+C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\payment\BalancePayment.java
 C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\payment\Gateway.java
 C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\payment\Payment.java
-C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\payment\Paymenthandler.java
+C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\payment\Paymentsystem.java
 C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\product\Deal.java
 C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\product\Drink.java
 C:\Users\User\Desktop\Master-Folder\Git-Repositories\newvendingmachine\Student-Smart-Vending-system\src\product\Fruit.java
