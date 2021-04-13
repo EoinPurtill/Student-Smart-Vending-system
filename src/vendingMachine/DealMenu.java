@@ -8,6 +8,8 @@ import commands.DealCancelCommand;
 import commands.DealCommand;
 import commands.ViewBalanceCommand;
 
+import interceptor.ContextObject;
+
 import java.io.IOException;
 import java.io.Console;
 import users.Operator;
@@ -60,7 +62,7 @@ public class DealMenu extends Menu{
 		return originator.getValue();
 	}
    
-    //TODO: add UNDO functionality to include memento
+
 	@SuppressWarnings("unchecked")
 	public Object run(VendingMachine machine) throws IOException, NullPointerException{
 		double orderValue = 0.0;
@@ -86,7 +88,9 @@ public class DealMenu extends Menu{
 								mementoStack.clear();
 								originatorStack.clear();
 								return returnDeal;
+
 							}
+
 							break;
 
 				case "S":	if(deal!=null){

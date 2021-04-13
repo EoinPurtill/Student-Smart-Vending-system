@@ -5,7 +5,7 @@ import java.io.IOException;
 import io.DAO;
 import vendingMachine.VendingMachine;
 
-public class QuitCommand implements Command{
+public class QuitCommand extends Command implements CommandInterface{
 
     VendingMachine machine;
 

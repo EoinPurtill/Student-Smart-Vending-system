@@ -74,7 +74,9 @@ public class MultiOrderMenu extends Menu{
 								mosc.execute();
 								break;
 
-				case "B":		if(order.itemsAdded())
+
+				case "B":	
+                if(order.itemsAdded())
 									return order;
 								else
 									System.out.println("Order Empty!");

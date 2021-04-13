@@ -7,7 +7,7 @@ import java.util.Scanner;
 import vendingMachine.OperatorMenu;
 import vendingMachine.VendingMachine;
 
-public class OperatorFunctionsCommand implements Command{
+public class OperatorFunctionsCommand extends Command implements CommandInterface{
 
     VendingMachine machine;
     private OperatorMenu opMenu;

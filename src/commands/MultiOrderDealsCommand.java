@@ -9,7 +9,7 @@ import vendingMachine.DealMenu;
 import vendingMachine.VendingException;
 import vendingMachine.VendingMachine;
 
-public class MultiOrderDealsCommand implements Command {
+public class MultiOrderDealsCommand extends Command implements CommandInterface{
 
     VendingMachine machine;
     User user;

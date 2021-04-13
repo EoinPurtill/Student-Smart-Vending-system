@@ -6,7 +6,7 @@ import io.Validator;
 import product.Product;
 import vendingMachine.VendingMachine;
 
-public class OperatorAddCommand implements Command{
+public class OperatorAddCommand extends Command implements CommandInterface{
 
     VendingMachine machine;
     private String newItemSummary;

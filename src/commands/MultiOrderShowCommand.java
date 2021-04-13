@@ -3,7 +3,7 @@ package commands;
 import product.Product;
 import vendingMachine.VendingMachine;
 
-public class MultiOrderShowCommand implements Command {
+public class MultiOrderShowCommand extends Command implements CommandInterface{
 
     VendingMachine machine;
     

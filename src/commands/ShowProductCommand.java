@@ -3,7 +3,7 @@ package commands;
 import vendingMachine.*;
 import product.*;
 
-public class ShowProductCommand implements Command{
+public class ShowProductCommand extends Command implements CommandInterface{
     
     VendingMachine machine;
 
