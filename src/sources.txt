@@ -3,11 +3,9 @@ C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\Comman
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\CommandFactory.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\CommandInterface.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\CommandMap.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\DealBuyCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\DealCancelCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\DealCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\DealMenuCommand.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiOrderBuyCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiOrderCancelCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiOrderCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiOrderDealsCommand.java
