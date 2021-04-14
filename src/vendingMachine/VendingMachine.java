@@ -26,14 +26,15 @@ public class VendingMachine
    private VendingMachine() 
    { 
 	   try{
+
 		   readerFacade rf = new readerFacade();
 		   stock = rf.getStock();
 		   operators = rf.getOperators();
 		   users= rf.getUsers();
 		   deals = rf.getDeals();
+
 	   }catch (IOException ex) {
 		   ex.printStackTrace();
-
 	   }
    }
    
@@ -169,7 +170,7 @@ public class VendingMachine
 			   if(stock.get(i).add(quant))
 				   output = "Successfully added"; 
 			   else
-					output = "Add Unsuccessful"; 
+			       output = "Add Unsuccessful"; 
 			   go = false;
 		   }
 		   i++;
@@ -197,7 +198,7 @@ public class VendingMachine
 	   for(int i = 0; i < stock.size(); i++)
 	   {
 		    if(stock.get(i).compareProducts(price, desc) == 0)
-			   return true;
+			    return true;
 	   }
 	   return false;
    }
@@ -225,11 +226,6 @@ public class VendingMachine
 			}
 		}
 		return null;
-   }
-
-   public void trackSales(String prodDesc){
-	   
-
    }
    
    public ArrayList<LineItem> getStock()

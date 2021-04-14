@@ -1,12 +1,14 @@
 package commands;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import interceptor.LogContextObject;
+import interceptor.SystemLogger;
 import users.User;
 import vendingMachine.VendingMachine;
 
 public class CommandFactory {
+
+    LogContextObject loc = new LogContextObject();	
+	SystemLogger sysLog = new SystemLogger();
     	
    //use getCommand method to get object of type Command 
     public Command getCommand(String commandType, VendingMachine machine, User user){
@@ -19,9 +21,13 @@ public class CommandFactory {
         } else if(commandType.equalsIgnoreCase("DEAL_MENU")){
             return new DealMenuCommand(machine, user);
 
-        } 
+        }else {
+            loc.setMessage("Command type: " + commandType + " is inappropriate for this argument list" );
+            sysLog.onLogEvent(loc);
+            return null;
+        }
 
-        return null;
+        
     }
 
     public Command getCommand(String commandType, VendingMachine machine){
@@ -34,8 +40,11 @@ public class CommandFactory {
         } else if(commandType.equalsIgnoreCase("QUIT")){
             return new QuitCommand(machine);
         } 
-
-        return null;
+        else {
+            loc.setMessage("Command type: " + commandType + " is inappropriate for this argument list" );
+            sysLog.onLogEvent(loc);
+            return null;
+        }
 
     }
 
@@ -45,20 +54,11 @@ public class CommandFactory {
 
         } else if(commandType.equalsIgnoreCase("VIEW_BALANCE")){
             return new ViewBalanceCommand(user);
-        }
-
-        return null;
-    }
-
-    public Command getCommand(String commandType){
-        if(commandType == null){
+        }else {
+            loc.setMessage("Command type: " + commandType + " is inappropriate for this argument list" );
+            sysLog.onLogEvent(loc);
             return null;
-        
-        } else if(commandType.equalsIgnoreCase("PRODUCT_TYPES")){
-            return new ProductTypeCommand();
         }
-
-        return null;
     }
 
 }

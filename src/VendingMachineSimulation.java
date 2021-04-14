@@ -12,7 +12,7 @@ public class VendingMachineSimulation
 { 
    //implement concrete in
    DealLogger myDealLogger = new DealLogger () {
-      public void onDealPurchase(ContextObject context) {
+      public void onLogEvent(DealContextObject context) {
       }
    };
 
