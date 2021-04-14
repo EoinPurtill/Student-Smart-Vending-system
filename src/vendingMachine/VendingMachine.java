@@ -20,7 +20,7 @@ public class VendingMachine {
 	private ArrayList<User> users;
 	private ArrayList<Deal> deals;
 
-	private VendingMachine() {
+	public VendingMachine() {
 		try {
 			stock = DAO.stockReader("Stock.txt");
 			operators = DAO.operatorReader("Operators.txt");
@@ -69,11 +69,9 @@ public class VendingMachine {
 				}
 			}
 			//Gateway
-			Payment order1 = new BalancePayment();  
-        	order1.payment = new Gateway();  
-        	order1.makePayment(prod, user);
-			
-			
+			Payment order = new BalancePayment();  
+        	order.payment = new Gateway();  
+        	order.makePayment(prod, user);
 		} else {
 			throw new VendingException("Not enough credit!\n");
 		}

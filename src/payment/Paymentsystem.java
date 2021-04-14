@@ -1,9 +1,10 @@
 package payment;
 
+import product.Product;
+import users.User;
+
 //Interface  
 public interface Paymentsystem {
-    // Method
-    void ProcessPayment();
-
-    void ProcessPayment(String string);
+    // Singular method to be overridden
+    void ProcessPayment(User user, Product prod);
 }
