@@ -54,6 +54,7 @@ public class DAO
 		
 		return list;
 	}
+
 	
 	public static ArrayList<Operator> operatorReader(String fileName) throws IOException
 	{

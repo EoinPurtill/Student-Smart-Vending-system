@@ -1,13 +1,13 @@
 package vendingMachine;
 
-import java.util.Scanner;
-import java.util.ArrayList;
 import java.io.IOException;
 import java.io.Console;
-import users.Operator;
 import users.User;
 import product.*;
 import io.*;
+import commands.*;
+import interceptor.LogContextObject;
+import interceptor.SystemLogger;
 
 /**
  * A menu from the vending machine.
@@ -18,8 +18,8 @@ public class VendingMachineMenu extends Menu {
 
 	private OperatorMenu opMenu;
 	private String sessionSummary;
-
-	private VendingMachineMenu() {
+	
+	private VendingMachineMenu(){
 		super();
 
 		try {
@@ -30,10 +30,14 @@ public class VendingMachineMenu extends Menu {
 		}
 	}
 
-	public static VendingMachineMenu getInstance() {
+	public static VendingMachineMenu getInstance(){
 		return instance;
 	}
 
+	LogContextObject loc = new LogContextObject();	
+	SystemLogger sysLog = new SystemLogger();
+	CommandFactory cf = new CommandFactory();
+   
 	/**
 	 * Runs the vending machine system.
 	 * 
@@ -42,11 +46,13 @@ public class VendingMachineMenu extends Menu {
 	public Object run(VendingMachine machine) throws IOException, NullPointerException {
 		boolean continueSim = true;
 		boolean more = false;
-
-		while (continueSim) {
+		
+		while(continueSim){
 			User user = null;
-			System.out.println("Please present student ID card(Enter Student ID Number)");
-			System.out.println("Enter ~ to exit");
+
+			loc.setMessage("Please present student ID card(Enter Student ID Number)\nEnter ~ to exit");
+			sysLog.onLogEvent(loc);
+
 			String enteredID = in.nextLine().toUpperCase();
 			if (enteredID.equals("~")) {
 				more = false;
@@ -54,106 +60,116 @@ public class VendingMachineMenu extends Menu {
 			} else {
 				user = machine.userLogin(enteredID);
 				more = (user != null);
-				if (!more)
-					System.out.println("Card not recognized\n");
-			}
+				if(!more){
+					loc.setMessage("Card not recognized\n");
+					sysLog.onLogEvent(loc);
+				}
+			}			
+				
+			while (more){ 
 
-			while (more) {
-				System.out.println(
-						"S)how Products  M)ulti-order  D)eals  B)uy  V)iew Balance  O)perator Functions  Q)uit");
+				loc.setMessage("S)how_Products  M)ulti-order  D)eals  B)uy  V)iew_Balance  O)perator_Functions  P)roduct_Types  Q)uit");
+				sysLog.onLogEvent(loc);
 				String command = in.nextLine().toUpperCase();
 
-				if (command.equals("S")) {
-					if (machine.getProductTypes(false).length == 0)
-						System.out.println("No Options Currently Available");
-					else {
-						/*
-						 * getProductTypes() returns an array of products that doesn't contain
-						 * duplicates
-						 */
-						for (Product p : machine.getProductTypes(false))
-							System.out.println(p);
-					}
+				if (command.equals("S"))
+				{  
+					ShowProductCommand spc = (ShowProductCommand) cf.getCommand("SHOW_PRODUCT", machine);
+					spc.execute();	
+				}
+				else if (command.equals("M")) //allows user to create order
+				{
+					MultiOrderCommand moc = (MultiOrderCommand) cf.getCommand("MULTI_ORDER", machine, user);
+					moc.execute();
+					this.sessionSummary += moc.getSessionSummary();
 
-				} else if (command.equals("M")) // allows user to create order
-				{
-					MultiOrderMenu multiMenu = MultiOrderMenu.getInstance(user);
-					Order order = (Order) multiMenu.run(machine);
-					try {
-						String orderSummary = "ORDER:\n" + order.toString() + "\n";
-						System.out.println(machine.processOrder(order, user));
-						DAO.stockToFile("Stock.txt", machine.getStock());
-						DAO.usersToFile("Users.txt", machine.getUsers());
-						this.sessionSummary += orderSummary + "\n" + "\n";
-					} catch (VendingException ex) {
-						System.out.println(ex.getMessage());
-					} catch (NullPointerException ex) {
-						System.out.println("Nothing Added to Order\n");
-					}
-				} else if (command.equals("D")) // allows user to create order from offers
-				{
-					DealMenu dealMenu = DealMenu.getInstance(user);
-					Deal deal = (Deal) dealMenu.run(machine);
-					if (deal != null) {
-						try {
-							String dealDescription = deal.getDescription();
-							double dealPrice = deal.getPrice();
-							String msg = machine.buyDeal(deal, user);
-							System.out.println("Purchased: " + msg);
-							deal.clearDeal();
-							DAO.stockToFile("Stock.txt", machine.getStock());
-							DAO.usersToFile("Users.txt", machine.getUsers());
-							this.sessionSummary += dealDescription + ": $" + String.format("%.2f", dealPrice) + "\n"
-									+ "\n";
-						} catch (VendingException ex) {
-							System.out.println(ex.getMessage());
-						}
-					}
-				} else if (command.equals("B")) {
-					if (machine.getProductTypes(false).length != 0) {
-						try {
+				}
+				else if (command.equals("D")) //allows user to create order from offers
+				{ 
+					DealMenuCommand dc = (DealMenuCommand) cf.getCommand("DEAL_MENU",machine, user);
+					dc.execute();
+					this.sessionSummary += dc.getSessionSummary();
+				}
+				else if (command.equals("B")) 
+				{              
+					if(machine.getProductTypes(false).length != 0){
+						try{
 							Product p = (Product) getChoice(machine.getProductTypes(false));
 							String output = machine.buyProduct(p, user);
-							System.out.println(output);
+							loc.setMessage(output);
+							sysLog.onLogEvent(loc);
 							DAO.stockToFile("Stock.txt", machine.getStock());
 							DAO.usersToFile("Users.txt", machine.getUsers());
-							this.sessionSummary += p.getDescription() + ": $" + String.format("%.2f", p.getPrice())
-									+ "\n";
-						} catch (NullPointerException except) {
-							System.out.println("No Options Currently Available");
-						} catch (VendingException ex) {
-							System.out.println(ex.getMessage());
+							sessionSummary += p.getDescription() + ": $" + String.format("%.2f", p.getPrice()) + "\n";
+						}	
+						catch(NullPointerException except){
+							loc.setMessage("No Options Currently Available");
+							sysLog.onLogEvent(loc);
+							
 						}
-					} else {
-						System.out.println("No Options Currently Available");
+						catch (VendingException ex){
+							loc.setMessage(ex.getMessage());
+							sysLog.onLogEvent(loc);
+						}
+						catch (IOException ex){
+							loc.setMessage("IO Exception caught");
+							sysLog.onLogEvent(loc);
+							
+						}
 					}
-				} else if (command.equals("V")) {
-					System.out.printf("Balance:  $%.2f\n", user.getCredit());
-				} else if (command.equals("O")) {
-					Console con = System.console();
-					String pass = "";
-					System.out.println("Enter Operator ID:");
-					String id = in.nextLine();
-					System.out.println("Enter Password:");
-					char[] passArray = con.readPassword();
-					for (char c : passArray)
-						pass += c;
+					else{
+						loc.setMessage("No Options Currently Available");
+						sysLog.onLogEvent(loc);
+					}
+				}
+				else if (command.equals("V"))
+				{
+					ViewBalanceCommand vbc = (ViewBalanceCommand) cf.getCommand("VIEW_BALANCE", machine, user);
+					
+					if(vbc != null){
+						vbc.execute();
+					}
+				}
+				else if (command.equals("O"))
+				{  		
 
-					try {
-						if (machine.login(id, pass)) {
-							String opSummary = (String) opMenu.run(machine);
-							System.out.println(opSummary);
-						} else {
-							System.out.println("LOGIN FAILED\nReturning to menu...");
+					Console con = System.console(); String pass = "";
+					loc.setMessage("Enter Operator ID:");
+					sysLog.onLogEvent(loc);
+					String id = in.nextLine();
+
+					loc.setMessage("Enter Password:");
+					sysLog.onLogEvent(loc);
+					char[] passArray = con.readPassword();
+
+					for(char c : passArray)
+						pass += c;
+					
+					try
+					{
+						if(machine.login(id, pass))
+						{
+							String opSummary = (String)opMenu.run(machine);
+							loc.setMessage(opSummary);
+							sysLog.onLogEvent(loc);
 						}
-					} catch (NullPointerException ex) {
-						System.out.println("LOGIN FAILED\nReturning to menu...");
+						else
+						{
+							loc.setMessage("LOGIN FAILED\nReturning to menu...");
+							sysLog.onLogEvent(loc);
+						}
 					}
-				} else if (command.equals("Q")) {
-					System.out.println("Returning to home screen\n");
-					DAO.stockToFile("Stock.txt", machine.getStock());
-					DAO.usersToFile("Users.txt", machine.getUsers());
-					more = false;
+					catch(NullPointerException ex)
+					{
+						loc.setMessage("LOGIN FAILED\nReturning to menu...");
+						sysLog.onLogEvent(loc);
+					}
+				}
+				else if (command.equals("Q"))
+				{
+					QuitCommand qc = (QuitCommand) cf.getCommand("QUIT", machine);
+					qc.execute();
+					more = false;			
 				}
 			}
 		}

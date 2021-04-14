@@ -1,24 +1,32 @@
 package vendingMachine;
 
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Stack;
+
+import commands.DealCommand;
+import commands.ViewBalanceCommand;
+
+import interceptor.LogContextObject;
+import interceptor.SystemLogger;
+
 import java.io.IOException;
-import java.io.Console;
-import users.Operator;
+
+
 import users.User;
 import product.*;
 import undo.DealMenuMemento;
 import undo.DealMenuOriginator;
 import undo.MenuMemento;
-import undo.MenuOriginator;
-import io.*;
+
 
 public class DealMenu extends Menu{
     private static DealMenu instance = new DealMenu();
     private static Stack mementoStack = new Stack<>(), originatorStack = new Stack<>();
 	private static DealMenuOriginator originator = new DealMenuOriginator();
     private static User user;
+
+	static LogContextObject loc = new LogContextObject();
+	static SystemLogger sysLog = new SystemLogger();
 
     private DealMenu(){
 		super();
@@ -29,22 +37,24 @@ public class DealMenu extends Menu{
 		return instance;
 	}
 
-	public void setOriginator(DealMenuOriginator originator_){
+	public static void setOriginator(DealMenuOriginator originator_){
 		originator = originator_;
 	}
 
-	public void undo(Deal deal){
-		if(mementoStack.size() > 0 && originatorStack.size() > 0){
-			System.out.println( deal.removeItem( ((Integer)((DealMenuMemento)mementoStack.peek()).getState()).intValue() ) );
+	public static void undo(Deal deal){
+		if(!mementoStack.isEmpty() && !originatorStack.isEmpty()){
+			loc.setMessage(deal.removeItem( ((Integer)((DealMenuMemento)mementoStack.peek()).getState()).intValue() ));
+			sysLog.onLogEvent(loc);
 			originator = (DealMenuOriginator)originatorStack.pop();
 			originator.restore((MenuMemento)mementoStack.pop());
 		}else{
-			System.out.println("No items to remove!");
+			loc.setMessage("No items to remove!");
+			sysLog.onLogEvent(loc);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setOriginatorState(int state){
+	public static void setOriginatorState(int state){
 		originator.setValue(state);
 		mementoStack.push(originator.createMemento());
 		originatorStack.push(originator);
@@ -55,37 +65,46 @@ public class DealMenu extends Menu{
 		return originator.getValue();
 	}
    
-    //TODO: add UNDO functionality to include memento
+
 	@SuppressWarnings("unchecked")
 	public Object run(VendingMachine machine) throws IOException, NullPointerException{
-		double orderValue = 0.0;
+
 		Deal deal = null;
 		boolean more = true;
+		String noDeal = "no deal selected\n";
+
 		while(more){
-			System.out.println("D)eals  B)uy  S)elect Deal  A)dd  V)iew Balance  U)ndo  C)ancel");
+			loc.setMessage("D)eals  B)uy  S)elect_Deal  A)dd  V)iew_Balance  U)ndo  C)ancel");
+			sysLog.onLogEvent(loc);
+
 			String command = in.nextLine().toUpperCase();
 			switch(command){
-				case "D":	for(Deal d : machine.getDeals())
-								System.out.println(d);
+				case "D":	DealCommand dc = new DealCommand(machine);
+							dc.execute();
 							break;
 
 				case "B":	if(deal == null){
-								System.out.println("No deal selected!\n");
+								loc.setMessage(noDeal);
+								sysLog.onLogEvent(loc);
+
 							}else if(!deal.isComplete()){
-								System.out.println("Deal not complete!\n");
+								loc.setMessage("Deal not complete!\n");
+								sysLog.onLogEvent(loc);
 							}else{
 								Deal returnDeal = new Deal( deal.getDescription(), deal.getAmountTreats(), deal.getAmountDrinks(), deal.getAmountSnacks(), deal.getAmountFruit(), deal.getAmountSandwiches(),
 															deal.getDiscount(), (ArrayList<Product>)deal.getTreats().clone(), (ArrayList<Product>)deal.getDrinks().clone(),
 															(ArrayList<Product>)deal.getSnacks().clone(), (ArrayList<Product>)deal.getFruits().clone(), (ArrayList<Product>)deal.getSandwiches().clone() );
 								deal.clearDeal();
-                                mementoStack.clear();
-                                originatorStack.clear();
+								
+								mementoStack.clear();
+								originatorStack.clear();
 								return returnDeal;
 							}
 							break;
 
-				case "S":	if(deal!=null)
+				case "S":	if(deal!=null){
 								deal.clearDeal();
+							}
 							originatorStack.clear();
 							mementoStack.clear();
 							originator = new DealMenuOriginator();
@@ -93,49 +112,57 @@ public class DealMenu extends Menu{
 							break;
 
 				case "A":	if(deal == null){
-								System.out.println("No deal selected!\n");
+								loc.setMessage(noDeal);
+								sysLog.onLogEvent(loc);
 							} else {
 								try
 								{
 									Product p = (Product) getChoice(machine.getProductTypes(false));
 									int itemType = deal.addItem(p);
 									if(itemType < 0){
-										System.out.println("Nothing added to order");
+										loc.setMessage("Nothing added to order");
+										sysLog.onLogEvent(loc);
 									}else{
+										
 										System.out.printf("%s added to deal\n", p.getDescription());
 										this.setOriginatorState(itemType);
 									}
 								}
 								catch(NullPointerException except)
 								{
-									System.out.println("No Options Currently Available");
+									loc.setMessage("No Options Currently Available");
+									sysLog.onLogEvent(loc);
 								}
 								catch (VendingException ex)
 								{
-									System.out.println(ex.getMessage());
+									loc.setMessage(ex.getMessage());
+									sysLog.onLogEvent(loc);
 								}
 							}
 							break;
 				
-				case "V":	System.out.printf("Balance:  $%.2f\n", user.getCredit());
+				case "V":	ViewBalanceCommand vbc = new ViewBalanceCommand(user);
+							vbc.execute();
 							break;
 
 				case "U":	if(deal != null){
 								undo(deal);
 							}else{
-								System.out.println("No deal selected!\n");
+								loc.setMessage(noDeal);
+								sysLog.onLogEvent(loc);
 							}
 							break;
-
-				case "C":	System.out.println("Returning to previous menu\n");
-							deal.clearDeal();
+				case "C":	loc.setMessage("Returning to previous menu\n");
+							sysLog.onLogEvent(loc);
+							if(deal != null)
+								deal.clearDeal();
 							deal = null;
 							more = false;
-                            mementoStack.clear();
-                            originatorStack.clear();
 							break;
-
-				default:	System.out.println("Invalid input\n\n"); break;
+							
+				default:	loc.setMessage("Invalid input\n\n"); 
+							sysLog.onLogEvent(loc);
+							break;
 			}
 		}
         mementoStack.clear();
