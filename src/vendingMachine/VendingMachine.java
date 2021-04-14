@@ -1,6 +1,9 @@
 package vendingMachine;
 
 import java.util.ArrayList;
+
+import facade.readerFacade;
+
 import java.io.*;
 import product.*;
 import users.Operator;
@@ -23,10 +26,11 @@ public class VendingMachine
    private VendingMachine() 
    { 
 	   try{
-		  stock = DAO.stockReader("Stock.txt");
-		  operators = DAO.operatorReader("Operators.txt");
-		  users = DAO.userReader("Users.txt");
-		  deals = DAO.dealReader("Deals.txt");
+		   readerFacade rf = new readerFacade();
+		   stock = rf.getStock();
+		   operators = rf.getOperators();
+		   users= rf.getUsers();
+		   deals = rf.getDeals();
 	   }catch (IOException ex) {
 		   ex.printStackTrace();
 
