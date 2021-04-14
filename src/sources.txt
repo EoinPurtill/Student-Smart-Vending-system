@@ -13,7 +13,6 @@ C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\MultiO
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\OperatorAddCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\OperatorFunctionsCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\OperatorRestockCommand.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\ProductTypeCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\QuitCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\SelectDealCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\ShowProductCommand.java
@@ -35,7 +34,6 @@ C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\product\Fruit.j
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\product\LineItem.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\product\Order.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\product\Product.java
-C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\product\ProductDescriptorFacade.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\product\ProductFactory.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\product\Sandwich.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\product\Snack.java

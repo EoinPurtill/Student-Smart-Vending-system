@@ -23,13 +23,12 @@ public class VendingMachine
    private VendingMachine() 
    { 
 	   try{
-		  stock = DAO.stockReader("Stock.txt");
+		  stock 	= DAO.stockReader("Stock.txt");
 		  operators = DAO.operatorReader("Operators.txt");
-		  users = DAO.userReader("Users.txt");
-		  deals = DAO.dealReader("Deals.txt");
+		  users 	= DAO.userReader("Users.txt");
+		  deals 	= DAO.dealReader("Deals.txt");
 	   }catch (IOException ex) {
 		   ex.printStackTrace();
-
 	   }
    }
    
