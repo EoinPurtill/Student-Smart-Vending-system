@@ -126,7 +126,10 @@ public class VendingMachineMenu extends Menu
 				else if (command.equals("V"))
 				{
 					ViewBalanceCommand vbc = (ViewBalanceCommand) cf.getCommand("VIEW_BALANCE", machine, user);
-					vbc.execute();
+					
+					if(vbc != null){
+						vbc.execute();
+					}
 				}
 				else if (command.equals("O"))
 				{  		
@@ -162,11 +165,6 @@ public class VendingMachineMenu extends Menu
 						loc.setMessage("LOGIN FAILED\nReturning to menu...");
 						sysLog.onLogEvent(loc);
 					}
-				}
-				else if (command.equals("P"))
-				{
-					ProductTypeCommand ptc = (ProductTypeCommand) cf.getCommand("PRODUCT_TYPES");
-					ptc.execute();
 				}
 				else if (command.equals("Q"))
 				{
