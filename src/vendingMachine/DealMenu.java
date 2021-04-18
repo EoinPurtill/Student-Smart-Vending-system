@@ -5,7 +5,9 @@ import java.util.Stack;
 
 import commands.DealCommand;
 import commands.ViewBalanceCommand;
-
+import interceptor.DealContextObject;
+import interceptor.DealLogger;
+import interceptor.Dispatcher;
 import interceptor.LogContextObject;
 import interceptor.SystemLogger;
 
@@ -27,6 +29,9 @@ public class DealMenu extends Menu{
 
 	static LogContextObject loc = new LogContextObject();
 	static SystemLogger sysLog = new SystemLogger();
+	static DealContextObject doc = new DealContextObject();
+	static DealLogger dealLog = new DealLogger();
+	static Dispatcher d = new Dispatcher(sysLog, dealLog);
 
     private DealMenu(){
 		super();
@@ -44,12 +49,12 @@ public class DealMenu extends Menu{
 	public static void undo(Deal deal){
 		if(!mementoStack.isEmpty() && !originatorStack.isEmpty()){
 			loc.setMessage(deal.removeItem( ((Integer)((DealMenuMemento)mementoStack.peek()).getState()).intValue() ));
-			sysLog.onLogEvent(loc);
+			d.dispatchSystemLog(loc);
 			originator = (DealMenuOriginator)originatorStack.pop();
 			originator.restore((MenuMemento)mementoStack.pop());
 		}else{
 			loc.setMessage("No items to remove!");
-			sysLog.onLogEvent(loc);
+			d.dispatchSystemLog(loc);
 		}
 	}
 
@@ -75,7 +80,7 @@ public class DealMenu extends Menu{
 
 		while(more){
 			loc.setMessage("D)eals  B)uy  S)elect_Deal  A)dd  V)iew_Balance  U)ndo  C)ancel");
-			sysLog.onLogEvent(loc);
+			d.dispatchSystemLog(loc);
 
 			String command = in.nextLine().toUpperCase();
 			switch(command){
@@ -85,15 +90,19 @@ public class DealMenu extends Menu{
 
 				case "B":	if(deal == null){
 								loc.setMessage(noDeal);
-								sysLog.onLogEvent(loc);
+								d.dispatchSystemLog(loc);
 
 							}else if(!deal.isComplete()){
 								loc.setMessage("Deal not complete!\n");
-								sysLog.onLogEvent(loc);
+								d.dispatchSystemLog(loc);
 							}else{
 								Deal returnDeal = new Deal( deal.getDescription(), deal.getAmountTreats(), deal.getAmountDrinks(), deal.getAmountSnacks(), deal.getAmountFruit(), deal.getAmountSandwiches(),
 															deal.getDiscount(), (ArrayList<Product>)deal.getTreats().clone(), (ArrayList<Product>)deal.getDrinks().clone(),
 															(ArrayList<Product>)deal.getSnacks().clone(), (ArrayList<Product>)deal.getFruits().clone(), (ArrayList<Product>)deal.getSandwiches().clone() );
+								
+								doc.setDeal(deal);
+								d.dispatchDealSale(doc);
+								
 								deal.clearDeal();
 								
 								mementoStack.clear();
@@ -113,7 +122,7 @@ public class DealMenu extends Menu{
 
 				case "A":	if(deal == null){
 								loc.setMessage(noDeal);
-								sysLog.onLogEvent(loc);
+								d.dispatchSystemLog(loc);
 							} else {
 								try
 								{
@@ -121,22 +130,24 @@ public class DealMenu extends Menu{
 									int itemType = deal.addItem(p);
 									if(itemType < 0){
 										loc.setMessage("Nothing added to order");
-										sysLog.onLogEvent(loc);
+										d.dispatchSystemLog(loc);
 									}else{
-										
-										System.out.printf("%s added to deal\n", p.getDescription());
+										StringBuilder sb = new StringBuilder();
+										sb.append(p.getDescription() + " added to deal\n");
+										loc.setMessage(sb.toString());
+										d.dispatchSystemLog(loc);
 										this.setOriginatorState(itemType);
 									}
 								}
 								catch(NullPointerException except)
 								{
 									loc.setMessage("No Options Currently Available");
-									sysLog.onLogEvent(loc);
+									d.dispatchSystemLog(loc);
 								}
 								catch (VendingException ex)
 								{
 									loc.setMessage(ex.getMessage());
-									sysLog.onLogEvent(loc);
+									d.dispatchSystemLog(loc);
 								}
 							}
 							break;
@@ -149,11 +160,11 @@ public class DealMenu extends Menu{
 								undo(deal);
 							}else{
 								loc.setMessage(noDeal);
-								sysLog.onLogEvent(loc);
+								d.dispatchSystemLog(loc);
 							}
 							break;
 				case "C":	loc.setMessage("Returning to previous menu\n");
-							sysLog.onLogEvent(loc);
+							d.dispatchSystemLog(loc);
 							if(deal != null)
 								deal.clearDeal();
 							deal = null;
@@ -161,7 +172,7 @@ public class DealMenu extends Menu{
 							break;
 							
 				default:	loc.setMessage("Invalid input\n\n"); 
-							sysLog.onLogEvent(loc);
+							d.dispatchSystemLog(loc);
 							break;
 			}
 		}

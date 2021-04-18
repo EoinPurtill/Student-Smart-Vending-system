@@ -2,6 +2,7 @@ package facade;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.DAO;
 import product.Deal;
@@ -18,10 +19,10 @@ public class readerFacade {
    
     public readerFacade() throws IOException
     {
-        stock = DAO.stockReader("Stock.txt");
-        operators = DAO.operatorReader("Operators.txt");
-        users = DAO.userReader("Users.txt");
-        deals = DAO.dealReader("Deals.txt");
+        stock       = DAO.stockReader("Stock.txt");
+        operators   = DAO.operatorReader("Operators.txt");
+        users       = DAO.userReader("Users.txt");
+        deals       = DAO.dealReader("Deals.txt");
     }
 
     public ArrayList<LineItem> getStock()

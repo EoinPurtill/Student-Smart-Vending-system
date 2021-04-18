@@ -2,7 +2,6 @@ import java.io.IOException;
 
 import interceptor.*;
 
-import java.io.*;
 import vendingMachine.*;
 
 /**
@@ -10,12 +9,16 @@ import vendingMachine.*;
 */
 public class VendingMachineSimulation
 { 
-   //implement concrete in
-   DealLogger myDealLogger = new DealLogger () {
-      public void onLogEvent(DealContextObject context) {
+   static SystemLogger mySystemLogger = new SystemLogger() {
+      @Override
+      public void onLogEvent(LogContextObject context) {
       }
    };
-
+   static DealLogger myDealLogger = new DealLogger() {
+      @Override
+      public void onDealSale(DealContextObject context) {
+      }
+   }; 
 
 
    public static void main(String[] args) throws IOException

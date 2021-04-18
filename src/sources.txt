@@ -17,6 +17,7 @@ C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\QuitCo
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\SelectDealCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\ShowProductCommand.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\commands\ViewBalanceCommand.java
+C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\facade\readerFacade.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\ContextObject.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\DealContextObject.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\interceptor\DealLogger.java
@@ -54,4 +55,3 @@ C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\vendingMachine\
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\vendingMachine\VendingException.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\vendingMachine\VendingMachine.java
 C:\Users\spren\Documents\GitHub\Student-Smart-Vending-system\src\vendingMachine\VendingMachineMenu.java
-

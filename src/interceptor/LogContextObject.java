@@ -2,7 +2,7 @@ package interceptor;
 
 public class LogContextObject extends ContextObject {
     
-    String message;
+    private String message;
     public LogContextObject(){
         
     }

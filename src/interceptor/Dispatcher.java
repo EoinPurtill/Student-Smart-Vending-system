@@ -1,28 +1,42 @@
 package interceptor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Dispatcher {
 
-    private Collection<SystemLogInterceptor> interceptors;
+    private Collection<SystemLogInterceptor> logInterceptors;
+    private Collection<DealSaleInterceptor> dealInterceptors;
 
-    public Dispatcher(Collection<SystemLogInterceptor> interceptors) {
-        this.interceptors = interceptors;
+    public Dispatcher() {
+        logInterceptors = new ArrayList<>();
+        dealInterceptors = new ArrayList<>();
     }
-
-    /** Register for all dispatched events */
+    public Dispatcher(SystemLogInterceptor logI, DealSaleInterceptor dealI){
+        this.logInterceptors = new ArrayList<>();
+        this.dealInterceptors = new ArrayList<>();
+        this.logInterceptors.add(logI);
+        this.dealInterceptors.add(dealI);
+    }
+    
     public void register(SystemLogInterceptor service) {
-        interceptors.add(service);
+        logInterceptors.add(service);
+    }
+    public void register(DealSaleInterceptor service) {
+        dealInterceptors.add(service);
     }
 
-    /** Deregister service to no longer receive dispatched events. */
     public void deregister(SystemLogInterceptor service) {
-        interceptors.remove(service);
+        logInterceptors.remove(service);
+    }
+    public void deregister(DealSaleInterceptor service) {
+        dealInterceptors.remove(service);
     }
 
     public void dispatchSystemLog(LogContextObject context) {
-        interceptors.forEach( i -> i.onLogEvent(context));
+        logInterceptors.forEach( i -> i.onLogEvent(context));
     }
-
-
+    public void dispatchDealSale(DealContextObject context) {
+        dealInterceptors.forEach( i -> i.onDealSale(context));
+    }
 }

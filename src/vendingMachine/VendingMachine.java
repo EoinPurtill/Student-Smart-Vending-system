@@ -8,8 +8,7 @@ import java.io.*;
 import product.*;
 import users.Operator;
 import users.User;
-import interceptor.*;
-import io.*;
+
 
 
 public class VendingMachine 
@@ -45,7 +44,7 @@ public class VendingMachine
    
    public Product[] getProductTypes(boolean isOperator)
    {
-	   ArrayList<Product> temp = new ArrayList<Product>();
+	   ArrayList<Product> temp = new ArrayList<>();
 	  
 		for(int i = 0; i < this.stock.size(); i++)
 		{

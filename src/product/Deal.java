@@ -2,6 +2,9 @@ package product;
 
 import java.util.ArrayList;
 
+import interceptor.LogContextObject;
+import interceptor.SystemLogger;
+
 public class Deal{
     private static final int TREATS = 0, DRINKS = 1, SNACKS = 2;
 	private static final int FRUIT = 3, SANDWICHES = 4;
@@ -13,6 +16,8 @@ public class Deal{
     private double discountPercent;
     private ArrayList<Product> treats, drinks, snacks;
     private ArrayList<Product> fruits, sandwiches;
+    static LogContextObject loc = new LogContextObject();
+	static SystemLogger sysLog = new SystemLogger();
 
     public Deal(String description, int amountTreats, int amountDrinks, int amountSnacks,
                 int amountFruit, int amountSandwiches, double discountPercent){
@@ -103,7 +108,9 @@ public class Deal{
 
     private int addTreat(Product treat){
         if(amountTreats == 0){
-            System.out.println("No treats in this offer.");
+
+            loc.setMessage("No treats in this offer.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
         else if(treats.size() < amountTreats){
@@ -111,14 +118,16 @@ public class Deal{
             return TREATS;
         }
         else{
-            System.out.println(amountTreats + "/" + amountTreats + " already selected.");
+            loc.setMessage(amountTreats + "/" + amountTreats + " already selected.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
     }
 
     private int addDrink(Product drink){
         if(amountDrinks == 0){
-            System.out.println("No drinks in this offer.");
+            loc.setMessage("No drinks in this offer.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
         else if(drinks.size() < amountDrinks){
@@ -126,14 +135,16 @@ public class Deal{
             return DRINKS;
         }
         else{
-            System.out.println(amountDrinks + "/" + amountDrinks + " already selected.");
+            loc.setMessage(amountDrinks + "/" + amountDrinks + " already selected.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
     }
 
     private int addFruit(Product fruit){
         if(amountFruit == 0){
-            System.out.println("No fruit in this offer.");
+            loc.setMessage("No fruit in this offer.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
         else if(fruits.size() < amountFruit){
@@ -141,14 +152,16 @@ public class Deal{
             return FRUIT;
         }
         else{
-            System.out.println(amountFruit + "/" + amountFruit + " already selected.");
+            loc.setMessage(amountFruit + "/" + amountFruit + " already selected.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
     }
 
     private int addSandwich(Product sandwich){
         if(amountSandwiches == 0){
-            System.out.println("No sandwiches in this offer.");
+            loc.setMessage("No sandwiches in this offer.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
         else if(sandwiches.size() < amountSandwiches){
@@ -156,14 +169,16 @@ public class Deal{
             return SANDWICHES;
         }
         else{
-            System.out.println(amountSandwiches + "/" + amountSandwiches + " already selected.");
+            loc.setMessage(amountSandwiches + "/" + amountSandwiches + " already selected.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
     }
 
     private int addSnack(Product snack){
         if(amountSnacks == 0){
-            System.out.println("No snacks in this offer.");
+            loc.setMessage("No snacks in this offer.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
         else if(snacks.size() < amountSnacks){
@@ -171,7 +186,8 @@ public class Deal{
             return SNACKS;
         }
         else{
-            System.out.println(amountSnacks + "/" + amountSnacks + " already selected.");
+            loc.setMessage(amountSnacks + "/" + amountSnacks + " already selected.");
+            sysLog.onLogEvent(loc);
             return -1;
         }
     }
@@ -207,13 +223,13 @@ public class Deal{
         if(amountTreats > 0)
             details += amountTreats + " treats\n";
         if(amountDrinks > 0)
-        details += amountDrinks + " drinks\n";
+            details += amountDrinks + " drinks\n";
         if(amountFruit > 0)
-        details += amountFruit + " fruit\n";
+            details += amountFruit + " fruit\n";
         if(amountSandwiches > 0)
-        details += amountSandwiches + " sandwiches\n";
+            details += amountSandwiches + " sandwiches\n";
         if(amountSnacks > 0)
-        details += amountSnacks + " snacks\n";
+            details += amountSnacks + " snacks\n";
 
         return String.format("%s\n%s", description, details);
     }
