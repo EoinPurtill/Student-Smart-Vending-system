@@ -129,7 +129,7 @@ public class VendingMachineMenu extends Menu {
 				else if (command.equals("V"))
 				{
 
-					ViewBalanceCommand vbc = (ViewBalanceCommand) cf.getCommand("VIEW_BALANCE", machine, user);
+					ViewBalanceCommand vbc = (ViewBalanceCommand) cf.getCommand("VIEW_BALANCE", user);
 					
 					if(vbc != null){
 						vbc.execute();
