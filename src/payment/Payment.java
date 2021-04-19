@@ -10,7 +10,7 @@ public abstract class Payment {
     public abstract void makePayment(Product prod, User user); // method responsible to makePayment
 
     public boolean getConfirmation() {
-        return false;
+        return true;
     }
 
 }

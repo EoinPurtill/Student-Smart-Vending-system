@@ -13,12 +13,16 @@ public class BalancePayment extends Payment {
         // Makes sure they are a valid user in the database
         // Checks user balances in comparison to price
         payment.ProcessPayment(user, prod);
+        setConfirmation(true);
         user.lowerBalance(prod.getPrice());
 
         System.out.println(
                 "Purchased: " + prod.getDescription() + ".\nNew Balance: $" + String.format("%.2f", user.getCredit()));
-        this.confirmed = true;
 
+    }
+
+    public void setConfirmation(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
     // Necessary for testing
