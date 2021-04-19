@@ -16,46 +16,39 @@ import payment.Payment;
 
 public class VendingMachine {
 
-public class VendingMachine 
-{  
+	// creates a private and static single instance of vendingMachine.
+	private static VendingMachine instance = new VendingMachine();
 
-   //creates a private and static single instance of vendingMachine.
-   private static VendingMachine instance = new VendingMachine();
-   
-   private ArrayList<LineItem> stock;
-   private ArrayList<Operator> operators;
-   private ArrayList<User> users;
-   private ArrayList<Deal> deals;
+	private ArrayList<LineItem> stock;
+	private ArrayList<Operator> operators;
+	private ArrayList<User> users;
+	private ArrayList<Deal> deals;
 
-   private VendingMachine() 
-   { 
-	   try{
+	private VendingMachine() {
+		try {
 
-		   readerFacade rf = new readerFacade();
-		   stock = rf.getStock();
-		   operators = rf.getOperators();
-		   users= rf.getUsers();
-		   deals = rf.getDeals();
+			readerFacade rf = new readerFacade();
+			stock = rf.getStock();
+			operators = rf.getOperators();
+			users = rf.getUsers();
+			deals = rf.getDeals();
 
-	   }catch (IOException ex) {
-		   ex.printStackTrace();
-	   }
-   }
-   
-   //Returns the only available Vending Machine object.
-   public static VendingMachine getInstance(){
-      return instance;
-   }
-   
-   public Product[] getProductTypes(boolean isOperator)
-   {
-	   ArrayList<Product> temp = new ArrayList<>();
-	  
-		for(int i = 0; i < this.stock.size(); i++)
-		{
-			if(!temp.contains(this.stock.get(i).getProd()))
-			{	
-				if((this.stock.get(i).getQuantity() > 0) || isOperator)
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	// Returns the only available Vending Machine object.
+	public static VendingMachine getInstance() {
+		return instance;
+	}
+
+	public Product[] getProductTypes(boolean isOperator) {
+		ArrayList<Product> temp = new ArrayList<>();
+
+		for (int i = 0; i < this.stock.size(); i++) {
+			if (!temp.contains(this.stock.get(i).getProd())) {
+				if ((this.stock.get(i).getQuantity() > 0) || isOperator)
 					temp.add(this.stock.get(i).getProd());
 			}
 		}
@@ -64,13 +57,13 @@ public class VendingMachine
 		ret = temp.toArray(ret);
 		return ret;
 	}
-/* 
-	public void payMachine(double value) throws VendingException {
-		Payment order12 = new BalancePayment();  
-        order12.payment = new Gateway();  
-        order12.makePayment(); 
-
-	} */
+	/*
+	 * public void payMachine(double value) throws VendingException { Payment
+	 * order12 = new BalancePayment(); order12.payment = new Gateway();
+	 * order12.makePayment();
+	 * 
+	 * }
+	 */
 
 	public String buyProduct(Product prod, User user) throws VendingException {
 		String output = "";
@@ -81,10 +74,10 @@ public class VendingMachine
 					j = stock.size();
 				}
 			}
-			//Gateway
-			Payment order = new BalancePayment();  
-        	order.payment = new Gateway();  
-        	order.makePayment(prod, user);
+			// Gateway
+			Payment order = new BalancePayment();
+			order.payment = new Gateway();
+			order.makePayment(prod, user);
 		} else {
 			throw new VendingException("Not enough credit!\n");
 		}
@@ -159,64 +152,55 @@ public class VendingMachine
 			}
 		}
 
-		return "Price:  " + String.format("$%.2f", totalPrice) + "\nNew Balance:  " + String.format("$%.2f", user.getCredit()) + "\n";
-	}
-   
-   public String addProduct(Product prod, int quant)
-	{   
-	   String output = ""; //I added this guy to this method to collect our output 
-							//and return it, it helps with the GUI, i also changed
-							//the statement where this is called from OperatorMenu to
-							//a println statement so that the needed info is still printed!
-	   
-	   boolean go = true; int i = 0;
-	   while(go && i < stock.size())
-	   {
-		   if(stock.get(i).compareProducts(prod) == 0)
-		   {
-			   if(stock.get(i).add(quant))
-				   output = "Successfully added"; 
-			   else
-			       output = "Add Unsuccessful"; 
-			   go = false;
-		   }
-		   i++;
-	   }
-	   if(go)
-	   {   
-			stock.add(new LineItem(prod, quant, "")); 
-			output = "Successfully added"; 
-	   }
-	   return output;
+		return "Price:  " + String.format("$%.2f", totalPrice) + "\nNew Balance:  "
+				+ String.format("$%.2f", user.getCredit()) + "\n";
 	}
 
-   public boolean containsProduct(Product p)
-   {
-	   for(int i = 0; i < stock.size(); i++)
-	   {
-		   if(stock.get(i).compareProducts(p) == 0)
-			   return true;
-	   }
-	   return false;
-   }
-   
-   public boolean containsProduct(double price, String desc)
-   {
-	   for(int i = 0; i < stock.size(); i++)
-	   {
-		    if(stock.get(i).compareProducts(price, desc) == 0)
-			    return true;
-	   }
-	   return false;
-   }
-   
-   public boolean login(String id, String pass) throws NullPointerException
-   {
-	    
-		for(int i = 0; i < operators.size(); i++)
-		{
-			if(operators.get(i).assertDetails(id, pass))
-			{
+	public String addProduct(Product prod, int quant) {
+		String output = ""; // I added this guy to this method to collect our output
+							// and return it, it helps with the GUI, i also changed
+							// the statement where this is called from OperatorMenu to
+							// a println statement so that the needed info is still printed!
+
+		boolean go = true;
+		int i = 0;
+		while (go && i < stock.size()) {
+			if (stock.get(i).compareProducts(prod) == 0) {
+				if (stock.get(i).add(quant))
+					output = "Successfully added";
+				else
+					output = "Add Unsuccessful";
+				go = false;
+			}
+			i++;
+		}
+		if (go) {
+			stock.add(new LineItem(prod, quant, ""));
+			output = "Successfully added";
+		}
+		return output;
+	}
+
+	public boolean containsProduct(Product p) {
+		for (int i = 0; i < stock.size(); i++) {
+			if (stock.get(i).compareProducts(p) == 0)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean containsProduct(double price, String desc) {
+		for (int i = 0; i < stock.size(); i++) {
+			if (stock.get(i).compareProducts(price, desc) == 0)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean login(String id, String pass) throws NullPointerException {
+
+		for (int i = 0; i < operators.size(); i++) {
+			if (operators.get(i).assertDetails(id, pass)) {
 				return true;
 			}
 		}
@@ -230,25 +214,21 @@ public class VendingMachine
 			}
 		}
 		return null;
-   }
-   
-   public ArrayList<LineItem> getStock()
-   {
-	   return stock;
-   }
-   
-   public ArrayList<Operator> getOperators()
-   {
-	   return operators;
-   }
-   
-   public ArrayList<User> getUsers()
-   {
-	   return users;
-   }
+	}
 
-   public ArrayList<Deal> getDeals()
-   {
-	   return deals;
-   }
+	public ArrayList<LineItem> getStock() {
+		return stock;
+	}
+
+	public ArrayList<Operator> getOperators() {
+		return operators;
+	}
+
+	public ArrayList<User> getUsers() {
+		return users;
+	}
+
+	public ArrayList<Deal> getDeals() {
+		return deals;
+	}
 }

@@ -18,13 +18,13 @@ public class testProcessPayment {
     @Before
     public void setUp() throws IOException {
         testPayment.payment = new Gateway();
-
+        boolean confirmed = testPayment.getConfirmation();
         testPayment.makePayment(d, user);
     }
 
     @Test
     public void test_confirmPay() {
-        assertTrue(testPayment.getConfirmation() == true);
+        assertTrue(confirmed);
     }
 
 }

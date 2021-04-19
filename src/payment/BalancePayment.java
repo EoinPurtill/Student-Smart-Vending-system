@@ -17,10 +17,11 @@ public class BalancePayment extends Payment {
 
         System.out.println(
                 "Purchased: " + prod.getDescription() + ".\nNew Balance: $" + String.format("%.2f", user.getCredit()));
-        confirmed = true;
+        this.confirmed = true;
 
     }
 
+    // Necessary for testing
     public boolean getConfirmation() {
         return this.confirmed;
     }
