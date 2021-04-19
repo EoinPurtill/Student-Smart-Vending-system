@@ -21,21 +21,18 @@ public class testProcessPayment {
         testPayment.makePayment(d, user);
 
     }
-
     @Test
     public void test_confirmPay() {
         System.out.println("Checking if the makePayment() method was called");
 
         assertTrue(testPayment.getConfirmation() == true);
     }
-
     @Test
     public void test_userRecieved() {
         System.out.println("Checking if the correct user was received");
 
         assertSame(user.getID(), "12312321");
     }
-
     @Test
     public void test_creditSame() {
         System.out.println("Checking if the balance has been decreased");
