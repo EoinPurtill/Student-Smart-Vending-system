@@ -2,7 +2,7 @@ package vendingMachine;
 
 import java.util.ArrayList;
 
-import facade.readerFacade;
+import facade.ReaderFacade;
 
 import java.io.*;
 import product.*;

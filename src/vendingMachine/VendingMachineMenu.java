@@ -72,7 +72,7 @@ public class VendingMachineMenu extends Menu {
 				
 			while (more){ 
 
-				loc.setMessage("S)how_Products  M)ulti-order  D)eals  B)uy  V)iew_Balance  O)perator_Functions  P)roduct_Types  Q)uit");
+				loc.setMessage("S)how Products  M)ulti-order  D)eals  B)uy  V)iew Balance  O)perator Functions  Q)uit");
 				d.dispatchSystemLog(loc);
 				String command = in.nextLine().toUpperCase();
 

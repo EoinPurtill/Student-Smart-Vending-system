@@ -15,10 +15,6 @@ public class BalancePayment extends Payment {
         payment.ProcessPayment(user, prod);
         setConfirmation(true);
         user.lowerBalance(prod.getPrice());
-
-        System.out.println(
-                "Purchased: " + prod.getDescription() + ".\nNew Balance: $" + String.format("%.2f", user.getCredit()));
-
     }
 
     public void setConfirmation(boolean confirmed) {

@@ -79,7 +79,7 @@ public class DealMenu extends Menu{
 		String noDeal = "no deal selected\n";
 
 		while(more){
-			loc.setMessage("D)eals  B)uy  S)elect_Deal  A)dd  V)iew_Balance  U)ndo  C)ancel");
+			loc.setMessage("D)eals  B)uy  S)elect Deal  A)dd  V)iew Balance  U)ndo  C)ancel");
 			d.dispatchSystemLog(loc);
 
 			String command = in.nextLine().toUpperCase();

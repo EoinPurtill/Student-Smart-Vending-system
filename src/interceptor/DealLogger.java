@@ -14,7 +14,7 @@ public class DealLogger implements DealSaleInterceptor {
         }
         else{
             StringBuilder sb = new StringBuilder();
-            sb.append("Date and Time of Purchase: " + getTimeAndDate() + "\n");
+            sb.append("Adding Deal:\nDate & Time: " + getTimeAndDate() + "\n");
             sb.append("Deal Description: " + deal.getDescription() +"\n");
             sb.append(deal.getAmountDrinks() + "x Drinks.\n");
             sb.append(deal.getAmountFruit() + "x Fruit.\n");

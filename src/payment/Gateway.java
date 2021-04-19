@@ -12,7 +12,7 @@ public class Gateway implements Paymentsystem {
             reached = true;
         }
         if (reached)
-            System.out.println("Using mock payment gateway for ");
+            System.out.println("Connected to mock payment gateway!");
         else {
             throw new VendingException("Not enough credit\n");
         }
