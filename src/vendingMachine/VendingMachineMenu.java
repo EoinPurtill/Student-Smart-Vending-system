@@ -10,12 +10,11 @@ import interceptor.Dispatcher;
 import interceptor.LogContextObject;
 import interceptor.SystemLogger;
 
-/**   
-A menu from the vending machine.
-*/
-public class VendingMachineMenu extends Menu
-{    
-	//Creates a private and static single instance of VendingMachineMenu()
+/**
+ * A menu from the vending machine.
+ */
+public class VendingMachineMenu extends Menu {
+	// Creates a private and static single instance of VendingMachineMenu()
 	private static VendingMachineMenu instance = new VendingMachineMenu();
 
 	private OperatorMenu opMenu;
@@ -23,11 +22,11 @@ public class VendingMachineMenu extends Menu
 	
 	private VendingMachineMenu(){
 		super();
-		
-		try{
+
+		try {
 			opMenu = new OperatorMenu();
 			sessionSummary = "";
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -42,10 +41,11 @@ public class VendingMachineMenu extends Menu
 	CommandFactory cf = new CommandFactory();
    
 	/**
-	Runs the vending machine system.
-	@param machine the vending machine
-	*/
-	public Object run(VendingMachine machine) throws IOException, NullPointerException{
+	 * Runs the vending machine system.
+	 * 
+	 * @param machine the vending machine
+	 */
+	public Object run(VendingMachine machine) throws IOException, NullPointerException {
 		boolean continueSim = true;
 		boolean more = false;
 		d.register(sysLog);
@@ -58,11 +58,10 @@ public class VendingMachineMenu extends Menu
 			d.dispatchSystemLog(loc);
 
 			String enteredID = in.nextLine().toUpperCase();
-			if(enteredID.equals("~")){
+			if (enteredID.equals("~")) {
 				more = false;
 				continueSim = false;
-			}
-			else{
+			} else {
 				user = machine.userLogin(enteredID);
 				more = (user != null);
 				if(!more){
@@ -180,7 +179,7 @@ public class VendingMachineMenu extends Menu
 				}
 			}
 		}
-		if(this.sessionSummary.equals(""))
+		if (this.sessionSummary.equals(""))
 			return "No Sales This Session";
 		return "Sales Summary For This Session:\n\n" + this.sessionSummary;
 	}

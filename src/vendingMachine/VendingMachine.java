@@ -8,8 +8,13 @@ import java.io.*;
 import product.*;
 import users.Operator;
 import users.User;
+import interceptor.*;
+import io.*;
+import payment.BalancePayment;
+import payment.Gateway;
+import payment.Payment;
 
-
+public class VendingMachine {
 
 public class VendingMachine 
 {  
@@ -54,99 +59,102 @@ public class VendingMachine
 					temp.add(this.stock.get(i).getProd());
 			}
 		}
-	   
-	   Product[] ret = new Product[temp.size()];
-	   ret = temp.toArray(ret);
-	   return ret;
-   }
-   
-   public String buyProduct(Product prod, User user) throws VendingException
-   {
+
+		Product[] ret = new Product[temp.size()];
+		ret = temp.toArray(ret);
+		return ret;
+	}
+/* 
+	public void payMachine(double value) throws VendingException {
+		Payment order12 = new BalancePayment();  
+        order12.payment = new Gateway();  
+        order12.makePayment(); 
+
+	} */
+
+	public String buyProduct(Product prod, User user) throws VendingException {
 		String output = "";
-		if(prod.getPrice() <= user.getCredit())
-		{
-			for(int j = 0; j < stock.size(); j++)
-			{
-				if((stock.get(j).getProd().compareTo(prod)) == 0)
-				{
+		if (prod.getPrice() <= user.getCredit()) {
+			for (int j = 0; j < stock.size(); j++) {
+				if ((stock.get(j).getProd().compareTo(prod)) == 0) {
 					stock.get(j).remove();
 					j = stock.size();
 				}
 			}
-			user.lowerBalance(prod.getPrice());
-			output = "Purchased: " + prod.getDescription() + ".\nNew Balance: $" + String.format("%.2f", user.getCredit());
-		}
-		else
-		{
+			//Gateway
+			Payment order = new BalancePayment();  
+        	order.payment = new Gateway();  
+        	order.makePayment(prod, user);
+		} else {
 			throw new VendingException("Not enough credit!\n");
 		}
 		return output;
 	}
-   
-	public String buyDeal(Deal deal, User user) throws VendingException
-   {
-		if( !deal.isComplete() ){
+
+	public String buyDeal(Deal deal, User user) throws VendingException {
+		if (!deal.isComplete()) {
 			throw new VendingException("Deal is not complete!\n");
 		}
 		double price = deal.getPrice();
-		if( user.getCredit() >= price ){
-			for(Product treat : deal.getTreats())
+		if (user.getCredit() >= price) {
+			for (Product treat : deal.getTreats())
 				buyProduct(treat, user);
-			for(Product drink : deal.getDrinks())
+			for (Product drink : deal.getDrinks())
 				buyProduct(drink, user);
-			for(Product fruit : deal.getFruits())
+			for (Product fruit : deal.getFruits())
 				buyProduct(fruit, user);
-			for(Product sandwich : deal.getSandwiches())
+			for (Product sandwich : deal.getSandwiches())
 				buyProduct(sandwich, user);
 
-			user.increaseBalance( ( deal.getPrice() / (100 - deal.getDiscount()) ) * deal.getDiscount() );
+			user.increaseBalance((deal.getPrice() / (100 - deal.getDiscount())) * deal.getDiscount());
 			deal.clearDeal();
-			return deal.getDescription() + " Total Price:  " + String.format("$%.2f", price) + "\nNew Balance:  $" + String.format("%.2f", user.getCredit());
-		}
-		else
-		{
+			return deal.getDescription() + " Total Price:  " + String.format("$%.2f", price) + "\nNew Balance:  $"
+					+ String.format("%.2f", user.getCredit());
+		} else {
 			throw new VendingException("Not enough credit!\n");
 		}
 	}
 
-	public String processOrder(Order order, User user) throws VendingException{
+	public String processOrder(Order order, User user) throws VendingException {
 		ArrayList<Product> itemsList = order.getSingleItems();
 		ArrayList<Deal> dealList = order.getDeals();
 
-		if(itemsList.size() + dealList.size() == 0){
+		if (itemsList.size() + dealList.size() == 0) {
 			throw new VendingException("Order is empty");
 		}
 
 		double totalPrice = 0.0;
-		for(Product prod : itemsList){
-				totalPrice += prod.getPrice();
+		for (Product prod : itemsList) {
+			totalPrice += prod.getPrice();
 		}
 		double dealsPrice = 0.0;
-		for(Deal deal : dealList){
+		for (Deal deal : dealList) {
 			dealsPrice += deal.getPrice();
 		}
 		totalPrice += dealsPrice;
-		
-		if(user.getCredit() < totalPrice){
+
+		if (user.getCredit() < totalPrice) {
 			throw new VendingException("Not enough credit to complete order");
 		}
 
 		String orderDetails = "ORDER:\n";
-		for(Product prod : itemsList){
-			try{
+		for (Product prod : itemsList) {
+			try {
 				this.buyProduct(prod, user);
-				orderDetails += "-" + prod + "\n";		
-			}catch(VendingException ex){
-				//TODO: implement memento here to restore vending machine state and user balance
+				orderDetails += "-" + prod + "\n";
+			} catch (VendingException ex) {
+				// TODO: implement memento here to restore vending machine state and user
+				// balance
 				throw new VendingException(ex.getMessage());
 			}
 		}
-		for(Deal deal : dealList){
-			try{
+		for (Deal deal : dealList) {
+			try {
 				this.buyDeal(deal, user);
 				orderDetails += "-" + deal + "\n";
-			}catch(VendingException ex){
-				//TODO: implement memento here to restore vending machine state and user balance
+			} catch (VendingException ex) {
+				// TODO: implement memento here to restore vending machine state and user
+				// balance
 				throw new VendingException(ex.getMessage());
 			}
 		}
@@ -213,14 +221,11 @@ public class VendingMachine
 			}
 		}
 		return false;
-   }
+	}
 
-   public User userLogin(String id) throws NullPointerException
-   {
-		for(int i = 0; i < users.size(); i++)
-		{
-			if(users.get(i).assertDetails(id))
-			{
+	public User userLogin(String id) throws NullPointerException {
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).assertDetails(id)) {
 				return users.get(i);
 			}
 		}
