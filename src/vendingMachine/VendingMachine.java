@@ -27,7 +27,7 @@ public class VendingMachine {
 	private VendingMachine() {
 		try {
 
-			readerFacade rf = new readerFacade();
+			ReaderFacade rf = new ReaderFacade();
 			stock = rf.getStock();
 			operators = rf.getOperators();
 			users = rf.getUsers();

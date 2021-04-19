@@ -10,14 +10,14 @@ import product.LineItem;
 import users.Operator;
 import users.User;
 
-public class readerFacade {
+public class ReaderFacade {
 
     private ArrayList<LineItem> stock;
     private ArrayList<Operator> operators;
     private ArrayList<User> users;
     private ArrayList<Deal> deals;
    
-    public readerFacade() throws IOException
+    public ReaderFacade() throws IOException
     {
         stock       = DAO.stockReader("Stock.txt");
         operators   = DAO.operatorReader("Operators.txt");
